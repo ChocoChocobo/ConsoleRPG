@@ -10,7 +10,7 @@ Shop::Shop(vector<Item> _availableItems, string _name)
 
 bool Shop::ShowItems()
 {
-	// Переделать!
+	// Я переделал
 	if (availableItems.size() == 0) return false;
 	cout << TOP_BORDER << endl;
 	for (int i = 0; i < availableItems.size(); i++)
