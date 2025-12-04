@@ -50,7 +50,7 @@ void main()
 	Character enemy("Блоха", 10, 4, 0, 8, 10);
 	Character enemy1("Цербер", 25, 8, 0, 14, 25);
 	Character enemy2("Моль-беспилотник", 2, 10, 0, 16, 10);
-	Character enemy3("Пульт от кондиционера", 45, 8, 0, 15, 100);
+	Character enemy3("Пульт от кондиционера", 45, 8, 0, 15, 1000);
 
 	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
 
@@ -58,6 +58,7 @@ void main()
 
 	Item item1("Зубы деда", "Все что вам могло осталось в наследство", 2, 32);
 	Item item2("Рок единорога", "Самый качественный звук", 5, 1);
+	Item item3("Батарейки", "Батарейки для пульта от кондиционера", 100, 4);
 
 	shopItems.push_back(item1);
 	shopItems.push_back(item2);
