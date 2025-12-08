@@ -69,6 +69,12 @@ void main()
 
 	shopItems.push_back(item1);
 	shopItems.push_back(item2);
+	shopItems.push_back(item3);
+	shopItems.push_back(item4);
+	shopItems.push_back(item5);
+	shopItems.push_back(item6);
+	shopItems.push_back(item7);
+	shopItems.push_back(item8);
 
 	Shop shop(shopItems);
 	
@@ -163,11 +169,7 @@ void main()
 
 			enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
 
-			if (player.health <= 0)
-			{
-				cout << player.name << " пал!" << endl;
-				break;
-			}
+			if (CheckWinLoseConditionPlayer(player)) break;
 
 		} while (userChoice != 0);
 	}

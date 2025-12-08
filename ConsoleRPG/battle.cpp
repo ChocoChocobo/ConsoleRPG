@@ -78,9 +78,14 @@ int EnemyTurn(Character& enemy, Character& player)
 	}
 }
 
-void CheckWinLoseConditionPlayer(Character player)
+bool CheckWinLoseConditionPlayer(Character player)
 {
-
+	if (player.health <= 0)
+	{
+		cout << player.name << " пал!" << endl;
+		return true;
+	}
+	return false;
 }
 
 void CheckWinLoseConditionEnemy(Character enemy)
