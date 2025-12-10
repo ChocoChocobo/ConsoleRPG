@@ -73,6 +73,7 @@ bool LoadGame(Character& player, Character& enemy, const string& filename)
 		string key = line.substr(0, sep);
 		string value = line.substr(sep + 1);
 
+		//Игрок
 		if (key == "player.name") player.name = value;
 		else if (key == "player.health") player.health = stoi(value);
 		else if (key == "player.maxHealth") player.maxHealth = stoi(value);
@@ -81,6 +82,16 @@ bool LoadGame(Character& player, Character& enemy, const string& filename)
 		else if (key == "player.specialCooldown") player.specialCooldown = stoi(value);
 		else if (key == "player.gold") player.gold = stoi(value);
 		else if (key == "player.stats.armorClass") player.stats.armorClass = stoi(value);
+
+		//Враг
+		if (key == "enemy.name") enemy.name = value;
+		else if (key == "enemy.health") enemy.health = stoi(value);
+		else if (key == "enemy.maxHealth") enemy.maxHealth = stoi(value);
+		else if (key == "enemy.healthFlasks") enemy.healthFlasks = stoi(value);
+		else if (key == "enemy.damageFace") enemy.damageFace = stoi(value);
+		else if (key == "enemy.specialCooldown") enemy.specialCooldown = stoi(value);
+		else if (key == "enemy.gold") enemy.gold = stoi(value);
+		else if (key == "enemy.stats.armorClass") enemy.stats.armorClass = stoi(value);
 	}
 
 	cout << "Сохранение успешно загружено!" << endl;
