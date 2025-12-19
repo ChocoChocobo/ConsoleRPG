@@ -11,20 +11,17 @@ Shop::Shop(Character& _player, vector<Item>& _availableItems, string _name) : av
 
 bool Shop::ShowItems()
 {
-	// Переделать!
-	if (availableItems.size() == 0) return false;
-	cout << TOP_BORDER << endl;
-	for (int i = 1; i <= availableItems.size(); i++)
-	{
-		cout << i << ". " << availableItems[i - 1].name << "." << endl;
-	}
-
 	int userInput;
 	do
 	{
-		// 1. Виден весь список предметов
-		// 2. Игрок может детально осмотреть предмет -> нажать кнопку купить или выход во все предметы
-		// Прим.: предмет сразу добавляется в инвентарь
+		// Исправлено: Теперь вывод полного списка предметов будет выводиться всегда при выходе из какого-то предмета позже, что позволит видеть игроку предметы, которые ему доступны.
+		if (availableItems.size() == 0) return false;
+		cout << TOP_BORDER << endl;
+		for (int i = 1; i <= availableItems.size(); i++)
+		{
+			cout << i << ". " << availableItems[i - 1].name << "." << endl;
+		}
+
 		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
 		cin >> userInput;
 
@@ -48,15 +45,20 @@ bool Shop::ShowItems()
 				player.inventory.push_back(chosenItem);
 				cout << endl << "У игрока денег: " << player.gold << endl;
 
-				availableItems[userInput - 1].quantity - 1;
+				// Исправлено: Теперь с помощью оператора присваивания (=) для availableItems[userInput - 1].quantity присваивается availableItems[userInput - 1].quantity - 1, а не просто считает availableItems[userInput - 1].quantity - 1, как было раньше.
+				availableItems[userInput - 1].quantity -= 1;
 				if (availableItems[userInput - 1].quantity <= 0)
 				{
 					availableItems.erase(availableItems.begin() + userInput - 1);
 				}
 			}
-			else if (userInput == 0) break;
+			// Исправлено: Теперь в условии nestedUserInput, который и нужен, что бы выйти из данного цикла, а не userInput, который был раньше. Так же после выхода консоль чиститься.
+			else if (nestedUserInput == 0)
+			{
+				system("cls");
+				break;
+			}
 		}
-
 	} while (userInput != 0);
 
 	system("cls");
