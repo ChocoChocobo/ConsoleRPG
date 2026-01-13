@@ -87,6 +87,58 @@ void Character::SpecialAttack()
 
 }
 
+void Character::ShowInventory()
+{
+	int userInput;
+	do
+	{
+		if (inventory.size() <= 0)
+		{
+			cout << "В инвентаре нет предметов!" << endl;
+			return;
+		}
+
+		for (int i = 1; i <= inventory.size(); i++)
+		{
+			cout << i << ". " << inventory[i - 1].name << "." << endl;
+		}
+
+		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
+		cin >> userInput;
+
+		if (userInput == 0) continue;
+		while (true)
+		{
+			cout << SEPARATOR_LINE << endl;
+			inventory[userInput - 1].ShowInfo();
+			Item chosenItem = inventory[userInput - 1];
+			cout << endl << "Введите 1 для применения предмета (или '0' для выхода): " << endl;
+			int nestedUserInput;
+			cin >> nestedUserInput;
+			if (nestedUserInput == 1)
+			{
+				inventory[userInput - 1].quantity -= 1;
+				if (inventory[userInput - 1].quantity <= 0)
+				{
+					inventory.erase(inventory.begin() + userInput - 1);
+					// PLACEHOLDER
+					break;
+				}
+			}
+
+			else if (nestedUserInput == 0)
+			{
+				system("cls");
+				break;
+			}
+		}
+
+		cout << TOP_BORDER << endl;
+	} while (userInput != 0);
+
+	system("cls");
+}
+
 void Character::IncreaseHealth(int amount)
 {
 	health += amount;

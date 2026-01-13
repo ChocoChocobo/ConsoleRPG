@@ -77,12 +77,13 @@ void main()
 		if (userChoice == 1) LoadGame(player, enemy);
 		else
 		{
+			system("cls");
 			cout << "Задайте имя вашему герою: ";
 			cin.ignore(1000, '\n');
 			getline(cin, player.name);
 			cout << endl;
 
-			int index = 1;
+			/*int index = 1;
 			while (true)
 			{
 				cout << "Задайте класс доспехов (12): ";
@@ -115,14 +116,16 @@ void main()
 					cout << "Мой хороший \\(>o<*)o" << endl;
 					break;
 				}
-			}
+			}*/
 		}
 	}	
 
 	for (int enemyCount = 0; enemyCount < enemyWave.size(); enemyCount++)
 	{
+		// МАГАЗИН
 		shop.ShowItems();
 
+		// БИТВА
 		//system("cls");
 		cout << TOP_BORDER << endl;
 		cout << enemyWave[enemyCount].name << " выступает следующим!" << endl;
@@ -141,7 +144,6 @@ void main()
 				break;
 			}
 
-
 			if (enemyWave[enemyCount].health <= 0)
 			{
 				cout << "Победа, но какой ценой (o_o;)" << endl;
@@ -155,17 +157,15 @@ void main()
 				break;
 			}
 
-			enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
-
-			//if (enemyChoice == 4) break;
-
 			if (player.health <= 0)
 			{
 				cout << player.name << " пал!" << endl;
 				break;
 			}
 
-			if (userChoice == 0) enemyCount = 999;
+			if (userChoice == 1, 2, 3, 4) enemyChoice = EnemyTurn(enemyWave[enemyCount], player);			
+
+			if (userChoice == 0) enemyCount = 999; // РАБОТАЕТ - НЕ ТРОГАЙ!
 
 		} while (userChoice != 0);
 	}

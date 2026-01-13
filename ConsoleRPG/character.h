@@ -6,6 +6,7 @@
 #include <vector>
 #include "item.h"
 #include "dice.h"
+#include "user_interface.h"
 using namespace std;
 
 struct Stats
@@ -37,6 +38,7 @@ struct Character
 	bool BuyItem(int cost);
 	void BasicAttack(Character& other);
 	void SpecialAttack();
+	void ShowInventory();
 	void IncreaseHealth(int amount);
 	void DecreaseHealth(int amount);
 	void Heal(int difficulty);
