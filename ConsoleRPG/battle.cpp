@@ -70,7 +70,7 @@ int EnemyTurn(Character& enemy, Character& player)
 {
 	int enemyAction = rand() % 3;
 
-	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 60)
+	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 40)
 	{
 		enemy.BasicAttack(player);
 		cout << endl;

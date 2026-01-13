@@ -1,17 +1,14 @@
 ﻿// Что добавить:
-// 5. Кол-во врагов определяется в массиве, где при переборе в цикле for во вложенном цикле while происходит поэтапная битва между героем и одним врагом. После победы над врагом, игроку предлагается магазин. После этого выходим из цикла while и переходим на следующую итерацию со следующей волной
-// 6. Структуры магазина и предмета
-// 1. Пасхалки на имена
-// f(x) = g(x) + h(x)
 // 2. В начале распределение статов из 75 предложенных очков (любая другая система на ваш вкус) и создание перса из домашки
-// 3. Сохранение в магазине
-// 4. Меню паузы для Давида с настройками сложности и сохранение
+// 3. Сохранение в магазине и магазина
+// 4. Меню паузы для Давида с настройками сложности
 // 7. Вывод графики в ASCII
 // 8. Переделать вывод информации для уникальных ситуаций
 // 9. Стринговые массивы для описания разных действий
-// 10. С помощью библиотеки threads добавлять задержку
 // 11. Клаустрофобия
-// ?. Сделать типа шахматного поля для Давида!
+// Пульт от кондиционера открывает секретную комнату
+
+// ?. Сделать A* типа шахматного поля для Давида!
 // ???. A* для ии врага
 
 #include <iostream>
@@ -61,8 +58,9 @@ void main()
 	Item item2("Рок единорога", "Самый качественный звук", 5, 1);
 	Item item3("Батарейки", "Батарейки для пульта от кондиционера", 100, 4);
 
-	shopItems.push_back(item1);
 	shopItems.push_back(item2);
+	shopItems.push_back(item1);
+	shopItems.push_back(item3);
 
 	Shop shop(player, shopItems);
 	
@@ -82,6 +80,67 @@ void main()
 			cin.ignore(1000, '\n');
 			getline(cin, player.name);
 			cout << endl;
+
+			if (player.name == "Платон Святозарный")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ 6 кд" << endl;
+				cout << "+ 40 голды" << endl;
+				player.stats.armorClass += 6;
+				player.gold += 40;
+			}
+			else if (player.name == "ChocoChocobo")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете себя сильнее" << endl;
+				cout << "+ мораль" << endl;
+				player.damageFace = 10;				
+			}
+			else if (player.name == "Bytik Menich")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете..." << endl;
+				Item item4("Батарейки", "Батарейки для пульта от кондиционера", 100, 2);
+				Item item5("Шпингалет", "Арбитр мироздания в твоей ванной", 1, 1);
+				player.inventory.push_back(item4);
+				player.inventory.push_back(item5);
+			}
+			else if (player.name == "Levi_333")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете свободу в вашем разуме" << endl;
+				cout << "+ вы перестали думать" << endl;
+				cout << "- мысли" << endl;
+				player.health += 12;
+				player.maxHealth += 12;
+				player.healthFlasks += 2;
+			}
+			else if (player.name == "Ольга Петровна")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете страх в глазах ваших врагов" << endl;
+				cout << "+ Вы" << endl;
+				cout << "- Родин" << endl;
+				player.stats.armorClass = 18;
+				player.health = 1;
+				player.maxHealth = 1;
+				player.gold = 250;
+			}
+			else if (player.name == "Кусов")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ теперь вы что-то между Абаем Кунанбаевом и Аполлоном" << endl;
+				cout << "+++++++++++++++++++++" << endl;
+				cout << "- нет" << endl;
+				player.damageFace = 1;
+				player.healthFlasks = 64;
+				player.stats.armorClass = 128;
+				player.health = 256;
+				player.maxHealth = 512;
+				player.gold = 1024;
+			}
+
+			PAUSE_5_SECONDS;
 
 			/*int index = 1;
 			while (true)
@@ -163,7 +222,20 @@ void main()
 				break;
 			}
 
-			if (userChoice == 1, 2, 3, 4) enemyChoice = EnemyTurn(enemyWave[enemyCount], player);			
+			if (userChoice == 1, 2, 3, 4) enemyChoice = EnemyTurn(enemyWave[enemyCount], player);	
+
+			if (enemyWave[enemyCount].health <= 0)
+			{
+				cout << "Победа, но какой ценой (o_o;)" << endl;
+
+				// ДОБАВЛЕНО: НАЧИСЛЕНИЕ НАГРАДЫ ЗА ПОБЕДУ
+				int reward = 50; // базовая награда
+				if (enemyWave[enemyCount].name == "Блоха") reward = 25;
+
+				player.AddGold(reward);
+
+				break;
+			}
 
 			if (userChoice == 0) enemyCount = 999; // РАБОТАЕТ - НЕ ТРОГАЙ!
 

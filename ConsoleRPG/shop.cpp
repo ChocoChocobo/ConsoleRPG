@@ -38,7 +38,7 @@ bool Shop::ShowItems()
 			system("cls");
 			availableItems[userInput - 1].ShowInfo();
 			cout << endl << "У игрока деняк: " << player.gold << endl;
-			Item chosenItem = availableItems[userInput - 1];
+			Item& chosenItem = availableItems[userInput - 1];
 			cout << endl << "Введите 1 для покупки предмета (или '0' для выхода): " << endl;
 			int nestedUserInput;
 			cin >> nestedUserInput;
