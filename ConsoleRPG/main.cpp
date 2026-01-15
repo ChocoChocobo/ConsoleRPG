@@ -141,7 +141,7 @@ void main()
 				player.gold = 1024;
 			}
 
-			PAUSE_5_SECONDS;
+			ShowProgressBar(100, "", '#');
 
 			system("cls");
 

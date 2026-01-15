@@ -8,8 +8,8 @@ Characteristics::Characteristics(int _strength, int _dexterity, int _constitutio
 	strength = _strength;
 	dexterity = _dexterity;
 	constitution = _constitution;
-	wisdom = _wisdom;
 	intelligence = _intelligence;
+	wisdom = _wisdom;
 	charisma = _charisma;
 	armorClass = _armorClass;
 }
@@ -21,8 +21,8 @@ void Characteristics::PrintCharacteristics()
 	cout << "Сила: " << strength << endl;
 	cout << "Ловкость: " << dexterity << endl;
 	cout << "Телосложение: " << constitution << endl;
-	cout << "Мудрость: " << wisdom << endl;
 	cout << "Интеллект: " << intelligence << endl;
+	cout << "Мудрость: " << wisdom << endl;
 	cout << "Харизма: " << charisma << endl;
 	cout << "Класс доспехов: " << armorClass << endl;
 	cout << TOP_BORDER << endl;
