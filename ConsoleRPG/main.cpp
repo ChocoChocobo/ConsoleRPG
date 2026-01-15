@@ -20,6 +20,7 @@
 #include "user_interface.h"
 #include "savesystem.h"
 #include "shop.h"
+#include "character_creator.h"
 
 using namespace std;
 
@@ -43,12 +44,12 @@ void main()
 	bool fled = false;
 
 	// ДОБАВЛЕНО: ИГРОК НАЧИНАЕТ С 10 ЗОЛОТА
-	Character player("Безымянный", 12, 8, 0, 12, 10);
+	Character player("Безымянный", 12, 8, 0, 10);
 	
-	Character enemy("Блоха", 10, 4, 0, 8, 10);
-	Character enemy1("Цербер", 25, 8, 0, 14, 25);
-	Character enemy2("Моль-беспилотник", 2, 10, 0, 16, 10);
-	Character enemy3("Пульт от кондиционера", 45, 8, 0, 15, 1000);
+	Character enemy("Блоха", 10, 4, 0, 10);
+	Character enemy1("Цербер", 25, 8, 0, 25);
+	Character enemy2("Моль-беспилотник", 2, 10, 0, 10);
+	Character enemy3("Пульт от кондиционера", 45, 8, 0, 1000);
 
 	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
 
@@ -86,7 +87,7 @@ void main()
 				cout << "Вы вписали секретное имя!" << endl;
 				cout << "+ 6 кд" << endl;
 				cout << "+ 40 голды" << endl;
-				player.stats.armorClass += 6;
+				player.characteristics.armorClass += 6;
 				player.gold += 40;
 			}
 			else if (player.name == "ChocoChocobo")
@@ -121,7 +122,7 @@ void main()
 				cout << "+ вы чувствуете страх в глазах ваших врагов" << endl;
 				cout << "+ Вы" << endl;
 				cout << "- Родин" << endl;
-				player.stats.armorClass = 18;
+				player.characteristics.armorClass = 18;
 				player.health = 1;
 				player.maxHealth = 1;
 				player.gold = 250;
@@ -134,13 +135,17 @@ void main()
 				cout << "- нет" << endl;
 				player.damageFace = 1;
 				player.healthFlasks = 64;
-				player.stats.armorClass = 128;
+				player.characteristics.armorClass = 128;
 				player.health = 256;
 				player.maxHealth = 512;
 				player.gold = 1024;
 			}
 
 			PAUSE_5_SECONDS;
+
+			system("cls");
+
+			player.characteristics = DistributeCharacteristics();
 
 			/*int index = 1;
 			while (true)

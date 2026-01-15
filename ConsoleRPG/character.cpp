@@ -1,7 +1,34 @@
 #include <iostream>
 #include "character.h"
 
-Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _armorClass, int _startGold)
+Characteristics::Characteristics() : strength(15), dexterity(14), constitution(13), wisdom(12), intelligence(10), charisma(8), armorClass(12) {}
+
+Characteristics::Characteristics(int _strength, int _dexterity, int _constitution, int _wisdom, int _intelligence, int _charisma, int _armorClass)
+{
+	strength = _strength;
+	dexterity = _dexterity;
+	constitution = _constitution;
+	wisdom = _wisdom;
+	intelligence = _intelligence;
+	charisma = _charisma;
+	armorClass = _armorClass;
+}
+
+void Characteristics::PrintCharacteristics()
+{
+	cout << TOP_BORDER << endl;
+	cout << "\t----Ваши текущие характеристики----" << endl;
+	cout << "Сила: " << strength << endl;
+	cout << "Ловкость: " << dexterity << endl;
+	cout << "Телосложение: " << constitution << endl;
+	cout << "Мудрость: " << wisdom << endl;
+	cout << "Интеллект: " << intelligence << endl;
+	cout << "Харизма: " << charisma << endl;
+	cout << "Класс доспехов: " << armorClass << endl;
+	cout << TOP_BORDER << endl;
+}
+
+Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold)
 {
 	name = _name;
 	health = _health;
@@ -9,9 +36,7 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	maxHealth = health;
 	healthFlasks = 3;
 	specialCooldown = _specialCooldown;
-	stats.armorClass = _armorClass;
-
-	// ДОБАВЛЕНО: ИНИЦИАЛИЗАЦИЯ ВАЛЮТЫ
+	
 	gold = _startGold;
 }
 
@@ -54,7 +79,7 @@ void Character::BasicAttack(Character& other)
 {
 	cout << endl << name << " пытается атаковать " << other.name << "..." << endl;
 
-	Results result = CheckSuccess(other.stats.armorClass);
+	Results result = CheckSuccess(other.characteristics.armorClass);
 
 	int damageRoll;
 	switch (result)

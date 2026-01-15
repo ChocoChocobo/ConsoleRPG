@@ -36,6 +36,9 @@
     <ClCompile Include="item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="character_creator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dice.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="character_creator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

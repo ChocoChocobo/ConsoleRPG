@@ -9,10 +9,31 @@
 #include "user_interface.h"
 using namespace std;
 
-struct Stats
+// В структуре character находятся все характеристики + описание перса
+// Это редактируется в отдельном файле редакторе персонажа
+
+// 1. Игрок распределяет сам статы - делаем. 8, 10, 12, 13, 14, 15
+// 2. Программа бросает кубик на характеристики
+
+struct Characteristics
 {
+	int strength;
+	int dexterity;
+	int constitution;
+	int wisdom;
+	int intelligence;
+	int charisma;
 	int armorClass;
+
+	Characteristics();
+	Characteristics(int _strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, int armorClass);
+	void PrintCharacteristics();
 };
+
+//struct Appearance
+//{
+//
+//};
 
 struct Character
 {
@@ -29,10 +50,10 @@ struct Character
 
 	vector<Item> inventory;
 
-	Stats stats;
+	Characteristics characteristics;
 
 	Character();
-	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _armorClass, int _startGold = 0);
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold = 0);
 	void PrintStatus();
 	void AddGold(int amount);
 	bool BuyItem(int cost);
