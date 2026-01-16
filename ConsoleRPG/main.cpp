@@ -141,7 +141,7 @@ void main()
 				player.gold = 1024;
 			}
 
-			ShowProgressBar(100, "", '#');
+			ShowProgressBar(3.2, 50, "Загрузка.", '#');
 
 			system("cls");
 
@@ -188,6 +188,9 @@ void main()
 	{
 		// МАГАЗИН
 		shop.ShowItems();
+
+		// Казино Алексея - случайное событие
+		// Код казино
 
 		// БИТВА
 		//system("cls");

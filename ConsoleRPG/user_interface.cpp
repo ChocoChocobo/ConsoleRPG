@@ -1,15 +1,14 @@
 #include "user_interface.h"
 
-void ShowProgressBar(int time, const string& message, char symbol)
+void ShowProgressBar(double progressLevel, int time, const string& message, char symbol)
 {
 	system("cls");
 
 	string progressBar;
-	const double PROGRESS_LEVEL = 1.42;
 
-	cout << message << "\n\n";
+	cout << message << endl;
 
-	for (double percentage = 0; percentage <= 100; percentage += PROGRESS_LEVEL)
+	for (double percentage = 0; percentage <= 100; percentage += progressLevel)
 	{
 		progressBar.insert(0, 1, symbol);
 		cout << "\r [" << ceil(percentage) << '%' << "] " << progressBar;
