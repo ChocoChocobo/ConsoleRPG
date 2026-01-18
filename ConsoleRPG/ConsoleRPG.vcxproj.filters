@@ -39,6 +39,12 @@
     <ClCompile Include="character_creator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="user_interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="casino.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dice.h">
@@ -63,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="character_creator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="casino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

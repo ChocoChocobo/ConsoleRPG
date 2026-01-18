@@ -21,6 +21,7 @@
 #include "savesystem.h"
 #include "shop.h"
 #include "character_creator.h"
+#include "casino.h"
 
 using namespace std;
 
@@ -191,6 +192,8 @@ void main()
 
 		// Казино Алексея - случайное событие
 		// Код казино
+		SpecialEvent(player);
+		
 
 		// БИТВА
 		//system("cls");
