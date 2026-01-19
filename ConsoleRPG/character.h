@@ -55,6 +55,7 @@ struct Character
 	Character();
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold = 0);
 	void PrintStatus();
+	void RemoveGold(int amount);
 	void AddGold(int amount);
 	bool BuyItem(int cost);
 	void BasicAttack(Character& other);

@@ -59,6 +59,12 @@ void Character::AddGold(int amount)
 	cout << name << " ïîëó÷àåò " << amount << " çîëîòà!" << endl;
 }
 
+// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÎÒÍÈÌÀÍÈß ÇÎËÎÒÀ (ÌÎÆÅÒ ÓÉÒÈ Â ÌÈÍÓÑ)
+void Character::RemoveGold(int amount)
+{
+	gold -= amount;
+}
+
 // ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎÊÓÏÊÈ ÏÐÅÄÌÅÒÎÂ
 bool Character::BuyItem(int cost)
 {
