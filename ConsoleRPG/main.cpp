@@ -22,6 +22,7 @@
 #include "shop.h"
 #include "character_creator.h"
 #include "casino.h"
+#include <conio.h>
 
 using namespace std;
 
@@ -55,8 +56,6 @@ void main()
 	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
 
 	vector<Item> shopItems = {};
-	vector<int> intvector;
-	vector<string> intvector;
 
 	Item item1("Зубы деда", "Все что вам могло осталось в наследство", 2, 32);
 	Item item2("Рок единорога", "Самый качественный звук", 5, 1);
@@ -79,6 +78,10 @@ void main()
 		if (userChoice == 1) LoadGame(player, enemy);
 		else
 		{
+			ShowProgressBar(3.2, 50, "Загрузка.", '#');
+			system("cls");
+			player.characteristics = DistributeCharacteristics();
+
 			system("cls");
 			cout << "Задайте имя вашему герою: ";
 			cin.ignore(1000, '\n');
@@ -143,12 +146,22 @@ void main()
 				player.maxHealth = 512;
 				player.gold = 1024;
 			}
+			else if (player.name == "Леша 10 метров от вас")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ определенно дотянется" << endl;
+				cout << "+ вы вступили на тропу войны с С++" << endl;
+				cout << "+ С++" << endl;
+				cout << "- С--" << endl;
+				cout << "- проиграл все торговцу" << endl;
+				player.gold = -1024;
+				player.characteristics.charisma = 17;
+				player.characteristics.wisdom = 17;
+			}
 
-			ShowProgressBar(3.2, 50, "Загрузка.", '#');
-
-			system("cls");
-
-			player.characteristics = DistributeCharacteristics();
+			cout << "Нажмите любую клавишу, чтобы продолжить...";
+			_getch(); // Ждет нажатия одной клавиши
+			system("cls");			
 
 			/*int index = 1;
 			while (true)

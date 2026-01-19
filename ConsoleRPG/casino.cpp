@@ -5,7 +5,7 @@
 #include "dice.h"
 
 void SpecialEvent(Character& player) {
-	int face = RollDice(5);
+	int face = 5; // RollDice(5);
 	bool input_choice = true;
 	if (face == 5) {
 		int PlayerChoice;
@@ -264,6 +264,7 @@ void RoundGame(Character& player, bool GameReady) {
 					" огда вы оборачиваетесь в последний раз Ч торговец уже смотрит в огонь,\n"
 					"словно вас здесь никогда и не было.\n";
 				return;
+				break;
 			default:
 				cout << "¬ыберите из единицы или двойки" << endl;
 			}
