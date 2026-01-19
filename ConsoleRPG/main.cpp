@@ -54,6 +54,8 @@ void main()
 	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
 
 	vector<Item> shopItems = {};
+	vector<int> intvector;
+	vector<string> intvector;
 
 	Item item1("Зубы деда", "Все что вам могло осталось в наследство", 2, 32);
 	Item item2("Рок единорога", "Самый качественный звук", 5, 1);
@@ -186,6 +188,7 @@ void main()
 
 	for (int enemyCount = 0; enemyCount < enemyWave.size(); enemyCount++)
 	{
+		PAUSE_1_SECONDS;
 		// МАГАЗИН
 		shop.ShowItems();
 
@@ -194,14 +197,18 @@ void main()
 
 		// БИТВА
 		//system("cls");
+		ShowLoadingDots(chrono::milliseconds(200), RollDice(4));
+
 		cout << TOP_BORDER << endl;
 		cout << enemyWave[enemyCount].name << " выступает следующим!" << endl;
 		cout << TOP_BORDER << endl;
 		do
 		{
 			player.PrintStatus();
+			PAUSE_1_SECONDS;
 			enemyWave[enemyCount].PrintStatus();
 
+			PAUSE_1_SECONDS;
 			userChoice = PlayerTurn(player, enemyWave[enemyCount]);
 
 			if (fled)
@@ -230,7 +237,11 @@ void main()
 				break;
 			}
 
-			if (userChoice == 1, 2, 3, 4) enemyChoice = EnemyTurn(enemyWave[enemyCount], player);	
+			if (userChoice == 1, 2, 3, 4)
+			{
+				PAUSE_1_SECONDS;
+				enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
+			}
 
 			if (enemyWave[enemyCount].health <= 0)
 			{

@@ -18,3 +18,20 @@ void ShowProgressBar(double progressLevel, int time, const string& message, char
 
 	system("cls");
 }
+
+void ShowLoadingDots(chrono::milliseconds pauseTime, int duration)
+{
+	cout << "Загрузка";
+	for (int i = 0; i < duration; i++)
+	{
+		this_thread::sleep_for(pauseTime);
+		cout << "." << flush;
+		this_thread::sleep_for(pauseTime);
+		cout << "." << flush;
+		this_thread::sleep_for(pauseTime);
+		cout << "." << flush;
+		this_thread::sleep_for(pauseTime);
+		cout << "\b\b\b   \b\b\b";
+	}
+	system("cls");
+}
