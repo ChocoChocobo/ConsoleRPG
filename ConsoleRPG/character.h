@@ -30,6 +30,16 @@ struct Characteristics
 	void PrintCharacteristics();
 };
 
+// Спрайты персонажей находятся в файлах
+// LoadSprite(enum state)
+struct VisualsASCII
+{
+	void ShowSprite()
+	{
+		
+	}
+};
+  
 //struct Appearance
 //{
 //
@@ -51,6 +61,8 @@ struct Character
 	vector<Item> inventory;
 
 	Characteristics characteristics;
+
+	VisualsASCII visualsASCII;
 
 	Character();
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold = 0);
