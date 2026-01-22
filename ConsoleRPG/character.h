@@ -15,6 +15,8 @@ using namespace std;
 // 1. Игрок распределяет сам статы - делаем. 8, 10, 12, 13, 14, 15
 // 2. Программа бросает кубик на характеристики
 
+// При внедрении классов необходимо определять тип куба и модификатора, используемого при атаке
+
 struct Characteristics
 {
 	int strength;
@@ -27,6 +29,7 @@ struct Characteristics
 
 	Characteristics();
 	Characteristics(int _strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, int armorClass);
+	int CountModificator(int characteristic);
 	void PrintCharacteristics();
 };
 

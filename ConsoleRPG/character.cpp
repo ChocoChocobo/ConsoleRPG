@@ -1,5 +1,8 @@
 #include <iostream>
 #include "character.h"
+#include <cmath>
+
+// -------- Characteristics
 
 Characteristics::Characteristics() : strength(15), dexterity(14), constitution(13), wisdom(12), intelligence(10), charisma(8), armorClass(12) {}
 
@@ -12,6 +15,11 @@ Characteristics::Characteristics(int _strength, int _dexterity, int _constitutio
 	wisdom = _wisdom;
 	charisma = _charisma;
 	armorClass = _armorClass;
+}
+
+int Characteristics::CountModificator(int characteristic)
+{
+	return floor((characteristic - 10) / 2);
 }
 
 void Characteristics::PrintCharacteristics()
@@ -27,6 +35,8 @@ void Characteristics::PrintCharacteristics()
 	cout << "Класс доспехов: " << armorClass << endl;
 	cout << TOP_BORDER << endl;
 }
+
+// --------- Character
 
 Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold)
 {
@@ -85,7 +95,7 @@ void Character::BasicAttack(Character& other)
 {
 	cout << endl << name << " пытается атаковать " << other.name << "..." << endl;
 
-	Results result = CheckSuccess(other.characteristics.armorClass);
+	Results result = CheckSuccess(this, characteristics.strength, other.characteristics.armorClass);
 
 	int damageRoll;
 	switch (result)
@@ -192,7 +202,7 @@ void Character::Heal(int difficulty)
 
 	cout << name << " пытается исцелиться..." << endl;
 
-	Results result = CheckSuccess(difficulty);
+	Results result = CheckSuccess(this, characteristics.wisdom, difficulty);
 
 	int healAmount;
 	switch (result)
@@ -253,7 +263,7 @@ bool Character::Flee(Character& other)
 
 bool Character::CheckFleeSuccess(int difficulty)
 {
-	Results result = CheckSuccess(difficulty);
+	Results result = CheckSuccess(this, characteristics.dexterity, difficulty);
 	switch (result)
 	{
 	case 1:

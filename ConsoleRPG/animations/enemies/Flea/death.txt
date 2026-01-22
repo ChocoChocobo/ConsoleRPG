@@ -1,4 +1,4 @@
 frameName=death0
-      ___
+    _____
   <( x_x )>
-      |    |
+     | |
