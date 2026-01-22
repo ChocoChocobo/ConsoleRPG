@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,16 +129,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="battle.cpp" />
+    <ClCompile Include="casino.cpp" />
     <ClCompile Include="character.cpp" />
+    <ClCompile Include="character_creator.cpp" />
     <ClCompile Include="dice.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="savesystem.cpp" />
     <ClCompile Include="shop.cpp" />
+    <ClCompile Include="user_interface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="battle.h" />
+    <ClInclude Include="casino.h" />
     <ClInclude Include="character.h" />
+    <ClInclude Include="character_creator.h" />
     <ClInclude Include="dice.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="savesystem.h" />

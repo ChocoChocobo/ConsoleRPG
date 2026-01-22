@@ -13,6 +13,7 @@ int PlayerTurn(Character& player, Character& enemy)
 	cout << "3. Лечение" << endl;
 	cout << "4. Побег" << endl; // чем больше хп врага, тем меньше шанс сбежать
 	// 5. Открыть инвентарь. Прим.: боевка на паузе
+	cout << "8. Инвентарь" << endl;
 	cout << "9. Сохранить игру" << endl;
 	cout << "0. Выйти из игры" << endl;
 	cout << "Ваши действия: ";
@@ -45,6 +46,11 @@ int PlayerTurn(Character& player, Character& enemy)
 			return 4;
 		}		
 		return 5;
+	case 8:
+		system("cls");
+		cout << TOP_BORDER << endl;
+		player.ShowInventory();
+		return 8;
 	case 9:
 		system("cls");
 		SaveGame(player, enemy);
@@ -64,7 +70,7 @@ int EnemyTurn(Character& enemy, Character& player)
 {
 	int enemyAction = rand() % 3;
 
-	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 60)
+	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 40)
 	{
 		enemy.BasicAttack(player);
 		cout << endl;

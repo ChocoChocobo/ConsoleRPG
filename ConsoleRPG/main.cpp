@@ -1,17 +1,14 @@
 ﻿// Что добавить:
-// 5. Кол-во врагов определяется в массиве, где при переборе в цикле for во вложенном цикле while происходит поэтапная битва между героем и одним врагом. После победы над врагом, игроку предлагается магазин. После этого выходим из цикла while и переходим на следующую итерацию со следующей волной
-// 6. Структуры магазина и предмета
-// 1. Пасхалки на имена
-// f(x) = g(x) + h(x)
 // 2. В начале распределение статов из 75 предложенных очков (любая другая система на ваш вкус) и создание перса из домашки
-// 3. Сохранение в магазине
-// 4. Меню паузы для Давида с настройками сложности и сохранение
+// 3. Сохранение в магазине и магазина
+// 4. Меню паузы для Давида с настройками сложности
 // 7. Вывод графики в ASCII
 // 8. Переделать вывод информации для уникальных ситуаций
 // 9. Стринговые массивы для описания разных действий
-// 10. С помощью библиотеки threads добавлять задержку
 // 11. Клаустрофобия
-// ?. Сделать типа шахматного поля для Давида!
+// Пульт от кондиционера открывает секретную комнату
+
+// ?. Сделать A* типа шахматного поля для Давида!
 // ???. A* для ии врага
 
 #include <iostream>
@@ -23,6 +20,9 @@
 #include "user_interface.h"
 #include "savesystem.h"
 #include "shop.h"
+#include "character_creator.h"
+#include "casino.h"
+#include <conio.h>
 
 using namespace std;
 
@@ -46,12 +46,12 @@ void main()
 	bool fled = false;
 
 	// ДОБАВЛЕНО: ИГРОК НАЧИНАЕТ С 10 ЗОЛОТА
-	Character player("Безымянный", 12, 8, 0, 12, 10);
+	Character player("Безымянный", 12, 8, 0, 10);
 	
-	Character enemy("Блоха", 10, 4, 0, 8, 10);
-	Character enemy1("Цербер", 25, 8, 0, 14, 25);
-	Character enemy2("Моль-беспилотник", 2, 10, 0, 16, 10);
-	Character enemy3("Пульт от кондиционера", 45, 8, 0, 15, 1000);
+	Character enemy("Блоха", 10, 4, 0, 10);
+	Character enemy1("Цербер", 25, 8, 0, 25);
+	Character enemy2("Моль-беспилотник", 2, 10, 0, 10);
+	Character enemy3("Пульт от кондиционера", 45, 8, 0, 1000);
 
 	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
 
@@ -66,7 +66,6 @@ void main()
 	Item item7("Бутыль тишины", "Внутри — абсолютная тишина. Выпьешь - и собственные мысли покажутся громкими", 5, 7);
 	Item item8("Зерно сомнения", "Если посадить, может вырасти что угодно. Чаще всего - недоверие.", 2, 21);
 
-	shopItems.push_back(item1);
 	shopItems.push_back(item2);
 	shopItems.push_back(item3);
 	shopItems.push_back(item4);
@@ -88,12 +87,92 @@ void main()
 		if (userChoice == 1) LoadGame(player, enemy);
 		else
 		{
+			ShowProgressBar(3.2, 50, "Загрузка.", '#');
+			system("cls");
+			player.characteristics = DistributeCharacteristics();
+
+			system("cls");
 			cout << "Задайте имя вашему герою: ";
 			cin.ignore(1000, '\n');
 			getline(cin, player.name);
 			cout << endl;
 
-			int index = 1;
+			if (player.name == "Платон Святозарный")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ 6 кд" << endl;
+				cout << "+ 40 голды" << endl;
+				player.characteristics.armorClass += 6;
+				player.gold += 40;
+			}
+			else if (player.name == "ChocoChocobo")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете себя сильнее" << endl;
+				cout << "+ мораль" << endl;
+				player.damageFace = 10;				
+			}
+			else if (player.name == "Bytik Menich")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете..." << endl;
+				Item item4("Батарейки", "Батарейки для пульта от кондиционера", 100, 2);
+				Item item5("Шпингалет", "Арбитр мироздания в твоей ванной", 1, 1);
+				player.inventory.push_back(item4);
+				player.inventory.push_back(item5);
+			}
+			else if (player.name == "Levi_333")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете свободу в вашем разуме" << endl;
+				cout << "+ вы перестали думать" << endl;
+				cout << "- мысли" << endl;
+				player.health += 12;
+				player.maxHealth += 12;
+				player.healthFlasks += 2;
+			}
+			else if (player.name == "Ольга Петровна")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ вы чувствуете страх в глазах ваших врагов" << endl;
+				cout << "+ Вы" << endl;
+				cout << "- Родин" << endl;
+				player.characteristics.armorClass = 18;
+				player.health = 1;
+				player.maxHealth = 1;
+				player.gold = 250;
+			}
+			else if (player.name == "Кусов")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ теперь вы что-то между Абаем Кунанбаевом и Аполлоном" << endl;
+				cout << "+++++++++++++++++++++" << endl;
+				cout << "- нет" << endl;
+				player.damageFace = 1;
+				player.healthFlasks = 64;
+				player.characteristics.armorClass = 128;
+				player.health = 256;
+				player.maxHealth = 512;
+				player.gold = 1024;
+			}
+			else if (player.name == "Леша 10 метров от вас")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ определенно дотянется" << endl;
+				cout << "+ вы вступили на тропу войны с С++" << endl;
+				cout << "+ С++" << endl;
+				cout << "- С--" << endl;
+				cout << "- проиграл все торговцу" << endl;
+				player.gold = -1024;
+				player.characteristics.charisma = 17;
+				player.characteristics.wisdom = 17;
+			}
+
+			cout << "Нажмите любую клавишу, чтобы продолжить...";
+			_getch(); // Ждет нажатия одной клавиши
+			system("cls");			
+
+			/*int index = 1;
 			while (true)
 			{
 				cout << "Задайте класс доспехов (12): ";
@@ -126,23 +205,35 @@ void main()
 					cout << "Мой хороший \\(>o<*)o" << endl;
 					break;
 				}
-			}
+			}*/
 		}
 	}	
 
 	for (int enemyCount = 0; enemyCount < enemyWave.size(); enemyCount++)
 	{
+		PAUSE_1_SECONDS;
+		// МАГАЗИН
 		shop.ShowItems();
 
+		// Казино Алексея - случайное событие
+		// Код казино
+		SpecialEvent(player);
+		
+
+		// БИТВА
 		//system("cls");
+		ShowLoadingDots(chrono::milliseconds(200), RollDice(4));
+
 		cout << TOP_BORDER << endl;
 		cout << enemyWave[enemyCount].name << " выступает следующим!" << endl;
 		cout << TOP_BORDER << endl;
 		do
 		{
 			player.PrintStatus();
+			PAUSE_1_SECONDS;
 			enemyWave[enemyCount].PrintStatus();
 
+			PAUSE_1_SECONDS;
 			userChoice = PlayerTurn(player, enemyWave[enemyCount]);
 
 			if (fled)
@@ -151,7 +242,6 @@ void main()
 				fled = false;
 				break;
 			}
-
 
 			if (enemyWave[enemyCount].health <= 0)
 			{
@@ -166,17 +256,32 @@ void main()
 				break;
 			}
 
-			enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
-
-			//if (enemyChoice == 4) break;
-
 			if (player.health <= 0)
 			{
 				cout << player.name << " пал!" << endl;
 				break;
 			}
 
-			if (userChoice == 0) enemyCount = 999;
+			if (userChoice == 1, 2, 3, 4)
+			{
+				PAUSE_1_SECONDS;
+				enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
+			}
+
+			if (enemyWave[enemyCount].health <= 0)
+			{
+				cout << "Победа, но какой ценой (o_o;)" << endl;
+
+				// ДОБАВЛЕНО: НАЧИСЛЕНИЕ НАГРАДЫ ЗА ПОБЕДУ
+				int reward = 50; // базовая награда
+				if (enemyWave[enemyCount].name == "Блоха") reward = 25;
+
+				player.AddGold(reward);
+
+				break;
+			}
+
+			if (userChoice == 0) enemyCount = 999; // РАБОТАЕТ - НЕ ТРОГАЙ!
 
 		} while (userChoice != 0);
 	}

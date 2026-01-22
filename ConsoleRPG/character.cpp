@@ -1,7 +1,44 @@
 #include <iostream>
 #include "character.h"
+#include <cmath>
 
-Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _armorClass, int _startGold)
+// -------- Characteristics
+
+Characteristics::Characteristics() : strength(15), dexterity(14), constitution(13), wisdom(12), intelligence(10), charisma(8), armorClass(12) {}
+
+Characteristics::Characteristics(int _strength, int _dexterity, int _constitution, int _wisdom, int _intelligence, int _charisma, int _armorClass)
+{
+	strength = _strength;
+	dexterity = _dexterity;
+	constitution = _constitution;
+	intelligence = _intelligence;
+	wisdom = _wisdom;
+	charisma = _charisma;
+	armorClass = _armorClass;
+}
+
+int Characteristics::CountModificator(int characteristic)
+{
+	return floor((characteristic - 10) / 2);
+}
+
+void Characteristics::PrintCharacteristics()
+{
+	cout << TOP_BORDER << endl;
+	cout << "\t----Âàøè òåêóùèå õàðàêòåðèñòèêè----" << endl;
+	cout << "Ñèëà: " << strength << endl;
+	cout << "Ëîâêîñòü: " << dexterity << endl;
+	cout << "Òåëîñëîæåíèå: " << constitution << endl;
+	cout << "Èíòåëëåêò: " << intelligence << endl;
+	cout << "Ìóäðîñòü: " << wisdom << endl;
+	cout << "Õàðèçìà: " << charisma << endl;
+	cout << "Êëàññ äîñïåõîâ: " << armorClass << endl;
+	cout << TOP_BORDER << endl;
+}
+
+// --------- Character
+
+Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold)
 {
 	name = _name;
 	health = _health;
@@ -9,9 +46,7 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	maxHealth = health;
 	healthFlasks = 3;
 	specialCooldown = _specialCooldown;
-	stats.armorClass = _armorClass;
-
-	// ÄÎÁÀÂËÅÍÎ: ÈÍÈÖÈÀËÈÇÀÖÈß ÂÀËÞÒÛ
+	
 	gold = _startGold;
 }
 
@@ -34,6 +69,12 @@ void Character::AddGold(int amount)
 	cout << name << " ïîëó÷àåò " << amount << " çîëîòà!" << endl;
 }
 
+// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÎÒÍÈÌÀÍÈß ÇÎËÎÒÀ (ÌÎÆÅÒ ÓÉÒÈ Â ÌÈÍÓÑ)
+void Character::RemoveGold(int amount)
+{
+	gold -= amount;
+}
+
 // ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎÊÓÏÊÈ ÏÐÅÄÌÅÒÎÂ
 bool Character::BuyItem(int cost)
 {
@@ -54,7 +95,7 @@ void Character::BasicAttack(Character& other)
 {
 	cout << endl << name << " ïûòàåòñÿ àòàêîâàòü " << other.name << "..." << endl;
 
-	Results result = CheckSuccess(other.stats.armorClass);
+	Results result = CheckSuccess(this, characteristics.strength, other.characteristics.armorClass);
 
 	int damageRoll;
 	switch (result)
@@ -87,6 +128,58 @@ void Character::SpecialAttack()
 
 }
 
+void Character::ShowInventory()
+{
+	int userInput;
+	do
+	{
+		if (inventory.size() <= 0)
+		{
+			cout << "Â èíâåíòàðå íåò ïðåäìåòîâ!" << endl;
+			return;
+		}
+
+		for (int i = 1; i <= inventory.size(); i++)
+		{
+			cout << i << ". " << inventory[i - 1].name << "." << endl;
+		}
+
+		cout << endl << "Ââåäèòå íîìåð ïðåäìåòà äëÿ åãî îñìîòðà (èëè '0' äëÿ âûõîäà): " << endl;
+		cin >> userInput;
+
+		if (userInput == 0) continue;
+		while (true)
+		{
+			cout << SEPARATOR_LINE << endl;
+			inventory[userInput - 1].ShowInfo();
+			Item chosenItem = inventory[userInput - 1];
+			cout << endl << "Ââåäèòå 1 äëÿ ïðèìåíåíèÿ ïðåäìåòà (èëè '0' äëÿ âûõîäà): " << endl;
+			int nestedUserInput;
+			cin >> nestedUserInput;
+			if (nestedUserInput == 1)
+			{
+				inventory[userInput - 1].quantity -= 1;
+				if (inventory[userInput - 1].quantity <= 0)
+				{
+					inventory.erase(inventory.begin() + userInput - 1);
+					// PLACEHOLDER
+					break;
+				}
+			}
+
+			else if (nestedUserInput == 0)
+			{
+				system("cls");
+				break;
+			}
+		}
+
+		cout << TOP_BORDER << endl;
+	} while (userInput != 0);
+
+	system("cls");
+}
+
 void Character::IncreaseHealth(int amount)
 {
 	health += amount;
@@ -109,7 +202,7 @@ void Character::Heal(int difficulty)
 
 	cout << name << " ïûòàåòñÿ èñöåëèòüñÿ..." << endl;
 
-	Results result = CheckSuccess(difficulty);
+	Results result = CheckSuccess(this, characteristics.wisdom, difficulty);
 
 	int healAmount;
 	switch (result)
@@ -170,7 +263,7 @@ bool Character::Flee(Character& other)
 
 bool Character::CheckFleeSuccess(int difficulty)
 {
-	Results result = CheckSuccess(difficulty);
+	Results result = CheckSuccess(this, characteristics.dexterity, difficulty);
 	switch (result)
 	{
 	case 1:

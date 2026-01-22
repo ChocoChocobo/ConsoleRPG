@@ -11,48 +11,60 @@ Shop::Shop(Character& _player, vector<Item>& _availableItems, string _name) : av
 
 bool Shop::ShowItems()
 {
+	system("cls");
+	cout << "Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ РІ РјР°РіР°Р·РёРЅ " << name << "!" << endl;
 	int userInput;
 	do
 	{
-		// Исправлено: Теперь вывод полного списка предметов будет выводиться всегда при выходе из какого-то предмета позже, что позволит видеть игроку предметы, которые ему доступны.
 		if (availableItems.size() == 0) return false;
 		cout << TOP_BORDER << endl;
 		for (int i = 1; i <= availableItems.size(); i++)
 		{
 			cout << i << ". " << availableItems[i - 1].name << "." << endl;
 		}
+		cout << endl << "РЈ РёРіСЂРѕРєР° РґРµРЅСЏРє: " << player.gold << endl;
 
-		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
+		cout << endl << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РїСЂРµРґРјРµС‚Р° РґР»СЏ РµРіРѕ РѕСЃРјРѕС‚СЂР° (РёР»Рё '0' РґР»СЏ РІС‹С…РѕРґР°): " << endl;
 		cin >> userInput;
+
+		if (userInput == 1301)
+		{
+			system("curl ASCII.live/can-you-hear-me");
+		}
 
 		if (userInput == 0) continue;
 		while (true)
 		{
+			system("cls");
 			availableItems[userInput - 1].ShowInfo();
-			Item chosenItem = availableItems[userInput - 1];
-			cout << endl << "Введите 1 для покупки предмета (или '0' для выхода): " << endl;
+			cout << endl << "РЈ РёРіСЂРѕРєР° РґРµРЅСЏРє: " << player.gold << endl;
+			Item& chosenItem = availableItems[userInput - 1];
+			cout << endl << "Р’РІРµРґРёС‚Рµ 1 РґР»СЏ РїРѕРєСѓРїРєРё РїСЂРµРґРјРµС‚Р° (РёР»Рё '0' РґР»СЏ РІС‹С…РѕРґР°): " << endl;
 			int nestedUserInput;
 			cin >> nestedUserInput;
 			if (nestedUserInput == 1)
-			{				
+			{
 				if (player.gold < chosenItem.price)
 				{
-					cout << "Нет деняк!" << endl;
+					cout << "РќРµС‚ РґРµРЅСЏРє!" << endl;
 					continue;
 				}
 
 				player.gold -= chosenItem.price;
 				player.inventory.push_back(chosenItem);
-				cout << endl << "У игрока денег: " << player.gold << endl;
+				cout << endl << "РЈ РёРіСЂРѕРєР° РґРµРЅСЏРє: " << player.gold << endl;
+				cout << endl;
 
-				// Исправлено: Теперь с помощью оператора присваивания (=) для availableItems[userInput - 1].quantity присваивается availableItems[userInput - 1].quantity - 1, а не просто считает availableItems[userInput - 1].quantity - 1, как было раньше.
+				// РСЃРїСЂР°РІР»РµРЅРѕ: РўРµРїРµСЂСЊ СЃ РїРѕРјРѕС‰СЊСЋ РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ (=) РґР»СЏ availableItems[userInput - 1].quantity РїСЂРёСЃРІР°РёРІР°РµС‚СЃСЏ availableItems[userInput - 1].quantity - 1, Р° РЅРµ РїСЂРѕСЃС‚Рѕ СЃС‡РёС‚Р°РµС‚ availableItems[userInput - 1].quantity - 1, РєР°Рє Р±С‹Р»Рѕ СЂР°РЅСЊС€Рµ.
 				availableItems[userInput - 1].quantity -= 1;
 				if (availableItems[userInput - 1].quantity <= 0)
 				{
 					availableItems.erase(availableItems.begin() + userInput - 1);
+					system("cls");
+					break;
 				}
 			}
-			// Исправлено: Теперь в условии nestedUserInput, который и нужен, что бы выйти из данного цикла, а не userInput, который был раньше. Так же после выхода консоль чиститься.
+
 			else if (nestedUserInput == 0)
 			{
 				system("cls");

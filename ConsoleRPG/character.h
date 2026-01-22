@@ -6,12 +6,47 @@
 #include <vector>
 #include "item.h"
 #include "dice.h"
+#include "user_interface.h"
 using namespace std;
 
-struct Stats
+// В структуре character находятся все характеристики + описание перса
+// Это редактируется в отдельном файле редакторе персонажа
+
+// 1. Игрок распределяет сам статы - делаем. 8, 10, 12, 13, 14, 15
+// 2. Программа бросает кубик на характеристики
+
+// При внедрении классов необходимо определять тип куба и модификатора, используемого при атаке
+
+struct Characteristics
 {
+	int strength;
+	int dexterity;
+	int constitution;
+	int wisdom;
+	int intelligence;
+	int charisma;
 	int armorClass;
+
+	Characteristics();
+	Characteristics(int _strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, int armorClass);
+	int CountModificator(int characteristic);
+	void PrintCharacteristics();
 };
+
+// Спрайты персонажей находятся в файлах
+// LoadSprite(enum state)
+struct VisualsASCII
+{
+	void ShowSprite()
+	{
+		
+	}
+};
+  
+//struct Appearance
+//{
+//
+//};
 
 struct Character
 {
@@ -28,15 +63,19 @@ struct Character
 
 	vector<Item> inventory;
 
-	Stats stats;
+	Characteristics characteristics;
+
+	VisualsASCII visualsASCII;
 
 	Character();
-	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _armorClass, int _startGold = 0);
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold = 0);
 	void PrintStatus();
+	void RemoveGold(int amount);
 	void AddGold(int amount);
 	bool BuyItem(int cost);
 	void BasicAttack(Character& other);
 	void SpecialAttack();
+	void ShowInventory();
 	void IncreaseHealth(int amount);
 	void DecreaseHealth(int amount);
 	void Heal(int difficulty);
