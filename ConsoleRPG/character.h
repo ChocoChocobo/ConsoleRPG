@@ -65,10 +65,15 @@ struct Character
 
 	Characteristics characteristics;
 
+	int uniqueAbilityDifficulty;
+	bool minionSpawned = false;
+	Character* minion;
+
 	VisualsASCII visualsASCII;
 
 	Character();
-	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold = 0);
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty);
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold);
 	void PrintStatus();
 	void RemoveGold(int amount);
 	void AddGold(int amount);

@@ -82,6 +82,16 @@ int EnemyTurn(Character& enemy, Character& player)
 		cout << endl;
 		return 3;
 	}
+
+	// Переделать через наследование
+	//						BattleActor (все объекты в бою)
+	//			EnemyActor					PlayerActor
+	//	Pult					...
+	int diceRoll = RollDice(20);
+	if (diceRoll > enemy.uniqueAbilityDifficulty)
+	{
+		enemy.minionSpawned = true;
+	}
 	/*else
 	{
 		if (enemy.Flee(player))

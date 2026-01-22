@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "dice.h"
 #include "character.h"
+#include "log.h"
 
 using namespace std;
 
@@ -14,6 +15,8 @@ Results CheckSuccess(Character* character, int characteristicValue, int difficul
 {
     int d20Roll = RollDice(20);
     cout << "¡ÓÒÓÍ ÍÛ·ËÍ‡: " << d20Roll;
+    int modificator = character->characteristics.CountModificator(characteristicValue);
+    PrintConsoleMessage("ÃŒƒ»‘» ¿“Œ–: ", modificator);
     if (d20Roll == 20)
     {
         cout << " --  –»»»»»»»“»◊≈— »… ”—œ≈’ :D" << endl;
@@ -24,7 +27,7 @@ Results CheckSuccess(Character* character, int characteristicValue, int difficul
         cout << " -- ÍËËË...ÚË˜ÂÒÍËÈ ÔÓ‚‡Î... D:" << endl;
         return CriticalFail;
     }
-    else if (d20Roll + character->characteristics.CountModificator(characteristicValue) > difficulty)
+    else if (d20Roll + modificator > difficulty)
     {
         cout << " -- ÛÒÔÂı!" << endl;
         return Success;
