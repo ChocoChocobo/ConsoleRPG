@@ -67,7 +67,7 @@ struct Character
 
 	int uniqueAbilityDifficulty;
 	bool minionSpawned = false;
-	Character* minion;
+	Character* minion = nullptr;
 
 	VisualsASCII visualsASCII;
 

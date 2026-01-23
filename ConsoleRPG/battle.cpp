@@ -90,6 +90,7 @@ int EnemyTurn(Character& enemy, Character& player)
 	int diceRoll = RollDice(20);
 	if (diceRoll > enemy.uniqueAbilityDifficulty)
 	{
+		cout << "Кондей, брошенный в вас оказался рабочим и бежит на вас в ярости, защищая своего господина" << endl;
 		enemy.minionSpawned = true;
 	}
 	/*else

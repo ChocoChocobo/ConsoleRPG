@@ -160,6 +160,25 @@ void main()
 				player.characteristics.charisma = 17;
 				player.characteristics.wisdom = 17;
 			}
+			else if (player.name == "Гном Плюсокрад")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ теперь гном" << endl;
+				cout << "+ есть честь" << endl;
+				cout << "+ печеньки с молоком" << endl;
+				cout << "- тестировщик" << endl;
+				player.gold = 1024;
+				player.characteristics.wisdom = 20;
+				player.characteristics.strength = 20;
+				player.characteristics.constitution = 20;
+				player.characteristics.dexterity = 20;
+				player.characteristics.charisma = 20;
+				player.characteristics.intelligence = 20;
+				player.damageFace = 60;
+				player.health = 256;
+				player.maxHealth = 512;
+				player.characteristics.armorClass = 30;
+			}
 
 			cout << "Нажмите любую клавишу, чтобы продолжить...";
 			_getch(); // Ждет нажатия одной клавиши
@@ -225,7 +244,7 @@ void main()
 			player.PrintStatus();
 			PAUSE_1_SECONDS;
 			
-			if (enemyWave[enemyCount].minion != NULL && enemyWave[enemyCount].minionSpawned)
+			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minionSpawned)
 			{
 				enemyWave[enemyCount].minion->PrintStatus();
 				PAUSE_1_SECONDS;
@@ -245,7 +264,7 @@ void main()
 				break;
 			}
 
-			if (enemyWave[enemyCount].minion->health <= 0)
+			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->health <= 0)
 			{
 				cout << "Ты выйграл битву, но не войну!" << endl;
 				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->gold);
@@ -267,7 +286,7 @@ void main()
 				break;
 			}
 
-			if (userChoice == 1, 2, 3, 4)
+			if (userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4)
 			{
 				PAUSE_1_SECONDS;
 				enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
