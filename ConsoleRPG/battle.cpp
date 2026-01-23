@@ -86,6 +86,8 @@ int EnemyTurn(Character& enemy, Character& player)
 	int diceRoll = RollDice(20);
 	if (diceRoll > enemy.uniqueAbilityDifficulty)
 	{
+		cout << "Польт от кондиционера включает кондей!" << endl;
+
 		enemy.minionSpawned = true;
 	}
 	/*else
