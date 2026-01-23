@@ -43,10 +43,27 @@ struct VisualsASCII
 	}
 };
   
-//struct Appearance
-//{
-//
-//};
+struct Appearance
+{
+	string physique;
+	string skinColor;
+	string eyeColor;
+	string earShape;
+	string hairType;
+	string mouthType;
+	string weapon;
+	string armor;
+	string tail;
+	string navel;
+	string skinTexture;
+	string hands;
+	string specialMarks;
+
+	Appearance(string _physique, string _skinColor, string _eyeColor,
+		string _earShape, string _hairType, string _mouthType,
+		string _weapon, string _armor, string _tail, string _navel,
+		string _skinTexture, string _hands, string _specialMarks);
+};
 
 struct Character
 {

@@ -54,7 +54,6 @@ void Character::PrintStatus()
 {
 	cout << endl << name << " –— HP: " << health << "/" << maxHealth;
 
-	// ÄÎÁÀÂËÅÍÎ: ÂÛÂÎÄ ÊÎËÈ×ÅÑÒÂÀ ÇÎËÎÒÀ
 	cout << " | Çîëîòî: " << gold;
 
 	if (specialCooldown > 0) cout << " | Îñîáàÿ àòàêà íåäîñòóïíà (" << specialCooldown << ")" << endl;
@@ -62,20 +61,17 @@ void Character::PrintStatus()
 	cout << "Íà äàííûé ìîìåíò ó " << name << " " << healthFlasks << " çåëèé ëå÷åíèÿ" << endl;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎËÓ×ÅÍÈß ÇÎËÎÒÀ
 void Character::AddGold(int amount)
 {
 	gold += amount;
 	cout << name << " ïîëó÷àåò " << amount << " çîëîòà!" << endl;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÎÒÍÈÌÀÍÈß ÇÎËÎÒÀ (ÌÎÆÅÒ ÓÉÒÈ Â ÌÈÍÓÑ)
 void Character::RemoveGold(int amount)
 {
 	gold -= amount;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎÊÓÏÊÈ ÏÐÅÄÌÅÒÎÂ
 bool Character::BuyItem(int cost)
 {
 	if (gold >= cost)
@@ -285,4 +281,26 @@ bool Character::CheckFleeSuccess(int difficulty)
 		cout << "×òî-òî ïîøëî íå òàê â FleeCheckSuccess!" << endl;
 		return false;
 	}
+}
+
+// --------- Appearance
+
+Appearance::Appearance(string _physique, string _skinColor, string _eyeColor,
+	string _earShape, string _hairType, string _mouthType,
+	string _weapon, string _armor, string _tail, string _navel,
+	string _skinTexture, string _hands, string _specialMarks)
+{
+	physique = _physique;
+	skinColor = _skinColor;
+	eyeColor = _eyeColor;
+	earShape = _earShape;
+	hairType = _hairType;
+	mouthType = _mouthType;
+	weapon = _weapon;
+	armor = _armor;
+	tail = _tail;
+	navel = _navel;
+	skinTexture = _skinTexture;
+	hands = _hands;
+	specialMarks = _specialMarks;
 }
