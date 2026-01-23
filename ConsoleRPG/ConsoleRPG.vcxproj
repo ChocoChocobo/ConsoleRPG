@@ -147,6 +147,7 @@
     <ClInclude Include="character_creator.h" />
     <ClInclude Include="dice.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="savesystem.h" />
     <ClInclude Include="shop.h" />
     <ClInclude Include="user_interface.h" />

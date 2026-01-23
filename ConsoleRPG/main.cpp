@@ -51,7 +51,9 @@ void main()
 	Character enemy("Блоха", 10, 4, 0, 10);
 	Character enemy1("Цербер", 25, 8, 0, 25);
 	Character enemy2("Моль-беспилотник", 2, 10, 0, 10);
-	Character enemy3("Пульт от кондиционера", 45, 8, 0, 1000);
+
+	Character condeiMinion("Кондей", 12, 4, 0, 0);
+	Character enemy3("Пульт от кондиционера", 45, 8, 0, 1000, condeiMinion, 15);
 
 	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
 
@@ -231,10 +233,19 @@ void main()
 		{
 			player.PrintStatus();
 			PAUSE_1_SECONDS;
-			enemyWave[enemyCount].PrintStatus();
-
-			PAUSE_1_SECONDS;
-			userChoice = PlayerTurn(player, enemyWave[enemyCount]);
+			
+			if (enemyWave[enemyCount].minion != NULL && enemyWave[enemyCount].minionSpawned)
+			{
+				enemyWave[enemyCount].minion->PrintStatus();
+				PAUSE_1_SECONDS;
+				userChoice = PlayerTurn(player, *enemyWave[enemyCount].minion);
+			}
+			else
+			{
+				enemyWave[enemyCount].PrintStatus();
+				PAUSE_1_SECONDS;
+				userChoice = PlayerTurn(player, enemyWave[enemyCount]);
+			}
 
 			if (fled)
 			{
@@ -243,15 +254,18 @@ void main()
 				break;
 			}
 
+			if (enemyWave[enemyCount].minion->health <= 0)
+			{
+				cout << "Ты выйграл битву, но не войну!" << endl;
+				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->gold);
+				enemyWave[enemyCount].minionSpawned = false;
+			}
+
 			if (enemyWave[enemyCount].health <= 0)
 			{
 				cout << "Победа, но какой ценой (o_o;)" << endl;
 
-				// ДОБАВЛЕНО: НАЧИСЛЕНИЕ НАГРАДЫ ЗА ПОБЕДУ
-				int reward = 50; // базовая награда
-				if (enemyWave[enemyCount].name == "Блоха") reward = 25;
-
-				player.AddGold(reward);
+				player.AddGold(enemyWave[enemyCount].gold);
 
 				break;
 			}
@@ -272,11 +286,7 @@ void main()
 			{
 				cout << "Победа, но какой ценой (o_o;)" << endl;
 
-				// ДОБАВЛЕНО: НАЧИСЛЕНИЕ НАГРАДЫ ЗА ПОБЕДУ
-				int reward = 50; // базовая награда
-				if (enemyWave[enemyCount].name == "Блоха") reward = 25;
-
-				player.AddGold(reward);
+				player.AddGold(enemyWave[enemyCount].gold);
 
 				break;
 			}

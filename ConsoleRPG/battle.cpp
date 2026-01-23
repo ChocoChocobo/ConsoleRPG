@@ -82,6 +82,12 @@ int EnemyTurn(Character& enemy, Character& player)
 		cout << endl;
 		return 3;
 	}
+
+	int diceRoll = RollDice(20);
+	if (diceRoll > enemy.uniqueAbilityDifficulty)
+	{
+		enemy.minionSpawned = true;
+	}
 	/*else
 	{
 		if (enemy.Flee(player))
