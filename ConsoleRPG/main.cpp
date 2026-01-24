@@ -105,6 +105,7 @@ void main()
 				cout << "+ мораль" << endl;
 				player.damageFace = 10;				
 			}
+			// Bytik Menich — это Я.
 			else if (player.name == "Bytik Menich")
 			{
 				cout << "Вы вписали секретное имя!" << endl;
