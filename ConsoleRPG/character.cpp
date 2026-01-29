@@ -37,6 +37,33 @@ void Characteristics::PrintCharacteristics()
 }
 
 // --------- Character
+Character::Character()
+{
+	name = "Безымянный";
+	health = 10;
+	maxHealth = health;
+	healthFlasks = 3;
+	damageFace = 4;
+	specialCooldown = 0;
+	gold = 10;
+	uniqueAbilityDifficulty = 10;
+	minion = nullptr;
+	minionSpawned = false;
+}
+
+Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
+{
+	name = _name;
+	health = _health;
+	damageFace = _damageFace;
+	maxHealth = health;
+	healthFlasks = 3;
+	specialCooldown = _specialCooldown;
+	minion = &_minion;
+	uniqueAbilityDifficulty = _uniqueAbilityDifficulty;
+
+	gold = _startGold;
+}
 
 Character::Character()
 {
