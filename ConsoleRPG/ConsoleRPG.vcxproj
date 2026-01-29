@@ -134,6 +134,7 @@
     <ClCompile Include="character_creator.cpp" />
     <ClCompile Include="dice.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="savesystem.cpp" />
     <ClCompile Include="shop.cpp" />

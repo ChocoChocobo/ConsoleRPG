@@ -5,6 +5,6 @@
 
 Characteristics DistributeCharacteristics();
 
-//Appearance DefineAppearance();
+Appearance DefineAppearance();
 
 #endif // !CHARACTER_CREATOR

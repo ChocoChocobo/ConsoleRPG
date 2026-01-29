@@ -5,20 +5,20 @@
 
 using namespace std;
 
-// в зависимости от исхода у игрока возвращается int значение
+// Гў Г§Г ГўГЁГ±ГЁГ¬Г®Г±ГІГЁ Г®ГІ ГЁГ±ГµГ®Г¤Г  Гі ГЁГЈГ°Г®ГЄГ  ГўГ®Г§ГўГ°Г Г№Г ГҐГІГ±Гї int Г§Г­Г Г·ГҐГ­ГЁГҐ
 int PlayerTurn(Character& player, Character& enemy, Shop& shop)
 {
     cout << endl;
     cout << TOP_BORDER << endl;
-    cout << "Вы можете сделать: " << endl;
-    cout << "1. Обычная атака" << endl;
-    cout << "2. Особая атака" << endl;
-    cout << "3. Лечение" << endl;
-    cout << "4. Побег" << endl;
-    cout << "8. Инвентарь" << endl;
-    cout << "9. Сохранить игру" << endl;
-    cout << "0. Выйти из игры" << endl;
-    cout << "Ваши действия: ";
+    cout << "Г‚Г» Г¬Г®Г¦ГҐГІГҐ Г±Г¤ГҐГ«Г ГІГј: " << endl;
+    cout << "1. ГЋГЎГ»Г·Г­Г Гї Г ГІГ ГЄГ " << endl;
+    cout << "2. ГЋГ±Г®ГЎГ Гї Г ГІГ ГЄГ " << endl;
+    cout << "3. Г‹ГҐГ·ГҐГ­ГЁГҐ" << endl;
+    cout << "4. ГЏГ®ГЎГҐГЈ" << endl;
+    cout << "8. Г€Г­ГўГҐГ­ГІГ Г°Гј" << endl;
+    cout << "9. Г‘Г®ГµГ°Г Г­ГЁГІГј ГЁГЈГ°Гі" << endl;
+    cout << "0. Г‚Г»Г©ГІГЁ ГЁГ§ ГЁГЈГ°Г»" << endl;
+    cout << "Г‚Г ГёГЁ Г¤ГҐГ©Г±ГІГўГЁГї: ";
 
     int userInput;
     cin >> userInput;
@@ -58,12 +58,12 @@ int PlayerTurn(Character& player, Character& enemy, Shop& shop)
 
     case 0:
         system("cls");
-        cout << "До новых встреч!" << endl;
+        cout << "Г„Г® Г­Г®ГўГ»Гµ ГўГ±ГІГ°ГҐГ·!" << endl;
         return 0;
 
     default:
         system("cls");
-        cout << "Некорректный ввод пользователя" << endl;
+        cout << "ГЌГҐГЄГ®Г°Г°ГҐГЄГІГ­Г»Г© ГўГўГ®Г¤ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї" << endl;
         return -1;
     }
 }

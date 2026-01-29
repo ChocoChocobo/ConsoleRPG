@@ -65,6 +65,34 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	gold = _startGold;
 }
 
+Character::Character()
+{
+	name = "??????????";
+	health = 10;
+	maxHealth = health;
+	healthFlasks = 3;
+	damageFace = 4;
+	specialCooldown = 0;
+	gold = 10;
+	uniqueAbilityDifficulty = 10;
+	minion = nullptr;
+	minionSpawned = false;
+}
+
+Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
+{
+	name = _name;
+	health = _health;
+	damageFace = _damageFace;
+	maxHealth = health;
+	healthFlasks = 3;
+	specialCooldown = _specialCooldown;
+	minion = &_minion;
+	uniqueAbilityDifficulty = _uniqueAbilityDifficulty;
+
+	gold = _startGold;
+}
+
 Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold)
 {
 	name = _name;
@@ -73,7 +101,6 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	maxHealth = health;
 	healthFlasks = 3;
 	specialCooldown = _specialCooldown;
-	
 	gold = _startGold;
 }
 
@@ -81,7 +108,6 @@ void Character::PrintStatus()
 {
 	cout << endl << name << " –— HP: " << health << "/" << maxHealth;
 
-	// ÄÎÁÀÂËÅÍÎ: ÂÛÂÎÄ ÊÎËÈ×ÅÑÒÂÀ ÇÎËÎÒÀ
 	cout << " | Çîëîòî: " << gold;
 
 	if (specialCooldown > 0) cout << " | Îñîáàÿ àòàêà íåäîñòóïíà (" << specialCooldown << ")" << endl;
@@ -89,20 +115,17 @@ void Character::PrintStatus()
 	cout << "Íà äàííûé ìîìåíò ó " << name << " " << healthFlasks << " çåëèé ëå÷åíèÿ" << endl;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎËÓ×ÅÍÈß ÇÎËÎÒÀ
 void Character::AddGold(int amount)
 {
 	gold += amount;
 	cout << name << " ïîëó÷àåò " << amount << " çîëîòà!" << endl;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÎÒÍÈÌÀÍÈß ÇÎËÎÒÀ (ÌÎÆÅÒ ÓÉÒÈ Â ÌÈÍÓÑ)
 void Character::RemoveGold(int amount)
 {
 	gold -= amount;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎÊÓÏÊÈ ÏÐÅÄÌÅÒÎÂ
 bool Character::BuyItem(int cost)
 {
 	if (gold >= cost)
@@ -312,4 +335,26 @@ bool Character::CheckFleeSuccess(int difficulty)
 		cout << "×òî-òî ïîøëî íå òàê â FleeCheckSuccess!" << endl;
 		return false;
 	}
+}
+
+// --------- Appearance
+
+Appearance::Appearance(string _physique, string _skinColor, string _eyeColor,
+	string _earShape, string _hairType, string _mouthType,
+	string _weapon, string _armor, string _tail, string _navel,
+	string _skinTexture, string _hands, string _specialMarks)
+{
+	physique = _physique;
+	skinColor = _skinColor;
+	eyeColor = _eyeColor;
+	earShape = _earShape;
+	hairType = _hairType;
+	mouthType = _mouthType;
+	weapon = _weapon;
+	armor = _armor;
+	tail = _tail;
+	navel = _navel;
+	skinTexture = _skinTexture;
+	hands = _hands;
+	specialMarks = _specialMarks;
 }

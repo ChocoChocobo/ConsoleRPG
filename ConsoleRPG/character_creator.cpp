@@ -145,8 +145,48 @@ Characteristics DistributeCharacteristics()
 	return distributedCharacteristics;
 }
 
-//Appearance DefineAppearance()
-//{
-//	Appearance definedAppearance();
-//	return definedAppearance;
-//}
+Appearance DefineAppearance()
+{
+	Appearance definedAppearance("", "", "", "", "", "", "", "", "", "", "", "", "");
+
+	cout << "Напишите телосложение вашего героя: ";
+	getline(cin, definedAppearance.physique);
+
+	cout << "Напишите цвет кожи вашего героя: ";
+	getline(cin, definedAppearance.skinColor);
+
+	cout << "Напишите цвет глаз вашего героя: ";
+	getline(cin, definedAppearance.eyeColor);
+
+	cout << "Напишите форму ушей вашего героя: ";
+	getline(cin, definedAppearance.earShape);
+
+	cout << "Опишите волосы вашего героя: ";
+	getline(cin, definedAppearance.hairType);
+
+	cout << "Опишите губы вашего героя: ";
+	getline(cin, definedAppearance.mouthType);
+
+	cout << "Какое оружие у вашего героя? ";
+	getline(cin, definedAppearance.weapon);
+
+	cout << "Какая броня у вашего героя? ";
+	getline(cin, definedAppearance.armor);
+
+	cout << "Какой хвост у вашего героя (если есть)? ";
+	getline(cin, definedAppearance.tail);
+
+	cout << "Опишите пупок вашего героя: ";
+	getline(cin, definedAppearance.navel);
+
+	cout << "Опишите текстуру кожи вашего героя: ";
+	getline(cin, definedAppearance.skinTexture);
+
+	cout << "Опишите руки вашего героя: ";
+	getline(cin, definedAppearance.hands);
+
+	cout << "Напишите особенности внешности вашего героя: ";
+	getline(cin, definedAppearance.specialMarks);
+
+	return definedAppearance;
+}
