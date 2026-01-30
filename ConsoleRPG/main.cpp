@@ -183,6 +183,19 @@ void main()
 				player.maxHealth = 512;
 				player.characteristics.armorClass = 30;
 			}
+			else if (player.name == "Максим Костыль")
+			{ 
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ есть волосы" << endl;
+				cout << "+ достстану с верхней полки" << endl;
+				cout << "- ветки в лице" << endl;
+				cout << "- проиграл все в казино" << endl;
+				player.gold = 0;
+				player.characteristics.charisma = 17;
+				player.damageFace = 5;
+				player.health = 35;
+				player.maxHealth = 50;
+			}
 
 			cout << "Нажмите любую клавишу, чтобы продолжить...";
 			_getch(); // Ждет нажатия одной клавиши
