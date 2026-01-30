@@ -43,14 +43,16 @@ struct VisualsASCII
 	}
 };
   
-//struct Appearance
-//{
-//
-//};
+struct Appearance
+{
+	string skinColor;
+	string hairColor;
+};
 
 struct Character
 {
 	string name;
+	Appearance appearance;
 
 	int health;
 	int maxHealth;

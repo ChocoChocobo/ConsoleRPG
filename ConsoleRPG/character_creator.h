@@ -5,6 +5,6 @@
 
 Characteristics DistributeCharacteristics();
 
-//Appearance DefineAppearance();
+void CreateCharacter(Character& player);
 
 #endif // !CHARACTER_CREATOR
