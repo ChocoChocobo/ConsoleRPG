@@ -1,43 +1,4 @@
 #include "character_creator.h"
-using namespace std;
-
-void CreateCharacter(Character& player)
-{
-	cout << "Создание персонажа\n";
-
-	cout << "Введите имя персонажа: ";
-	cin.ignore(1000, '\n');
-	getline(cin, player.name);
-
-	int choice;
-
-	cout << "\nВыберите цвет кожи:\n";
-	cout << "1. Светлая\n2. Смуглая\n3. Тёмная\n> ";
-	cin >> choice;
-
-	switch (choice)
-	{
-	case 1: player.appearance.skinColor = "Светлая"; break;
-	case 2: player.appearance.skinColor = "Смуглая"; break;
-	case 3: player.appearance.skinColor = "Тёмная"; break;
-	default: player.appearance.skinColor = "Неизвестная"; break;
-	}
-
-	cout << "\nВыберите цвет волос:\n";
-	cout << "1. Чёрные\n2. Русые\n3. Светлые\n4. Рыжие\n> ";
-	cin >> choice;
-
-	switch (choice)
-	{
-	case 1: player.appearance.hairColor = "Чёрные"; break;
-	case 2: player.appearance.hairColor = "Русые"; break;
-	case 3: player.appearance.hairColor = "Светлые"; break;
-	case 4: player.appearance.hairColor = "Рыжие"; break;
-	default: player.appearance.hairColor = "Нет волос"; break;
-	}
-
-	system("cls");
-}
 
 Characteristics DistributeCharacteristics()
 {
@@ -184,8 +145,65 @@ Characteristics DistributeCharacteristics()
 	return distributedCharacteristics;
 }
 
-//Appearance DefineAppearance()
-//{
-//	Appearance definedAppearance();
-//	return definedAppearance;
-//}
+Appearance DefineAppearance()
+{
+	system("cls");
+
+	vector<string> races = { "Человек", "Эльф", "Дворф", "Полуорк" };
+	vector<string> genders = { "Мужской", "Женский", "Небинарный" };
+	vector<string> hairStyles = { "Короткие", "Длинные", "Хвост", "Лысый" };
+	vector<string> hairColors = { "Чёрные", "Русые", "Белые", "Рыжие" };
+	vector<string> eyeColors = { "Карие", "Голубые", "Зелёные", "Серые" };
+
+	int choice;
+
+	cout << "=== Создание внешности персонажа ===" << endl;
+
+	// Раса
+	cout << "\nВыберите расу:" << endl;
+	for (int i = 0; i < races.size(); i++)
+		cout << i + 1 << ". " << races[i] << endl;
+	cin >> choice;
+	string race = races[choice - 1];
+
+	// Пол
+	cout << "\nВыберите пол:" << endl;
+	for (int i = 0; i < genders.size(); i++)
+		cout << i + 1 << ". " << genders[i] << endl;
+	cin >> choice;
+	string gender = genders[choice - 1];
+
+	// Причёска
+	cout << "\nВыберите причёску:" << endl;
+	for (int i = 0; i < hairStyles.size(); i++)
+		cout << i + 1 << ". " << hairStyles[i] << endl;
+	cin >> choice;
+	string hairStyle = hairStyles[choice - 1];
+
+	// Цвет волос
+	cout << "\nВыберите цвет волос:" << endl;
+	for (int i = 0; i < hairColors.size(); i++)
+		cout << i + 1 << ". " << hairColors[i] << endl;
+	cin >> choice;
+	string hairColor = hairColors[choice - 1];
+
+	// Цвет глаз
+	cout << "\nВыберите цвет глаз:" << endl;
+	for (int i = 0; i < eyeColors.size(); i++)
+		cout << i + 1 << ". " << eyeColors[i] << endl;
+	cin >> choice;
+	string eyeColor = eyeColors[choice - 1];
+
+	Appearance appearance(
+		race,
+		gender,
+		hairStyle,
+		hairColor,
+		eyeColor
+	);
+
+	system("cls");
+	appearance.PrintAppearance();
+
+	return appearance;
+}

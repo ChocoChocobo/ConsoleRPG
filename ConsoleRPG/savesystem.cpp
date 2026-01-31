@@ -16,7 +16,27 @@ bool WriteKeyValue(ofstream& file, const string& key, const string& value)
 	else return false;
 }
 
-bool SaveGame(const Character& player, const Character& enemy, const string& filename)
+bool SaveItem(ofstream& file, const string& prefix, const Item& item, int index)
+{
+	return
+		WriteKeyValue(file, prefix + "[" + to_string(index) + "].name", item.name) &&
+		WriteKeyValue(file, prefix + "[" + to_string(index) + "].description", item.description) &&
+		WriteKeyValue(file, prefix + "[" + to_string(index) + "].price", to_string(item.price)) &&
+		WriteKeyValue(file, prefix + "[" + to_string(index) + "].quantity", to_string(item.quantity));
+}
+
+bool SaveItemVector(ofstream& file, const string& prefix, const vector<Item>& items)
+{
+	WriteKeyValue(file, prefix + ".count", to_string(items.size()));
+
+	for (size_t i = 0; i < items.size(); i++)
+	{
+		SaveItem(file, prefix, items[i], i);
+	}
+	return true;
+}
+
+bool SaveGame(const Character& player, const Character& enemy, const Shop& shop, const string& filename)
 {
 	filesystem::create_directory("saves");
 	ofstream file;
@@ -37,7 +57,9 @@ bool SaveGame(const Character& player, const Character& enemy, const string& fil
 		WriteKeyValue(file, "player.specialCooldown", to_string(player.specialCooldown));
 		WriteKeyValue(file, "player.gold", to_string(player.gold));
 		WriteKeyValue(file, "player.stats.armorClass", to_string(player.characteristics.armorClass));
-
+		SaveItemVector(file, "player.inventory", player.inventory);
+		WriteKeyValue(file, "shop.name", shop.name);
+		SaveItemVector(file, "shop.items", shop.availableItems);
 		// Враг
 		WriteKeyValue(file, "enemy.name", enemy.name);
 		WriteKeyValue(file, "enemy.health", to_string(enemy.health));
@@ -81,6 +103,15 @@ bool LoadGame(Character& player, Character& enemy, const string& filename)
 		else if (key == "player.specialCooldown") player.specialCooldown = stoi(value);
 		else if (key == "player.gold") player.gold = stoi(value);
 		else if (key == "player.stats.armorClass") player.characteristics.armorClass = stoi(value);
+
+		else if (key == "enemy.name") enemy.name = value;
+		else if (key == "enemy.health") enemy.health = stoi(value);
+		else if (key == "enemy.maxHealth") enemy.maxHealth = stoi(value);
+		else if (key == "enemy.healthFlasks") enemy.healthFlasks = stoi(value);
+		else if (key == "enemy.damageFace") enemy.damageFace = stoi(value);
+		else if (key == "enemy.specialCooldown") enemy.specialCooldown = stoi(value);
+		else if (key == "enemy.gold") enemy.gold = stoi(value);
+		else if (key == "enemy.stats.armorClass") enemy.characteristics.armorClass = stoi(value);
 	}
 
 	cout << "Сохранение успешно загружено!" << endl;

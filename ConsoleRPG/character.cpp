@@ -36,6 +36,42 @@ void Characteristics::PrintCharacteristics()
 	cout << TOP_BORDER << endl;
 }
 
+Appearance::Appearance()
+{
+	race = "Человек";
+	gender = "Не определён";
+	hairStyle = "Короткие";
+	hairColor = "Тёмные";
+	eyeColor = "Карие";
+}
+
+Appearance::Appearance(
+	const string& _race,
+	const string& _gender,
+	const string& _hairStyle,
+	const string& _hairColor,
+	const string& _eyeColor
+)
+{
+	race = _race;
+	gender = _gender;
+	hairStyle = _hairStyle;
+	hairColor = _hairColor;
+	eyeColor = _eyeColor;
+}
+
+void Appearance::PrintAppearance() const
+{
+	cout << TOP_BORDER << endl;
+	cout << "Внешность персонажа:" << endl;
+	cout << "Раса: " << race << endl;
+	cout << "Пол: " << gender << endl;
+	cout << "Причёска: " << hairStyle << endl;
+	cout << "Цвет волос: " << hairColor << endl;
+	cout << "Цвет глаз: " << eyeColor << endl;
+	cout << TOP_BORDER << endl;
+}
+
 // --------- Character
 Character::Character()
 {
@@ -49,8 +85,6 @@ Character::Character()
 	uniqueAbilityDifficulty = 10;
 	minion = nullptr;
 	minionSpawned = false;
-	appearance.skinColor = "Не выбран";
-	appearance.hairColor = "Не выбран";
 }
 
 Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)

@@ -45,14 +45,27 @@ struct VisualsASCII
   
 struct Appearance
 {
-	string skinColor;
+	string race;
+	string gender;
+	string hairStyle;
 	string hairColor;
+	string eyeColor;
+
+	Appearance();
+	Appearance(
+		const string& _race,
+		const string& _gender,
+		const string& _hairStyle,
+		const string& _hairColor,
+		const string& _eyeColor
+	);
+
+	void PrintAppearance() const;
 };
 
 struct Character
 {
 	string name;
-	Appearance appearance;
 
 	int health;
 	int maxHealth;
