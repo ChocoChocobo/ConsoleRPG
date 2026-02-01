@@ -189,6 +189,17 @@ void main()
 				player.maxHealth = 512;
 				player.characteristics.armorClass = 30;
 			}
+			else if (player.name == "Кокаколик")
+			{
+				cout << "Вы вписали секретное имя!" << endl;
+				cout << "+ у вас теперь неблагополучная семья" << endl;
+				cout << "+ вам мало лет" << endl;
+				cout << "- это не лечится" << endl;
+				Item cococola("Банка колы 0.333", "Это нерациональная трата денег, дешевле купить бутылку 0.5", 69, 1);
+				player.inventory.push_back(cococola);
+				player.maxHealth -= 3;
+				player.health -= 3;
+			}
 
 			cout << "Нажмите любую клавишу, чтобы продолжить...";
 			_getch(); // Ждет нажатия одной клавиши
