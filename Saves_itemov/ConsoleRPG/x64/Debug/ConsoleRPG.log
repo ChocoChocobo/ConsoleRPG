@@ -1,0 +1,7 @@
+﻿  battle.cpp
+  main.cpp
+D:\VisualStudio\Repo2401\ConsoleRPG\main.cpp(17,1): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+D:\VisualStudio\Repo2401\ConsoleRPG\main.cpp(22,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  user_interface.cpp
+  Создание кода...
+  ConsoleRPG.vcxproj -> D:\VisualStudio\Repo2401\x64\Debug\ConsoleRPG.exe

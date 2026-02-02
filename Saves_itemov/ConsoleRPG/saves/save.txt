@@ -1,0 +1,16 @@
+player.name=Платон Святозарный
+player.health=2
+player.maxHealth=12
+player.healthFlasks=1
+player.damageFace=8
+player.specialCooldown=0
+player.gold=35
+player.stats.armorClass=12
+enemy.name=Цербер
+enemy.health=25
+enemy.maxHealth=25
+enemy.healthFlasks=3
+enemy.damageFace=8
+enemy.specialCooldown=0
+enemy.gold=25
+enemy.stats.armorClass=14
