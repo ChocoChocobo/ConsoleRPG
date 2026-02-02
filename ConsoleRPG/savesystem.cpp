@@ -54,38 +54,84 @@ bool SaveGame(const Character& player, const Character& enemy, const string& fil
 	}
 }
 
-bool LoadGame(Character& player, Character& enemy, const string& filename)
+bool LoadGame(Character& player, Character& enemy, Shop& shop, const string& filename)
 {
-	ifstream file(filename);
-	if (!file.is_open())
-	{
-		cout << "Файл сохранения не найден! <(_　_)>" << endl;
-		return false;
-	}
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        cout << "Файл сохранения не найден! <(_ _)>" << endl;
+        return false;
+    }
 
-	string line;
-	if (getline(file, line)) if (line.empty()) return false;
+    shop.availableItems.clear();
+    player.inventory.clear();
 
-	while (getline(file, line))
-	{
-		if (line.empty()) continue;
-		size_t sep = line.find('=');
-		string key = line.substr(0, sep);
-		string value = line.substr(sep + 1);
+    string line;
 
-		if (key == "player.name") player.name = value;
-		else if (key == "player.health") player.health = stoi(value);
-		else if (key == "player.maxHealth") player.maxHealth = stoi(value);
-		else if (key == "player.healthFlasks") player.healthFlasks = stoi(value);
-		else if (key == "player.damageFace") player.damageFace = stoi(value);
-		else if (key == "player.specialCooldown") player.specialCooldown = stoi(value);
-		else if (key == "player.gold") player.gold = stoi(value);
-		else if (key == "player.stats.armorClass") player.characteristics.armorClass = stoi(value);
-	}
+    while (getline(file, line))
+    {
+        if (line.empty()) continue;
 
-	cout << "Сохранение успешно загружено!" << endl;
-	file.close();
-	return true;
+        size_t sep = line.find('=');
+        if (sep == string::npos) continue;
+
+        string key = line.substr(0, sep);
+        string value = line.substr(sep + 1);
+
+        // ===== ИГРОК =====
+        if (key == "player.name") player.name = value;
+        else if (key == "player.health") player.health = stoi(value);
+        else if (key == "player.maxHealth") player.maxHealth = stoi(value);
+        else if (key == "player.healthFlasks") player.healthFlasks = stoi(value);
+        else if (key == "player.damageFace") player.damageFace = stoi(value);
+        else if (key == "player.specialCooldown") player.specialCooldown = stoi(value);
+        else if (key == "player.gold") player.gold = stoi(value);
+        else if (key == "player.stats.armorClass") player.characteristics.armorClass = stoi(value);
+
+        // ===== МАГАЗИН =====
+        else if (key == "shop.name")
+        {
+            shop.name = value;
+        }
+        else if (key == "shop.items.count")
+        {
+            int count = stoi(value);
+            shop.availableItems.resize(count);
+        }
+        else if (key.find("shop.items.") == 0)
+        {
+            // shop.items.X.field
+            size_t firstDot = key.find('.', 11);
+            size_t secondDot = key.find('.', firstDot + 1);
+
+            int index = stoi(key.substr(11, firstDot - 11));
+            string field = key.substr(secondDot + 1);
+
+            if (index >= 0 && index < shop.availableItems.size())
+            {
+                Item& item = shop.availableItems[index];
+
+                if (field == "name") item.name = value;
+                else if (field == "description") item.description = value;
+                else if (field == "price") item.price = stoi(value);
+                else if (field == "quantity") item.quantity = stoi(value);
+            }
+        }
+
+        // ===== ВРАГ =====
+        else if (key == "enemy.name") enemy.name = value;
+        else if (key == "enemy.health") enemy.health = stoi(value);
+        else if (key == "enemy.maxHealth") enemy.maxHealth = stoi(value);
+        else if (key == "enemy.healthFlasks") enemy.healthFlasks = stoi(value);
+        else if (key == "enemy.damageFace") enemy.damageFace = stoi(value);
+        else if (key == "enemy.specialCooldown") enemy.specialCooldown = stoi(value);
+        else if (key == "enemy.gold") enemy.gold = stoi(value);
+        else if (key == "enemy.stats.armorClass") enemy.characteristics.armorClass = stoi(value);
+    }
+
+    cout << "Сохранение успешно загружено! \\(@^0^@)/" << endl;
+    file.close();
+    return true;
 }
 
 bool SaveExists(const string& filename)
