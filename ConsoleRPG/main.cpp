@@ -23,6 +23,7 @@
 #include "character_creator.h"
 #include "casino.h"
 #include <conio.h>
+#include "battle.cpp"
 
 using namespace std;
 
@@ -285,7 +286,7 @@ void main()
 				break;
 			}
 
-			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->health <= 0)
+			/*if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->health <= 0)
 			{
 				cout << "Ты выйграл битву, но не войну!" << endl;
 				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->gold);
@@ -306,6 +307,12 @@ void main()
 				cout << player.name << " пал!" << endl;
 				break;
 			}
+			*/
+			CheckWinLoseConditionEnemy(enemyWave[enemyCount], player);
+			CheckWinLoseConditionPlayer(player);
+
+
+
 
 			if (userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4)
 			{

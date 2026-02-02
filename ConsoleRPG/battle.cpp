@@ -103,10 +103,27 @@ int EnemyTurn(Character& enemy, Character& player)
 
 void CheckWinLoseConditionPlayer(Character player)
 {
-
+	if (player.health <= 0)
+	{
+		cout << player.name << " пал!" << endl;
+		
+	}
 }
 
-void CheckWinLoseConditionEnemy(Character enemy)
+void CheckWinLoseConditionEnemy(Character enemy, Character player)
 {
+	if (enemy.minion != nullptr && enemy.minion->health <= 0)
+	{
+		cout << "Ты выйграл битву, но не войну!" << endl;
+		enemy.AddGold(enemy.minion->gold);
+		enemy.minionSpawned = false;
+	}
+	if (enemy.health <= 0)
+	{
+		cout << "Победа, но какой ценой (o_o;)" << endl;
 
+		player.AddGold(enemy.gold);
+
+	
+	}
 }
