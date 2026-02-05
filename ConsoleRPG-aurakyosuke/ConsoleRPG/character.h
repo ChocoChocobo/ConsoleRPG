@@ -1,0 +1,106 @@
+#pragma once
+#ifndef CHARACTER_H
+#define CHARACTER_H
+
+#include <iostream>
+#include <vector>
+#include "item.h"
+#include "dice.h"
+#include "user_interface.h"
+using namespace std;
+
+// В структуре character находятся все характеристики + описание перса
+// Это редактируется в отдельном файле редакторе персонажа
+
+// 1. Игрок распределяет сам статы - делаем. 8, 10, 12, 13, 14, 15
+// 2. Программа бросает кубик на характеристики
+
+// При внедрении классов необходимо определять тип куба и модификатора, используемого при атаке
+
+struct Characteristics
+{
+	int strength;
+	int dexterity;
+	int constitution;
+	int wisdom;
+	int intelligence;
+	int charisma;
+	int armorClass;
+
+	Characteristics();
+	Characteristics(int _strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, int armorClass);
+	int CountModificator(int characteristic);
+	void PrintCharacteristics();
+};
+
+// Спрайты персонажей находятся в файлах
+// LoadSprite(enum state)
+struct VisualsASCII
+{
+	void ShowSprite()
+	{
+		
+	}
+};
+  
+struct Appearance
+{
+	string race;
+	string gender;
+	string hairStyle;
+	string hairColor;
+	string eyeColor;
+
+	Appearance();
+	Appearance(
+		const string& _race,
+		const string& _gender,
+		const string& _hairStyle,
+		const string& _hairColor,
+		const string& _eyeColor
+	);
+
+	void PrintAppearance() const;
+};
+
+struct Character
+{
+	string name;
+
+	int health;
+	int maxHealth;
+	int healthFlasks;
+
+	int damageFace;
+	int specialCooldown;
+
+	int gold;
+
+	vector<Item> inventory;
+
+	Characteristics characteristics;
+
+	int uniqueAbilityDifficulty;
+	bool minionSpawned = false;
+	Character* minion = nullptr;
+
+	VisualsASCII visualsASCII;
+
+	Character();
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty);
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold);
+	void PrintStatus();
+	void RemoveGold(int amount);
+	void AddGold(int amount);
+	bool BuyItem(int cost);
+	void BasicAttack(Character& other);
+	void SpecialAttack();
+	void ShowInventory();
+	void IncreaseHealth(int amount);
+	void DecreaseHealth(int amount);
+	void Heal(int difficulty);
+	bool Flee(Character& other);
+	bool CheckFleeSuccess(int difficulty);
+};
+
+#endif
