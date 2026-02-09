@@ -1,308 +1,315 @@
-﻿// Что добавить:
-// 2. В начале распределение статов из 75 предложенных очков (любая другая система на ваш вкус) и создание перса из домашки
-// 3. Сохранение в магазине и магазина
-// 4. Меню паузы для Давида с настройками сложности
-// 7. Вывод графики в ASCII
-// 8. Переделать вывод информации для уникальных ситуаций
-// 9. Стринговые массивы для описания разных действий
-// 11. Клаустрофобия
-// Пульт от кондиционера открывает секретную комнату
-
-// ?. Сделать A* типа шахматного поля для Давида!
-// ???. A* для ии врага
-
 #include <iostream>
-#include <string>
 #include <Windows.h>
-#include <vector>
-#include "character.h"
-#include "battle.h"
-#include "user_interface.h"
-#include "savesystem.h"
-#include "shop.h"
-#include "character_creator.h"
-#include "casino.h"
-#include <conio.h>
+#include <string>
+#include <cstdlib>
+#include <conio.h> // Добавляем для работы с _getch()
+#include "shpingalet.h"
 
 using namespace std;
 
-#if !defined(__cplusplus)
-#error C++ компилятор нужен ты олух!
-#endif
-
-void main()
+struct Cell // координаты символа в двумерном массиве символов
 {
-	setlocale(LC_ALL, "Ru");
+    int x;
+    int y;
+};
 
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+struct Node // узел, который хранит состояние клетки
+{
+    int x;
+    int y;
+    int g; // стомость от начала клетки
+    int f; // полная стоимость (g + h), где h - расстояние до конца
+    Node* parent; // предыдущий узел
+};
 
-	//cout << "Программа была скомпилирована в: " << __TIME__ << endl;
+int DistanceToCell(int x1, int y1, int x2, int y2)
+{
+    return abs(x1 - x2) + abs(y1 - y2);
+}
 
-	srand(time(0));
+// A* алгоритм, который возвращает указатель на клетку, которую мы ищем
+Cell* AStarSearch(string* map, int height, int width, Cell start, Cell end, int &pathLength)
+{
+    // массив указателей на доступность узла
+    bool** closed = new bool* [height]; // указываем строками на столбцы
+    // массив указателей на стоимость узла
+    int** gcost = new int* [height];
+    Node** nodes = new Node * [height];
 
-	int userChoice;
-	int enemyChoice;
-	bool fled = false;
+    // Инициализация поля и значений узлов
+    for (int i = 0; i < height; i++)
+    {
+        // Выделяем строки
+        closed[i] = new bool[width];
+        gcost[i] = new int[width];
+        nodes[i] = new Node[width];
 
-	// ДОБАВЛЕНО: ИГРОК НАЧИНАЕТ С 10 ЗОЛОТА
-	Character player("Безымянный", 12, 8, 0, 10);
-	
-	Character enemy("Блоха", 10, 4, 0, 10);
-	Character enemy1("Цербер", 25, 8, 0, 25);
-	Character enemy2("Моль-беспилотник", 2, 10, 0, 10);
+        // Заполнение значений
+        for (int j = 0; j < width; j++)
+        {
+            closed[i][j] = false;
+            gcost[i][j] = 1000000000;
+            nodes[i][j].x = i;
+            nodes[i][j].y = j;
+            nodes[i][j].g = 1000000000;
+            nodes[i][j].f = 1000000000;
+            nodes[i][j].parent = NULL;
+        }
+    }
 
-	Character condeiMinion("Кондей", 12, 4, 0, 0);
-	Character enemy3("Пульт от кондиционера", 45, 8, 0, 1000, condeiMinion, 15);
+    int maxOpen = height + width; // максимальное количество элементов в таблице
+    int* openX = new int[maxOpen]; // массив X координат в открытых узлах
+    int* openY = new int[maxOpen]; // массив Y координат в открытых узлах
+    int* openG = new int[maxOpen]; // массив значений стоимости
+    int* openF = new int[maxOpen]; // массив значений полной стоимости
+    int openCount = 0; // текущее количество элементов 
 
-	vector<Character> enemyWave = {enemy, enemy1, enemy2, enemy3};
+    // Стартовая клетка
+    gcost[start.x][start.y] = 0;
+    nodes[start.x][start.y].g = 0;
+    nodes[start.x][start.y].f = DistanceToCell(start.x, start.y, end.x, end.y);
+    nodes[start.x][start.y].parent = NULL;
 
-	vector<Item> shopItems = {};
+    // Открытые списки 
+    openX[openCount] = start.x;
+    openY[openCount] = start.y;
+    openF[openCount] = nodes[start.x][start.y].f;
+    openG[openCount] = 0;
+    openCount++;
 
-	Item item1("Зубы деда", "Все что вам могло осталось в наследство", 2, 32);
-	Item item2("Рок единорога", "Самый качественный звук", 5, 1);
-	Item item3("Батарейки", "Батарейки для пульта от кондиционера", 100, 4);
+    //                влево, вправо, вниз, вверх
+    int directionsX[4] = {-1, 1, 0, 0}; // Направления, куда может идти x
+    int directionsY[4] = {0, 0, -1, 1}; // Направления, куда может идти x
 
-	shopItems.push_back(item2);
-	shopItems.push_back(item1);
-	shopItems.push_back(item3);
+    bool endFound = false;
+    // Пока есть открытые узлы
+    while (openCount > 0)
+    {
+        int bestId = 0;
+        for (int i = 0; i < openCount; i++)
+        {
+            // Если текущий узел полной стоимости меньше лучшего узла полной стоимости ИЛИ текущий узел полной стоимости равен лучшему узлу полной стоимости И текущая стоимость от предыдущей клетки меньше лучше стоимости предыдущей клетки
+            if (openF[i] < openF[bestId] || (openF[i] == openF[bestId] && openG[i] < openG[bestId]))
+            {
+                bestId = i;
+            }
+        }
 
-	Shop shop(player, shopItems);
-	
+        // Создаем переменные для работы с текущим узлом
+        int currentX = openX[bestId];
+        int currentY = openY[bestId];
 
-	cout << "\t\t-----CPlusPlus Console RPG!-----" << endl;
-	cout << "В данной текстовой ролевой игре вам необходимо победить врага в формате пошаговых боев. При совершении каждого действия происходит бросок кубика д20, который определяет исход результата. Удачи!" << endl;
-	
-	if (SaveExists())
-	{
-		cout << endl << "Обнаружено сохранение. Для его загрузки нажмите 1. Для начала новой игрой нажмите 0." << endl;
-		cin >> userChoice;
-		if (userChoice == 1) LoadGame(player, enemy);
-		else
-		{
-			ShowProgressBar(3.2, 50, "Загрузка.", '#');
-			system("cls");
-			player.characteristics = DistributeCharacteristics();
+        // Перемещаем последний элемент на место лучшего, затем присваиваем ему значения
+        openCount--;
+        openX[bestId] = openX[openCount];
+        openY[bestId] = openY[openCount];
+        openF[bestId] = openF[openCount];
+        openG[bestId] = openG[openCount];
 
-			system("cls");
-			cout << "Задайте имя вашему герою: ";
-			cin.ignore(1000, '\n');
-			getline(cin, player.name);
-			cout << endl;
+        // Если узел уже закрыт, пропускаем условие, либо помечаем текущий узел, как закрытый
+        if (closed[currentX][currentY]) continue;
+        closed[currentX][currentY] = true;
 
-			if (player.name == "Платон Святозарный")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ 6 кд" << endl;
-				cout << "+ 40 голды" << endl;
-				player.characteristics.armorClass += 6;
-				player.gold += 40;
-			}
-			else if (player.name == "ChocoChocobo")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете себя сильнее" << endl;
-				cout << "+ мораль" << endl;
-				player.damageFace = 10;				
-			}
-			else if (player.name == "Bytik Menich")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете..." << endl;
-				Item item4("Батарейки", "Батарейки для пульта от кондиционера", 100, 2);
-				Item item5("Шпингалет", "Арбитр мироздания в твоей ванной", 1, 1);
-				player.inventory.push_back(item4);
-				player.inventory.push_back(item5);
-			}
-			else if (player.name == "Levi_333")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете свободу в вашем разуме" << endl;
-				cout << "+ вы перестали думать" << endl;
-				cout << "- мысли" << endl;
-				player.health += 12;
-				player.maxHealth += 12;
-				player.healthFlasks += 2;
-			}
-			else if (player.name == "Ольга Петровна")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете страх в глазах ваших врагов" << endl;
-				cout << "+ Вы" << endl;
-				cout << "- Родин" << endl;
-				player.characteristics.armorClass = 18;
-				player.health = 1;
-				player.maxHealth = 1;
-				player.gold = 250;
-			}
-			else if (player.name == "Кусов")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ теперь вы что-то между Абаем Кунанбаевом и Аполлоном" << endl;
-				cout << "+++++++++++++++++++++" << endl;
-				cout << "- нет" << endl;
-				player.damageFace = 1;
-				player.healthFlasks = 64;
-				player.characteristics.armorClass = 128;
-				player.health = 256;
-				player.maxHealth = 512;
-				player.gold = 1024;
-			}
-			else if (player.name == "Леша 10 метров от вас")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ определенно дотянется" << endl;
-				cout << "+ вы вступили на тропу войны с С++" << endl;
-				cout << "+ С++" << endl;
-				cout << "- С--" << endl;
-				cout << "- проиграл все торговцу" << endl;
-				player.gold = -1024;
-				player.characteristics.charisma = 17;
-				player.characteristics.wisdom = 17;
-			}
-			else if (player.name == "Гном Плюсокрад")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ теперь гном" << endl;
-				cout << "+ есть честь" << endl;
-				cout << "+ печеньки с молоком" << endl;
-				cout << "- тестировщик" << endl;
-				player.gold = 1024;
-				player.characteristics.wisdom = 20;
-				player.characteristics.strength = 20;
-				player.characteristics.constitution = 20;
-				player.characteristics.dexterity = 20;
-				player.characteristics.charisma = 20;
-				player.characteristics.intelligence = 20;
-				player.damageFace = 60;
-				player.health = 256;
-				player.maxHealth = 512;
-				player.characteristics.armorClass = 30;
-			}
+        // Если достигли целевого узла, отмечаем, что путь найден и выходим из цикла поиска
+        if (currentX == end.x && currentY == end.y)
+        {
+            endFound = true;
+            break;
+        }
 
-			cout << "Нажмите любую клавишу, чтобы продолжить...";
-			_getch(); // Ждет нажатия одной клавиши
-			system("cls");			
+        // Для каждого соседа необходимо:                 
+        for (int i = 0; i < 4; i++)
+        {
+            // 1. вычислять координаты
+            int neighbourX = currentX + directionsX[i];
+            int neighbourY = currentY + directionsY[i];
+            // 2. проверять границы карты
+            if (neighbourX < 0 || neighbourX >= height || neighbourY < 0 || neighbourY >= width) continue;
+            // 3. проверять является ли сосед стеной
+            if (map[neighbourX][neighbourY] == '+') continue;
+            // 4. проверять закрыт ли сосед
+            if (closed[neighbourX][neighbourY]) continue;
 
-			/*int index = 1;
-			while (true)
-			{
-				cout << "Задайте класс доспехов (12): ";
-				cin >> player.stats.armorClass;
-				cout << endl;
+            int currentG = gcost[currentX][currentY] + 1;
 
-				if (player.stats.armorClass != 12 && index == 1)
-				{
-					cout << "Вы уверены?" << endl;
-					index++;
-				}
-				else if (player.stats.armorClass != 12 && index == 2)
-				{
-					cout << "Вы точно хотите это сделать..?" << endl;
-					index++;
-				}
-				else if (player.stats.armorClass != 12 && index == 3)
-				{
-					cout << "Вы встали на тропу войны /(`o`)✓" << endl;
-					cout << "Противники чувствуют себя сильнее..." << endl;
-					enemy.health *= 100;
-					enemy.maxHealth *= 100;
-					enemy.damageFace *= 100;
-					enemy.healthFlasks *= 100;
-					enemy.stats.armorClass *= 100;
-					break;
-				}
-				else
-				{
-					cout << "Мой хороший \\(>o<*)o" << endl;
-					break;
-				}
-			}*/
-		}
-	}	
+            // Если найдена меньшая стоимость к соседу
+            if (currentG < gcost[neighbourX][neighbourY])
+            {
+                // Обновляем значения у соседа
+                gcost[neighbourX][neighbourY] = currentG;
+                nodes[neighbourX][neighbourY].g = currentG;
+                nodes[neighbourX][neighbourY].f = currentG + DistanceToCell(neighbourX, neighbourY, end.x, end.y);
+                nodes[neighbourX][neighbourY].parent = &nodes[currentX][currentY];
 
-	for (int enemyCount = 0; enemyCount < enemyWave.size(); enemyCount++)
-	{
-		PAUSE_1_SECONDS;
-		// МАГАЗИН
-		shop.ShowItems();
+                // Обновляем открытые списки
+                openX[openCount] = neighbourX;
+                openY[openCount] = neighbourY;
+                openF[openCount] = nodes[neighbourX][neighbourY].f;
+                openG[openCount] = nodes[neighbourX][neighbourY].g;
+                openCount++;
+            }
+        }
+    }
 
-		// Казино Алексея - случайное событие
-		// Код казино
-		SpecialEvent(player);
-		
+    Cell* path = NULL;
+    // Если путь найден,восстанавливаем его по предыдущим узлам
+    if (endFound)
+    {
+        cout << "Путь построен!" << endl;
+        Node* currentNode = &nodes[end.x][end.y]; // текущий узел на момент нахождения конца
+        pathLength = 0;
+        //Подсчитываем сколько узлов потребовалось для нахождения цели
+        while (currentNode != NULL)
+        {
+            pathLength++;
+            currentNode = currentNode->parent;
+        }
+        // Создаем массив клеток с размером пути
+        path = new Cell[pathLength];
+        currentNode = &nodes[end.x][end.y];
+        // Строим массив клеток в обратном порядке
+        for (int i = pathLength - 1; i >= 0; i--)
+        {
+            path[i].x = currentNode->x;
+            path[i].y = currentNode->y;
+            currentNode = currentNode->parent;
+        }
+    }
 
-		// БИТВА
-		//system("cls");
-		ShowLoadingDots(chrono::milliseconds(200), RollDice(4));
+    // Высвобождение памяти под 
+    for (int i = 0; i < height; i++)
+    {
+        // поскольку мы работаем с массивом указателей на указатели, сперва необъодимо очистить память у строк, а затем и у самого массива
+        delete[] closed[i];
+        delete[] gcost[i];
+        delete[] nodes[i];
+    }
+    delete[] closed;
+    delete[] gcost;
+    delete[] nodes;
+    delete[] openX;
+    delete[] openY;
+    delete[] openF;
+    delete[] openG;
 
-		cout << TOP_BORDER << endl;
-		cout << enemyWave[enemyCount].name << " выступает следующим!" << endl;
-		cout << TOP_BORDER << endl;
-		do
-		{
-			player.PrintStatus();
-			PAUSE_1_SECONDS;
-			
-			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minionSpawned)
-			{
-				enemyWave[enemyCount].minion->PrintStatus();
-				PAUSE_1_SECONDS;
-				userChoice = PlayerTurn(player, *enemyWave[enemyCount].minion);
-			}
-			else
-			{
-				enemyWave[enemyCount].PrintStatus();
-				PAUSE_1_SECONDS;
-				userChoice = PlayerTurn(player, enemyWave[enemyCount]);
-			}
+    return path;
+}
 
-			if (fled)
-			{
-				cout << TOP_BORDER << endl;
-				fled = false;
-				break;
-			}
+void PrintMap(string* map, int height, int width, Cell* path, Cell start, Cell end, int pathLength)
+{
+    string* mapCopy = new string[height];
 
-			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->health <= 0)
-			{
-				cout << "Ты выйграл битву, но не войну!" << endl;
-				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->gold);
-				enemyWave[enemyCount].minionSpawned = false;
-			}
+    for (int i = 0; i < height; i++) mapCopy[i] = map[i];
 
-			if (enemyWave[enemyCount].health <= 0)
-			{
-				cout << "Победа, но какой ценой (o_o;)" << endl;
+    if (path != NULL)
+    {
+        for (int i = 1; i + 1 < pathLength; i++) mapCopy[path[i].x][path[i].y] = '*';
+    }
 
-				player.AddGold(enemyWave[enemyCount].gold);
+    mapCopy[start.x][start.y] = 'S';
+    mapCopy[end.x][end.y] = 'G';
 
-				break;
-			}
+    for (int i = 0; i < height; i++)
+    {
+        cout << mapCopy[i] << endl;
+    }
 
-			if (player.health <= 0)
-			{
-				cout << player.name << " пал!" << endl;
-				break;
-			}
+    delete[] mapCopy;
+}
 
-			if (userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4)
-			{
-				PAUSE_1_SECONDS;
-				enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
-			}
+int main()
+{
+    setlocale(LC_ALL, "");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
-			if (enemyWave[enemyCount].health <= 0)
-			{
-				cout << "Победа, но какой ценой (o_o;)" << endl;
+    string map[] =
+    {
+        // · - пустая клетка
+        // + - стена
+        // * - путь
+        // S - старт
+        // G - конец
+        "···+·",
+        "++·+·",
+        "···+·",
+        "·+++·",
+        "·····"
+    };
 
-				player.AddGold(enemyWave[enemyCount].gold);
+    int height = 5;
+    int width = 5;
 
-				break;
-			}
+    Cell start; // структура клетки (символа в двумерном массиве)
+    start.x = 0;
+    start.y = 0;
 
-			if (userChoice == 0) enemyCount = 999; // РАБОТАЕТ - НЕ ТРОГАЙ!
+    Cell end;
+    end.x = 4;
+    end.y = 4;
 
-		} while (userChoice != 0);
-	}
+    // Каждый цикл мы вызываем функцию AStarSearch, которая возвращает набор клеток, по которым может передвигаться объект. После вызова этой функции переменная pathLength задается длиной пути, которую надо пройти
+    // Пока координаты начальной точки НЕ равняются координатам конечной точки
+    while (!(start.x == end.x && start.y == end.y))
+    {
+        int pathLength = 0;
+        Cell* path = AStarSearch(map, height, width, start, end, pathLength);
+
+        if (path != NULL)
+        {
+            PrintMap(map, height, width, path, start, end, pathLength);
+            
+            // ИНСТРУКЦИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ
+            cout << "\nНажмите ПРОБЕЛ (SPACE) для следующего шага" << endl;
+            cout << "Или любую другую клавишу для выхода" << endl;
+            
+            // Ждем ввода пользователя
+            int key = _getch();
+            
+            // Если нажата клавиша SPACE (код 32)
+            if (key == 32)
+            {
+                // Если длина пути больше двух, объект перемещается на следующий индекс набор клеток (первый)
+                if (pathLength >= 2)
+                {
+                    start.x = path[1].x;
+                    start.y = path[1].y;
+                    cout << "Совершен шаг к цели!" << endl;
+                }
+                else
+                {
+                    start = end;
+                }
+            }
+            else
+            {
+                cout << "Выход из программы..." << endl;
+                delete[] path;
+                break;
+            }
+
+            delete[] path;
+        }
+        else
+        {
+            cout << "Не удалось построить пути к цели!\n";
+            break;
+        }
+
+        Sleep(300);
+        system("cls");
+    }
+
+    if (start.x == end.x && start.y == end.y)
+    {
+        int pathLength = 0;
+        Cell* path = AStarSearch(map, height, width, start, end, pathLength);
+        PrintMap(map, height, width, path, start, end, pathLength);
+        cout << "Враг добрался до вас!" << endl;
+        // ИНИЦИАЛИЗАЦИЯ БОЯ
+    }
+    
+    cout << "\nПрограмма завершена. Нажмите любую клавишу для выхода...";
+    _getch();
+    return 0;
 }
