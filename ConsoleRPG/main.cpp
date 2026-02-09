@@ -63,9 +63,11 @@ void main()
 	Item item2("Рок единорога", "Самый качественный звук", 5, 1);
 	Item item3("Батарейки", "Батарейки для пульта от кондиционера", 100, 4);
 
-	shopItems.push_back(item2);
-	shopItems.push_back(item1);
-	shopItems.push_back(item3);
+	 myShop.addItem(Item("Laptop", 999.99, 10));
+    myShop.addItem(Item("Smartphone", 699.99, 25));
+    myShop.addItem(Item("Headphones", 149.99, 50));
+    myShop.addItem(Item("Keyboard", 79.99, 30));
+    myShop.addItem(Item("Mouse", 29.99, 40));
 
 	Shop shop(player, shopItems);
 	
