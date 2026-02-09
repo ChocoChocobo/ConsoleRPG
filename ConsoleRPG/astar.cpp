@@ -68,7 +68,7 @@ namespace AStar {
 
             int cx = cur.x;
             int cy = cur.y;
-
+            //лейкоцит
             if (closed[cx][cy]) continue;
             closed[cx][cy] = true;
 
@@ -127,7 +127,7 @@ namespace AStar {
         }
         copy[start.x][start.y] = 'S';
         copy[end.x][end.y] = 'G';
-
+        //lemon
         for (int i = 0; i < height; ++i) cout << copy[i] << '\n';
     }
 
