@@ -36,42 +36,6 @@ void Characteristics::PrintCharacteristics()
 	cout << TOP_BORDER << endl;
 }
 
-Appearance::Appearance()
-{
-	race = "Человек";
-	gender = "Не определён";
-	hairStyle = "Короткие";
-	hairColor = "Тёмные";
-	eyeColor = "Карие";
-}
-
-Appearance::Appearance(
-	const string& _race,
-	const string& _gender,
-	const string& _hairStyle,
-	const string& _hairColor,
-	const string& _eyeColor
-)
-{
-	race = _race;
-	gender = _gender;
-	hairStyle = _hairStyle;
-	hairColor = _hairColor;
-	eyeColor = _eyeColor;
-}
-
-void Appearance::PrintAppearance() const
-{
-	cout << TOP_BORDER << endl;
-	cout << "Внешность персонажа:" << endl;
-	cout << "Раса: " << race << endl;
-	cout << "Пол: " << gender << endl;
-	cout << "Причёска: " << hairStyle << endl;
-	cout << "Цвет волос: " << hairColor << endl;
-	cout << "Цвет глаз: " << eyeColor << endl;
-	cout << TOP_BORDER << endl;
-}
-
 // --------- Character
 Character::Character()
 {
@@ -85,6 +49,8 @@ Character::Character()
 	uniqueAbilityDifficulty = 10;
 	minion = nullptr;
 	minionSpawned = false;
+	appearance.skinColor = "Не выбран";
+	appearance.hairColor = "Не выбран";
 }
 
 Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
@@ -158,7 +124,7 @@ void Character::BasicAttack(Character& other)
 {
 	cout << endl << name << " пытается атаковать " << other.name << "..." << endl;
 
-	Results result = CheckSuccess(this, characteristics.strength, other.characteristics.armorClass);
+	Results result = CheckSuccess(this, characteristics.GetStrength(), other.GetCharacteristics().GetArmorClass());
 
 	int damageRoll;
 	switch (result)
@@ -259,93 +225,41 @@ void Character::Heal(int difficulty)
 {
 	if (healthFlasks == 0)
 	{
-		cout << "У вас не осталось зелий лечения!" << endl;
+		cout << GetName() << " не осталось зелий лечения!" << endl;
 		return;
 	}
 
-	cout << name << " пытается исцелиться..." << endl;
+	cout << GetName() << " пытается исцелиться..." << endl;
 
-	Results result = CheckSuccess(this, characteristics.wisdom, difficulty);
+	Results result = CheckSuccess(this, characteristics.GetWisdom(), difficulty);
 
 	int healAmount;
 	switch (result)
 	{
 	case 1:
 		healthFlasks--;
-		healAmount = maxHealth / 3;
+		healAmount = GetMaxHealth() / 3;
 		IncreaseHealth(healAmount);
-		cout << name << " восстанавливает " << healAmount << " HP!" << endl;
+		cout << GetName() << " восстанавливает " << healAmount << " HP!" << endl;
 		break;
 	case 2:
 		healthFlasks--;
-		cout << name << " проливает целебную жидкость мимо рта." << endl;
+		cout << GetName() << " проливает целебную жидкость мимо рта." << endl;
 		break;
 	case 3:
 		healthFlasks--;
-		healAmount = maxHealth / 2;
+		healAmount = GetMaxHealth() / 2;
 		IncreaseHealth(healAmount);
-		cout << name << " восстанавливает " << healAmount << " HP!" << endl;
+		cout << GetName() << " восстанавливает " << healAmount << " HP!" << endl;
 		break;
 	case 4:
 		healthFlasks--;
-		healAmount = maxHealth / 3;
+		healAmount = GetMaxHealth() / 3;
 		DecreaseHealth(healAmount);
-		cout << "Во время того, как " << name << " судорожно пил склянку, он поперхнулся и потерял" << healAmount << " HP :o" << endl;
+		cout << GetName() << " поперхнулся и потерял " << healAmount << " HP :o" << endl;
 		break;
 	default:
-		cout << name << " пропускает свой ход!" << endl;
+		cout << GetName() << " пропускает свой ход!" << endl;
 		break;
-	}
-}
-
-bool Character::Flee(Character& other)
-{
-	int currentHealthPercent = int((double(other.health) / double(other.maxHealth)) * 100);
-
-	if (currentHealthPercent >= 0 && currentHealthPercent <= 20)
-	{
-		return CheckFleeSuccess(3);
-	}
-	else if (currentHealthPercent >= 20 && currentHealthPercent <= 40)
-	{
-		return CheckFleeSuccess(7);
-	}
-	else if (currentHealthPercent >= 40 && currentHealthPercent <= 60)
-	{
-		return CheckFleeSuccess(14);
-	}
-	else if (currentHealthPercent >= 60 && currentHealthPercent <= 80)
-	{
-		return CheckFleeSuccess(15);
-	}
-	else
-	{
-		return CheckFleeSuccess(19);
-	}
-}
-
-bool Character::CheckFleeSuccess(int difficulty)
-{
-	Results result = CheckSuccess(this, characteristics.dexterity, difficulty);
-	switch (result)
-	{
-	case 1:
-		cout << name << " сбежал, пожав хвост!" << endl;
-		return true;
-	case 2:
-		cout << "У " << name << " сбежали глаза, а он остался..." << endl;
-		return false;
-	case 3:
-		cout << name << " не только удалось сбежать, но и воспрять духами!" << endl;
-		healthFlasks++;
-		Heal(8);
-		return true;
-	case 4:
-		cout << name << " засмотрелся на противника и подскользнулся на своих глазах." << name << "завораживает его вид..." << endl;
-		DecreaseHealth(RollDice(4));
-		return false;
-	default:
-		cout << "Что-то пошло не так в FleeCheckSuccess!" << endl;
-		return false;
 	}
 }
