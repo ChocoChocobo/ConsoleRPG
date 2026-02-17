@@ -152,10 +152,114 @@ void Character::BasicAttack(Character& other)
 	}
 }
 
-void Character::SpecialAttack() {}
-void Character::ShowInventory() {}
-void Character::IncreaseHealth(int amount) { SetHealth(health + amount); }
-void Character::DecreaseHealth(int amount) { SetHealth(health - amount); }
-void Character::Heal(int difficulty) {}
-bool Character::Flee(Character& other) { return true; }
-bool Character::CheckFleeSuccess(int difficulty) { return true; }
+void Character::SpecialAttack()
+{
+
+}
+
+void Character::ShowInventory()
+{
+	int userInput;
+	do
+	{
+		if (inventory.size() <= 0)
+		{
+			cout << "В инвентаре нет предметов!" << endl;
+			return;
+		}
+
+		for (int i = 1; i <= inventory.size(); i++)
+		{
+			cout << i << ". " << inventory[i - 1].name << "." << endl;
+		}
+
+		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
+		cin >> userInput;
+
+		if (userInput == 0) continue;
+		while (true)
+		{
+			cout << SEPARATOR_LINE << endl;
+			inventory[userInput - 1].ShowInfo();
+			Item chosenItem = inventory[userInput - 1];
+			cout << endl << "Введите 1 для применения предмета (или '0' для выхода): " << endl;
+			int nestedUserInput;
+			cin >> nestedUserInput;
+			if (nestedUserInput == 1)
+			{
+				inventory[userInput - 1].quantity -= 1;
+				if (inventory[userInput - 1].quantity <= 0)
+				{
+					inventory.erase(inventory.begin() + userInput - 1);
+					// PLACEHOLDER
+					break;
+				}
+			}
+
+			else if (nestedUserInput == 0)
+			{
+				system("cls");
+				break;
+			}
+		}
+
+		cout << TOP_BORDER << endl;
+	} while (userInput != 0);
+
+	system("cls");
+}
+
+void Character::IncreaseHealth(int amount)
+{
+	health += amount;
+	if (health > maxHealth) health = maxHealth;
+}
+
+void Character::DecreaseHealth(int amount)
+{
+	health -= amount;
+	if (health < 0) health = 0;
+}
+
+void Character::Heal(int difficulty)
+{
+	if (healthFlasks == 0)
+	{
+		cout << GetName() << " не осталось зелий лечения!" << endl;
+		return;
+	}
+
+	cout << GetName() << " пытается исцелиться..." << endl;
+
+	Results result = CheckSuccess(this, characteristics.GetWisdom(), difficulty);
+
+	int healAmount;
+	switch (result)
+	{
+	case 1:
+		healthFlasks--;
+		healAmount = GetMaxHealth() / 3;
+		IncreaseHealth(healAmount);
+		cout << GetName() << " восстанавливает " << healAmount << " HP!" << endl;
+		break;
+	case 2:
+		healthFlasks--;
+		cout << GetName() << " проливает целебную жидкость мимо рта." << endl;
+		break;
+	case 3:
+		healthFlasks--;
+		healAmount = GetMaxHealth() / 2;
+		IncreaseHealth(healAmount);
+		cout << GetName() << " восстанавливает " << healAmount << " HP!" << endl;
+		break;
+	case 4:
+		healthFlasks--;
+		healAmount = GetMaxHealth() / 3;
+		DecreaseHealth(healAmount);
+		cout << GetName() << " поперхнулся и потерял " << healAmount << " HP :o" << endl;
+		break;
+	default:
+		cout << GetName() << " пропускает свой ход!" << endl;
+		break;
+	}
+}
