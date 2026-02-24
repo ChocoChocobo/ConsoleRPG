@@ -179,6 +179,19 @@ void main()
 				player.maxHealth = 512;
 				player.characteristics.armorClass = 30;
 			}
+			else if (player.name == "гря")
+			{
+				cout << "Вы вписали секретное имя" << endl;
+				cout << "+ пепе" << endl;
+				cout << "+ шнеле" << endl;
+				cout << "+ ватафа" << endl;
+				cout << "- нет" << endl;
+				player.gold = 100;
+				player.characteristics.charisma = 10;
+				player.health = 100;
+				player.maxHealth = 120;
+				player.damageFace = 30;
+			}
 
 			cout << "Нажмите любую клавишу, чтобы продолжить...";
 			_getch(); // Ждет нажатия одной клавиши
