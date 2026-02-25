@@ -1,0 +1,12 @@
+frameName=idle0
+  O
+ / | \
+  / \
+frameName=idle1
+  O
+ ( | \
+  / \
+frameName=idle2
+  O
+ / | )
+  / \
