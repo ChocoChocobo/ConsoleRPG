@@ -1,0 +1,12 @@
+frameName=attack0
+()()()
+<|  |>
+ <\/>
+frameName=attack1
+()()()
+/|  |>
+ <\/\
+frameName=attack2
+()()()
+<|  |\
+ /\/>

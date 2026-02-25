@@ -1,0 +1,12 @@
+frameName=attack0
+    ___
+ <( ._. )>
+    | |
+frameName=attack1
+    ___
+ <( ._. )_/
+    | |
+frameName=attack2
+    ___
+\_( ._. )>
+    | |
