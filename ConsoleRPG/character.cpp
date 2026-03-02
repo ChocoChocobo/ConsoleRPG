@@ -315,3 +315,53 @@ bool Character::CheckFleeSuccess(int difficulty)
 		return false;
 	}
 }
+
+// ================= CONTEXT =================
+
+CharacterContext::CharacterContext(Character* owner, CharacterState* state) {
+	this->owner = owner;
+	this->state = nullptr;
+	TransitionToState(state);
+}
+
+CharacterContext::~CharacterContext() {
+	delete state;
+}
+
+void CharacterContext::TransitionToState(CharacterState* state) {
+	if (this->state != nullptr)
+		delete this->state;
+
+	this->state = state;
+	this->state->SetContext(this);
+}
+
+// ================= STATES =================
+
+void BasicAttackState::HandleAction(Character* target) {
+	if (target != nullptr)
+		context->GetOwner()->BasicAttack(*target);
+}
+
+void SpecialAttackState::HandleAction(Character* target) {
+	context->GetOwner()->SpecialAttack();
+}
+
+void HealState::HandleAction(Character* target) {
+	context->GetOwner()->Heal(8);
+}
+
+void InventoryState::HandleAction(Character* target) {
+	context->GetOwner()->ShowInventory();
+}
+
+void FleeState::HandleAction(Character* target) {
+	if (target != nullptr)
+		context->GetOwner()->Flee(*target);
+}
+
+// ================= CHARACTER DESTRUCTOR =================
+
+Character::~Character() {
+	delete stateContext;
+}

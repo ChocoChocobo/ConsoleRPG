@@ -25,7 +25,8 @@ int PlayerTurn(Character& player, Character& enemy)
 	{
 	case 1:
 		system("cls");
-		player.BasicAttack(enemy);
+		player.stateContext->TransitionToState(new BasicAttackState);
+		player.stateContext->RequestAction(&enemy);
 		cout << TOP_BORDER << endl;
 		return 1;
 	case 2:
