@@ -362,16 +362,32 @@ void main()
                 player.inventory.push_back(item4);
                 player.inventory.push_back(item5);
             }
-            else if (player.name == "Гном Плюсокрад")
-            // ДОБАВЛЕНО: Секретное имя для геймера
-else if (player.name == "Gamer" || player.name == "gamer" || 
-         player.name == "Игрок" || player.name == "игрок" ||
-         player.name == "Noob" || player.name == "noob" ||
+           else if (player.name == "Гном Плюсокрад")
+{
+    cout << "Вы вписали секретное имя!" << endl;
+    player.gold = 1024;
+    player.characteristics.wisdom = 20;
+    player.characteristics.strength = 20;
+    player.characteristics.constitution = 20;
+    player.characteristics.dexterity = 20;
+    player.characteristics.charisma = 20;
+    player.characteristics.intelligence = 20;
+    player.damageFace = 60;
+    player.health = 256;
+    player.maxHealth = 512;
+    player.characteristics.armorClass = 30;
+}
+// ← ВАЖНО! Здесь закрывается прошлый else if
+
+// ДОБАВЛЕНО: Секретное имя для геймера
+else if (player.name == "ElonYD" || player.name == "ElonYD" || 
+         player.name == "Игрок" || player.name == "игрок" || 
+         player.name == "Noob" || player.name == "noob" || 
          player.name == "Pro" || player.name == "pro")
 {
-    cout << "====================" << endl;
-    cout << "ГЕЙМЕР ДЕТЕКТЕД!" << endl;
-    cout << "====================" << endl;
+    cout << "======================" << endl;
+    cout << "ElonYD ДЕТЕКТЕД!" << endl;
+    cout << "======================" << endl;
     cout << "Ты провел тысячи часов в играх," << endl;
     cout << "теперь пришло время применить навыки!" << endl;
     cout << endl;
