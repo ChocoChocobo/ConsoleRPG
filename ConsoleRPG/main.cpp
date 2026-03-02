@@ -1,17 +1,9 @@
-// Что добавить:
-// 2. В начале распределение статов из 75 предложенных очков (любая другая система на ваш вкус) и создание перса из домашки
-// 3. Сохранение в магазине и магазина
-// 4. Меню паузы для Давида с настройками сложности
-// 7. Вывод графики в ASCII
-// 8. Переделать вывод информации для уникальных ситуаций
-// 9. Стринговые массивы для описания разных действий
-// 11. Клаустрофобия
-// Пульт от кондиционера открывает секретную комнату
-
 #include <iostream>
 #include <string>
 #include <Windows.h>
 #include <vector>
+#include <thread>
+#include <chrono>
 #include "character.h"
 #include "battle.h"
 #include "user_interface.h"
@@ -116,6 +108,15 @@ Characteristics Distribute75Points() {
     stats.armorClass = 10 + (stats.dexterity - 8) / 2;
     
     return stats;
+}
+
+// Функция для имитации прогрузки
+void simulate_loading(const string& action, int min_sec = 2, int max_sec = 5) {
+    int delay = min_sec + rand() % (max_sec - min_sec + 1);
+    cout << "Прогрузка... " << action << " (ожидайте " << delay << " секунд)" << endl;
+    // Задержка для имитации прогрузки
+    this_thread::sleep_for(chrono::seconds(delay));
+    cout << action << " завершено!" << endl;
 }
 
 // ДОБАВЛЕНО: Меню паузы с настройками сложности
@@ -401,8 +402,8 @@ void main()
         enemyWave[enemyCount].maxHealth = enemyWave[enemyCount].health;
         enemyWave[enemyCount].damageFace = int(enemyWave[enemyCount].damageFace * currentDifficulty.enemyDamageMultiplier);
         
-        PAUSE_1_SECONDS;
-        
+        simulate_loading("Прогрузка боя");
+
         // МАГАЗИН
         shop.ShowItems();
 
@@ -415,7 +416,7 @@ void main()
         }
 
         // БИТВА
-        ShowLoadingDots(chrono::milliseconds(200), RollDice(4));
+        simulate_loading("Прогрузка действий врага и игрока");
 
         cout << TOP_BORDER << endl;
         
@@ -436,18 +437,18 @@ void main()
             }
             
             player.PrintStatus();
-            PAUSE_1_SECONDS;
+            simulate_loading("Прогрузка состояния игрока", 1, 2);
             
             if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minionSpawned)
             {
                 enemyWave[enemyCount].minion->PrintStatus();
-                PAUSE_1_SECONDS;
+                simulate_loading("Прогрузка состояния миньона", 1, 2);
                 userChoice = PlayerTurn(player, *enemyWave[enemyCount].minion);
             }
             else
             {
                 enemyWave[enemyCount].PrintStatus();
-                PAUSE_1_SECONDS;
+                simulate_loading("Прогрузка состояния врага", 1, 2);
                 userChoice = PlayerTurn(player, enemyWave[enemyCount]);
             }
 
@@ -467,14 +468,11 @@ void main()
 
             if (enemyWave[enemyCount].health <= 0)
             {
-                // ИЗМЕНЕНО: Используем массив строк для победы
                 int winIndex = rand() % victoryMessages.size();
                 cout << victoryMessages[winIndex] << endl;
                 
-                // ДОБАВЛЕНО: Учитываем множитель золота
                 player.AddGold(enemyWave[enemyCount].gold * currentDifficulty.goldMultiplier);
                 
-                // ДОБАВЛЕНО: Секретная комната после пульта
                 if (enemyWave[enemyCount].name == "Пульт от кондиционера") {
                     EnterSecretRoom(player);
                 }
@@ -484,7 +482,6 @@ void main()
 
             if (player.health <= 0)
             {
-                // ИЗМЕНЕНО: Используем массив строк для поражения
                 int loseIndex = rand() % defeatMessages.size();
                 cout << player.name << defeatMessages[loseIndex] << endl;
                 break;
@@ -492,27 +489,9 @@ void main()
 
             if (userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4)
             {
-                PAUSE_1_SECONDS;
+                simulate_loading("Прогрузка хода врага", 2, 3);
                 enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
             }
-
-            if (enemyWave[enemyCount].health <= 0)
-            {
-                // ИЗМЕНЕНО: Используем массив строк для победы
-                int winIndex = rand() % victoryMessages.size();
-                cout << victoryMessages[winIndex] << endl;
-                
-                player.AddGold(enemyWave[enemyCount].gold * currentDifficulty.goldMultiplier);
-                
-                // ДОБАВЛЕНО: Секретная комната после пульта
-                if (enemyWave[enemyCount].name == "Пульт от кондиционера") {
-                    EnterSecretRoom(player);
-                }
-                
-                break;
-            }
-
-            if (userChoice == 0) enemyCount = 999;
 
         } while (userChoice != 0);
     }
