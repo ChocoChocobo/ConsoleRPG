@@ -76,18 +76,39 @@ struct Character
 	Character();
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty);
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold);
+
+	// Вспомогательные функции
 	void PrintStatus();
 	void RemoveGold(int amount);
 	void AddGold(int amount);
 	bool BuyItem(int cost);
+	void IncreaseHealth(int amount);
+	void DecreaseHealth(int amount);
+	bool CheckFleeSuccess(int difficulty);
+
+	// Функции, которые должны быть описаны как состояния
 	void BasicAttack(Character& other);
 	void SpecialAttack();
 	void ShowInventory();
-	void IncreaseHealth(int amount);
-	void DecreaseHealth(int amount);
 	void Heal(int difficulty);
 	bool Flee(Character& other);
-	bool CheckFleeSuccess(int difficulty);
 };
 
+class CharacterContext;
+class CharacterState
+{
+
+};
+
+class CharacterContext
+{
+
+};
+
+class BasicAttackState : public CharacterState
+{
+
+};
+
+// Остальные классы состояний персонажа
 #endif

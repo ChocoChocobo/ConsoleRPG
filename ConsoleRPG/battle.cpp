@@ -113,3 +113,21 @@ void CheckWinLoseConditionEnemy(Character enemy)
 {
 
 }
+
+// -------------------------- State
+void BattleContext::TransitionToState(BattleState* state)
+{
+	std::cout << "\t\tѕроисходит смена контекста на другое состо€ние" << typeid(*state).name() << std::endl;
+	// ≈сли присутствует состо€ние у контекста, очищаем пам€ть указател€ на состо€ние и задаем новое
+	if (this->state != nullptr)
+	{
+		delete this->state;
+	}
+	this->state = state;
+	this->state->SetContext(this);
+}
+
+void PlayerTurn::HandleChangeState()
+{
+	this->context->TransitionToState(new EnemyTurn);
+}

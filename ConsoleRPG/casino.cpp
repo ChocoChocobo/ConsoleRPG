@@ -102,8 +102,7 @@ void GameMoreLess(Character& player, bool GameReady) {
 			"Иногда самый безопасный выбор — пройти мимо.\n"
 			"Иногда — самый тяжёлый.\n\n";
 	}
-	cout << "Нажмите любую клавишу, чтобы продолжить...";
-	_getch(); // Ждет нажатия одной клавиши
+	system("pause");
 	system("cls");
 	return;
 }
@@ -176,8 +175,7 @@ void RoundGame(Character& player, bool GameReady) {
 				cout << "Выберите из единицы или двойки" << endl;
 			}
 		}
-		cout << "Нажмите любую клавишу, чтобы продолжить...";
-		_getch(); // Ждет нажатия одной клавиши
+		system("pause");
 		system("cls");
 
 		cout << "Вы ставите свою монету на чашку. Торговец сжимает кости в кулаке,\n"
