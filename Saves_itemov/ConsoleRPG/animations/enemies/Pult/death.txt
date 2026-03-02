@@ -1,4 +1,0 @@
-frameName=death0
- \ /
-\|x|/
-/| |\
