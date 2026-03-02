@@ -127,7 +127,7 @@ void BattleContext::TransitionToState(BattleState* state)
 	this->state->SetContext(this);
 }
 
-void PlayerTurn::HandleChangeState()
+void PlayerTurnState::HandleChangeState()
 {
-	this->context->TransitionToState(new EnemyTurn);
+	this->context->TransitionToState(new EnemyTurnState);
 }

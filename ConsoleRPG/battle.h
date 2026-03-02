@@ -16,12 +16,12 @@ class BattleState
 {
 public:
     ~BattleState() {}
-    // Публичный метод, позволяющий переключиться на конкретное состояние
+
     void SetContext(BattleContext* context)
     {
         this->context = context;
     }
-    // Handle-функция ответственна за возможность справиться с вызовом другой функции
+
     virtual void HandleChangeState() = 0;
     virtual void HandleAction() = 0;
 protected:
@@ -35,7 +35,7 @@ public:
     {
         this->TransitionToState(state);
     }
-    // Контекст позволяет изменять состояние объекта с помощью этой функции
+    
     void TransitionToState(BattleState* state);
     void RequestChangeState()
     {
@@ -53,7 +53,7 @@ private:
     BattleState* state;
 };
 
-class PlayerTurn : public BattleState
+class PlayerTurnState : public BattleState
 {
 public:
     void HandleChangeState() override;
@@ -64,12 +64,12 @@ public:
     }
 };
 
-class EnemyTurn : public BattleState
+class EnemyTurnState : public BattleState
 {
 public:
     void HandleChangeState() override
     {
-        this->context->TransitionToState(new PlayerTurn);
+        this->context->TransitionToState(new PlayerTurnState);
     }
 
     void HandleAction() override
