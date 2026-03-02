@@ -363,6 +363,31 @@ void main()
                 player.inventory.push_back(item5);
             }
             else if (player.name == "Гном Плюсокрад")
+            // ДОБАВЛЕНО: Секретное имя для геймера
+else if (player.name == "Gamer" || player.name == "gamer" || 
+         player.name == "Игрок" || player.name == "игрок" ||
+         player.name == "Noob" || player.name == "noob" ||
+         player.name == "Pro" || player.name == "pro")
+{
+    cout << "====================" << endl;
+    cout << "ГЕЙМЕР ДЕТЕКТЕД!" << endl;
+    cout << "====================" << endl;
+    cout << "Ты провел тысячи часов в играх," << endl;
+    cout << "теперь пришло время применить навыки!" << endl;
+    cout << endl;
+    cout << "Бонусы за геймерский опыт:" << endl;
+    cout << "+8 к урону (натренированная реакция)" << endl;
+    cout << "+4 к классу брони (скилловый мув)" << endl;
+    cout << "+50 золота (нашел в сундуке)" << endl;
+    cout << "+2 флакона здоровья (аптечки с запасом)" << endl;
+    cout << endl;
+    cout << "Особый навык: 'Last hit' - добивание врага с 50% хп" << endl;
+    
+    player.damageFace += 8;
+    player.characteristics.armorClass += 4;
+    player.gold += 50;
+    player.healthFlasks += 2;
+}
             {
                 cout << "Вы вписали секретное имя!" << endl;
                 player.gold = 1024;
