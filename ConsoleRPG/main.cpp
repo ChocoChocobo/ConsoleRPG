@@ -47,6 +47,8 @@ void main()
 	int enemyChoice;
 	bool fled = false;
 
+	BattleContext battleContext(new PlayerTurnState);
+
 	// ДОБАВЛЕНО: ИГРОК НАЧИНАЕТ С 10 ЗОЛОТА
 	Character player("Безымянный", 12, 8, 0, 10);
 	
@@ -245,17 +247,20 @@ void main()
 			player.PrintStatus();
 			PAUSE_1_SECONDS;
 			
-			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minionSpawned)
+			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minionSpawned && battleContext.GetBattleState() == PlayerTurnEnum)
 			{
 				enemyWave[enemyCount].minion->PrintStatus();
 				PAUSE_1_SECONDS;
-				userChoice = PlayerTurn(player, *enemyWave[enemyCount].minion);
+				userChoice = battleContext.RequestAction(player, *enemyWave[enemyCount].minion);
+				battleContext.RequestChangeState();
 			}
-			else
+			else if (battleContext.GetBattleState() == PlayerTurnEnum)
 			{
 				enemyWave[enemyCount].PrintStatus();
 				PAUSE_1_SECONDS;
-				userChoice = PlayerTurn(player, enemyWave[enemyCount]);
+				userChoice = battleContext.RequestAction(player, enemyWave[enemyCount]);
+				battleContext.RequestChangeState();
+
 			}
 
 			if (fled)
@@ -287,10 +292,11 @@ void main()
 				break;
 			}
 
-			if (userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4)
+			if ((userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4) && battleContext.GetBattleState() == EnemyTurnEnum)
 			{
 				PAUSE_1_SECONDS;
-				enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
+				enemyChoice = battleContext.RequestAction(enemyWave[enemyCount], player);
+				battleContext.RequestChangeState();
 			}
 
 			if (enemyWave[enemyCount].health <= 0)

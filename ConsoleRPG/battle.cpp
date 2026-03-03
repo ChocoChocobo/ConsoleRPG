@@ -2,8 +2,36 @@
 #include "savesystem.h"
 #include "user_interface.h"
 
-// в зависимости от исхода у игрока возвращается int значение
-int PlayerTurn(Character& player, Character& enemy)
+void CheckWinLoseConditionPlayer(Character player)
+{
+
+}
+
+void CheckWinLoseConditionEnemy(Character enemy)
+{
+
+}
+
+// -------------------------- State
+void BattleContext::TransitionToState(BattleState* state)
+{
+	std::cout << "\t\tПроисходит смена контекста на другое состояние" << typeid(*state).name() << std::endl;
+	// Если присутствует состояние у контекста, очищаем память указателя на состояние и задаем новое
+	if (this->state != nullptr)
+	{
+		delete this->state;
+	}
+	this->state = state;
+	this->state->SetContext(this);
+}
+
+void PlayerTurnState::HandleChangeState()
+{
+	context->SetBattleStateEnum(EnemyTurnEnum);
+	this->context->TransitionToState(new EnemyTurnState);
+}
+
+int PlayerTurnState::HandleAction(Character& player, Character& enemy)
 {
 	cout << endl;
 	cout << TOP_BORDER << endl;
@@ -42,9 +70,9 @@ int PlayerTurn(Character& player, Character& enemy)
 		system("cls");
 		cout << TOP_BORDER << endl;
 		if (player.Flee(enemy))
-		{			
+		{
 			return 4;
-		}		
+		}
 		return 5;
 	case 8:
 		system("cls");
@@ -66,7 +94,7 @@ int PlayerTurn(Character& player, Character& enemy)
 	}
 }
 
-int EnemyTurn(Character& enemy, Character& player)
+int EnemyTurnState::HandleAction(Character& player, Character& enemy)
 {
 	int enemyAction = rand() % 3;
 
@@ -104,30 +132,8 @@ int EnemyTurn(Character& enemy, Character& player)
 	}*/
 }
 
-void CheckWinLoseConditionPlayer(Character player)
+void EnemyTurnState::HandleChangeState()
 {
-
-}
-
-void CheckWinLoseConditionEnemy(Character enemy)
-{
-
-}
-
-// -------------------------- State
-void BattleContext::TransitionToState(BattleState* state)
-{
-	std::cout << "\t\tПроисходит смена контекста на другое состояние" << typeid(*state).name() << std::endl;
-	// Если присутствует состояние у контекста, очищаем память указателя на состояние и задаем новое
-	if (this->state != nullptr)
-	{
-		delete this->state;
-	}
-	this->state = state;
-	this->state->SetContext(this);
-}
-
-void PlayerTurnState::HandleChangeState()
-{
-	this->context->TransitionToState(new EnemyTurnState);
+	context->SetBattleStateEnum(PlayerTurnEnum);
+	this->context->TransitionToState(new PlayerTurnState);
 }
