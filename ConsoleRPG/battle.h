@@ -11,4 +11,16 @@ void CheckWinLoseConditionPlayer(Character player);
 
 void CheckWinLoseConditionEnemy(Character enemy);
 
+class WinState {
+public:
+    WinState();
+    ~WinState();
+};
+
+class LoseState {
+public:
+    LoseState();
+    ~LoseState();
+};
+
 #endif
