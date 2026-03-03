@@ -1,90 +1,230 @@
 #include "battle.h"
 #include "savesystem.h"
 #include "user_interface.h"
-#include <iostream>
 
-using namespace std;
-
-// â çàâèñèìîñòè îò èñõîäà ó èãðîêà âîçâðàùàåòñÿ int çíà÷åíèå
-int PlayerTurn(Character& player, Character& enemy, Shop& shop)
+// в зависимости от исхода у игрока возвращается int значение
+int PlayerTurn(Character& player, Character& enemy)
 {
-    cout << endl;
-    cout << TOP_BORDER << endl;
-    cout << "Âû ìîæåòå ñäåëàòü: " << endl;
-    cout << "1. Îáû÷íàÿ àòàêà" << endl;
-    cout << "2. Îñîáàÿ àòàêà" << endl;
-    cout << "3. Ëå÷åíèå" << endl;
-    cout << "4. Ïîáåã" << endl;
-    cout << "8. Èíâåíòàðü" << endl;
-    cout << "9. Ñîõðàíèòü èãðó" << endl;
-    cout << "0. Âûéòè èç èãðû" << endl;
-    cout << "Âàøè äåéñòâèÿ: ";
+	cout << endl;
+	cout << TOP_BORDER << endl;
+	cout << "Вы можете сделать: " << endl;
+	cout << "1. Обычная атака" << endl;
+	cout << "2. Особая атака" << endl;
+	cout << "3. Лечение" << endl;
+	cout << "4. Побег" << endl; // чем больше хп врага, тем меньше шанс сбежать
+	// 5. Открыть инвентарь. Прим.: боевка на паузе
+	cout << "8. Инвентарь" << endl;
+	cout << "9. Сохранить игру" << endl;
+	cout << "0. Выйти из игры" << endl;
+	cout << "Ваши действия: ";
+	int userInput;
+	cin >> userInput;
+	cout << TOP_BORDER << endl;
 
-    int userInput;
-    cin >> userInput;
-    cout << TOP_BORDER << endl;
-
-    switch (userInput)
-    {
-    case 1:
-        system("cls");
-        player.BasicAttack(enemy);
-        return 1;
-
-    case 2:
-        system("cls");
-        return 2;
-
-    case 3:
-        system("cls");
-        player.Heal(8);
-        return 3;
-
-    case 4:
-        system("cls");
-        if (player.Flee(enemy))
-            return 4;
-        return 5;
-
-    case 8:
-        system("cls");
-        player.ShowInventory();
-        return 8;
-
-    case 9:
-        system("cls");
-        SaveGame(player, enemy, shop);
-        return 9;
-
-    case 0:
-        system("cls");
-        cout << "Äî íîâûõ âñòðå÷!" << endl;
-        return 0;
-
-    default:
-        system("cls");
-        cout << "Íåêîððåêòíûé ââîä ïîëüçîâàòåëÿ" << endl;
-        return -1;
-    }
+	switch (userInput)
+	{
+	case 1:
+		system("cls");
+		player.BasicAttack(enemy);
+		cout << TOP_BORDER << endl;
+		return 1;
+	case 2:
+		// SpecialAttack()
+		system("cls");
+		cout << TOP_BORDER << endl;
+		return 2;
+	case 3:
+		system("cls");
+		player.Heal(8);
+		cout << TOP_BORDER << endl;
+		return 3;
+	case 4:
+		system("cls");
+		cout << TOP_BORDER << endl;
+		if (player.Flee(enemy))
+		{
+			return 4;
+		}
+		return 5;
+	case 8:
+		system("cls");
+		cout << TOP_BORDER << endl;
+		player.ShowInventory();
+		return 8;
+	case 9:
+		system("cls");
+		SaveGame(player, enemy);
+		return 9;
+	case 0:
+		system("cls");
+		cout << "До новых встреч!" << endl;
+		return 0;
+	default:
+		system("cls");
+		cout << "Некорректный ввод пользоватля, строка: " << __LINE__ << " в файле: " << __FILE__ << endl;
+		break;
+	}
 }
 
 int EnemyTurn(Character& enemy, Character& player)
 {
-    int enemyAction = rand() % 3;
+	int enemyAction = rand() % 3;
 
-    if (enemyAction == 0)
-    {
-        enemy.BasicAttack(player);
-        return 1;
-    }
-    else if (enemy.healthFlasks > 0)
-    {
-        enemy.Heal(8);
-        return 3;
-    }
+	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 40)
+	{
+		enemy.BasicAttack(player);
+		cout << endl;
+		return 1;
+	}
+	else if (enemy.healthFlasks != 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 <= 40)
+	{
+		enemy.Heal(8);
+		cout << endl;
+		return 3;
+	}
 
-    return 0;
+	// Переделать через наследование
+	//						BattleActor (все объекты в бою)
+	//			EnemyActor					PlayerActor
+	//	Pult					...
+	int diceRoll = RollDice(20);
+	if (diceRoll > enemy.uniqueAbilityDifficulty)
+	{
+		cout << "Кондей, брошенный в вас оказался рабочим и бежит на вас в ярости, защищая своего господина" << endl;
+		enemy.minionSpawned = true;
+	}
+	/*else
+	{
+		if (enemy.Flee(player))
+		{
+			cout << enemy.name << " сбегает в закат, оставляя ваши трусы с дурным послевкусием..." << endl;
+			return 4;
+		}
+		else return 5;
+	}*/
 }
 
-void CheckWinLoseConditionPlayer(Character player) {}
-void CheckWinLoseConditionEnemy(Character enemy) {}
+void CheckWinLoseConditionPlayer(Character player)
+{
+
+}
+
+void CheckWinLoseConditionEnemy(Character enemy)
+{
+
+}
+
+// -------------------------- State
+void BattleContext::TransitionToState(BattleState* state)
+{
+	std::cout << "\t\tПроисходит смена контекста на другое состояние" << typeid(*state).name() << std::endl;
+	// Если присутствует состояние у контекста, очищаем память указателя на состояние и задаем новое
+	if (this->state != nullptr)
+	{
+		delete this->state;
+	}
+	this->state = state;
+	this->state->SetContext(this);
+}
+
+void PlayerTurnState::HandleChangeState()
+{
+	context->SetBattleStateEnum(EnemyTurnEnum);
+	this->context->TransitionToState(new EnemyTurnState);
+}
+int PlayerTurnState::HandleAction(Character& player, Character& enemy)
+{
+	cout << endl;
+	cout << TOP_BORDER << endl;
+	cout << "Вы можете сделать: " << endl;
+	cout << "1. Обычная атака" << endl;
+	cout << "2. Особая атака" << endl;
+	cout << "3. Лечение" << endl;
+	cout << "4. Побег" << endl; // чем больше хп врага, тем меньше шанс сбежать
+	// 5. Открыть инвентарь. Прим.: боевка на паузе
+	cout << "8. Инвентарь" << endl;
+	cout << "9. Сохранить игру" << endl;
+	cout << "0. Выйти из игры" << endl;
+	cout << "Ваши действия: ";
+	int userInput;
+	cin >> userInput;
+	cout << TOP_BORDER << endl;
+
+	switch (userInput)
+	{
+	case 1:
+		system("cls");
+		player.BasicAttack(enemy);
+		cout << TOP_BORDER << endl;
+		return 1;
+	case 2:
+		// SpecialAttack()
+		system("cls");
+		cout << TOP_BORDER << endl;
+		return 2;
+	case 3:
+		system("cls");
+		player.Heal(8);
+		cout << TOP_BORDER << endl;
+		return 3;
+	case 4:
+		system("cls");
+		cout << TOP_BORDER << endl;
+		if (player.Flee(enemy))
+		{
+			return 4;
+		}
+		return 5;
+	case 8:
+		system("cls");
+		cout << TOP_BORDER << endl;
+		player.ShowInventory();
+		return 8;
+	case 9:
+		system("cls");
+		SaveGame(player, enemy);
+		return 9;
+	case 0:
+		system("cls");
+		cout << "До новых встреч!" << endl;
+		return 0;
+	default:
+		system("cls");
+		cout << "Некорректный ввод пользоватля, строка: " << __LINE__ << " в файле: " << __FILE__ << endl;
+		break;
+	}
+}
+
+void EnemyTurnState::HandleChangeState()
+{
+	context->SetBattleStateEnum(PlayerTurnEnum);
+	this->context->TransitionToState(new PlayerTurnState);
+}
+int EnemyTurnState::HandleAction(Character& player, Character& enemy)
+{
+	int enemyAction = rand() % 3;
+
+	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 40)
+	{
+		enemy.BasicAttack(player);
+		cout << endl;
+		return 1;
+	}
+	else if (enemy.healthFlasks != 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 <= 40)
+	{
+		enemy.Heal(8);
+		cout << endl;
+		return 3;
+	}
+
+	// Переделать через наследование
+	//						BattleActor (все объекты в бою)
+	//			EnemyActor					PlayerActor
+	//	Pult					...
+	int diceRoll = RollDice(20);
+	if (diceRoll > enemy.uniqueAbilityDifficulty)
+	{
+		cout << "Кондей, брошенный в вас оказался рабочим и бежит на вас в ярости, защищая своего господина" << endl;
+		enemy.minionSpawned = true;
+	}
+}

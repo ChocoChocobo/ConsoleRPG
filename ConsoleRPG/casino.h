@@ -8,5 +8,5 @@ void GameMoreLess(Character& player, bool GameReady);
 void RoundGame(Character& player, bool GameReady);
 
 void SpecialEvent(Character& player);
- 
+
 #endif

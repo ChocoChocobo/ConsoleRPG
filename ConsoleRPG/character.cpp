@@ -49,34 +49,8 @@ Character::Character()
 	uniqueAbilityDifficulty = 10;
 	minion = nullptr;
 	minionSpawned = false;
-}
-
-Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
-{
-	name = _name;
-	health = _health;
-	damageFace = _damageFace;
-	maxHealth = health;
-	healthFlasks = 3;
-	specialCooldown = _specialCooldown;
-	minion = &_minion;
-	uniqueAbilityDifficulty = _uniqueAbilityDifficulty;
-
-	gold = _startGold;
-}
-
-Character::Character()
-{
-	name = "??????????";
-	health = 10;
-	maxHealth = health;
-	healthFlasks = 3;
-	damageFace = 4;
-	specialCooldown = 0;
-	gold = 10;
-	uniqueAbilityDifficulty = 10;
-	minion = nullptr;
-	minionSpawned = false;
+	appearance.skinColor = "Не выбран";
+	appearance.hairColor = "Не выбран";
 }
 
 Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
@@ -101,6 +75,7 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	maxHealth = health;
 	healthFlasks = 3;
 	specialCooldown = _specialCooldown;
+
 	gold = _startGold;
 }
 
@@ -108,6 +83,7 @@ void Character::PrintStatus()
 {
 	cout << endl << name << " –— HP: " << health << "/" << maxHealth;
 
+	// ДОБАВЛЕНО: ВЫВОД КОЛИЧЕСТВА ЗОЛОТА
 	cout << " | Золото: " << gold;
 
 	if (specialCooldown > 0) cout << " | Особая атака недоступна (" << specialCooldown << ")" << endl;
@@ -115,17 +91,20 @@ void Character::PrintStatus()
 	cout << "На данный момент у " << name << " " << healthFlasks << " зелий лечения" << endl;
 }
 
+// ДОБАВЛЕНО: МЕТОД ДЛЯ ПОЛУЧЕНИЯ ЗОЛОТА
 void Character::AddGold(int amount)
 {
 	gold += amount;
 	cout << name << " получает " << amount << " золота!" << endl;
 }
 
+// ДОБАВЛЕНО: МЕТОД ДЛЯ ОТНИМАНИЯ ЗОЛОТА (МОЖЕТ УЙТИ В МИНУС)
 void Character::RemoveGold(int amount)
 {
 	gold -= amount;
 }
 
+// ДОБАВЛЕНО: МЕТОД ДЛЯ ПОКУПКИ ПРЕДМЕТОВ
 bool Character::BuyItem(int cost)
 {
 	if (gold >= cost)
@@ -337,24 +316,172 @@ bool Character::CheckFleeSuccess(int difficulty)
 	}
 }
 
-// --------- Appearance
-
-Appearance::Appearance(string _physique, string _skinColor, string _eyeColor,
-	string _earShape, string _hairType, string _mouthType,
-	string _weapon, string _armor, string _tail, string _navel,
-	string _skinTexture, string _hands, string _specialMarks)
+// -------------------------- State
+void CharacterContext::TransitionToState(CharacterState* state)
 {
-	physique = _physique;
-	skinColor = _skinColor;
-	eyeColor = _eyeColor;
-	earShape = _earShape;
-	hairType = _hairType;
-	mouthType = _mouthType;
-	weapon = _weapon;
-	armor = _armor;
-	tail = _tail;
-	navel = _navel;
-	skinTexture = _skinTexture;
-	hands = _hands;
-	specialMarks = _specialMarks;
+	std::cout << "\t\tПроисходит смена контекста на другое состояние" << typeid(*state).name() << std::endl;
+	// Если присутствует состояние у контекста, очищаем память указателя на состояние и задаем новое
+	if (this->state != nullptr)
+	{
+		delete this->state;
+	}
+	this->state = state;
+	this->state->SetContext(this);
+}
+
+void BasicAttackState::HandleChangeState()
+{
+
+}
+void BasicAttackState::HandleAction(Character* character, Character* other, int difficulty)
+{
+	cout << endl << character->name << " пытается атаковать " << other->name << "..." << endl;
+
+	Results result = CheckSuccess(character, character->characteristics.strength, other->characteristics.armorClass);
+
+	int damageRoll;
+	switch (result)
+	{
+	case 1:
+		damageRoll = RollDice(character->damageFace);
+		other->DecreaseHealth(damageRoll);
+		cout << character->name << " наносит " << damageRoll << " урона!" << endl;
+		break;
+	case 2:
+		cout << character->name << " промахивается O_O" << endl;
+		break;
+	case 3:
+		damageRoll = RollDice(character->damageFace * 2);
+		other->DecreaseHealth(damageRoll);
+		cout << character->name << " СТИРАЕТ С ЛИЦА ЗЕМЛИ НА " << damageRoll << " УРОНА!" << endl;
+		break;
+	case 4:
+		damageRoll = RollDice(character->damageFace);
+		character->DecreaseHealth(damageRoll);
+		cout << character->name << " подскользнулся на банановой кожуре и сломал позвоночник на " << damageRoll << " урона :U" << endl;
+		break;
+	default:
+		break;
+	}
+}
+
+void SpecialAttackState::HandleChangeState()
+{
+
+}
+void SpecialAttackState::HandleAction(Character* character, Character* other, int difficulty)
+{
+
+}
+
+void ShowInventoryState::HandleChangeState()
+{
+
+}
+void ShowInventoryState::HandleAction(Character* character, Character* other, int difficulty)
+{
+	int userInput;
+	do
+	{
+		if (character->inventory.size() <= 0)
+		{
+			cout << "В инвентаре нет предметов!" << endl;
+			return;
+		}
+
+		for (int i = 1; i <= character->inventory.size(); i++)
+		{
+			cout << i << ". " << character->inventory[i - 1].name << "." << endl;
+		}
+
+		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
+		cin >> userInput;
+
+		if (userInput == 0) continue;
+		while (true)
+		{
+			cout << SEPARATOR_LINE << endl;
+			character->inventory[userInput - 1].ShowInfo();
+			Item chosenItem = character->inventory[userInput - 1];
+			cout << endl << "Введите 1 для применения предмета (или '0' для выхода): " << endl;
+			int nestedUserInput;
+			cin >> nestedUserInput;
+			if (nestedUserInput == 1)
+			{
+				character->inventory[userInput - 1].quantity -= 1;
+				if (character->inventory[userInput - 1].quantity <= 0)
+				{
+					character->inventory.erase(character->inventory.begin() + userInput - 1);
+					// PLACEHOLDER
+					break;
+				}
+			}
+
+			else if (nestedUserInput == 0)
+			{
+				system("cls");
+				break;
+			}
+		}
+
+		cout << TOP_BORDER << endl;
+	} while (userInput != 0);
+
+	system("cls");
+}
+
+void HealState::HandleChangeState()
+{
+
+}
+void HealState::HandleAction(Character* character, Character* other, int difficulty)
+{
+	if (character->healthFlasks == 0)
+	{
+		cout << "У вас не осталось зелий лечения!" << endl;
+		return;
+	}
+
+	cout << character->name << " пытается исцелиться..." << endl;
+
+	Results result = CheckSuccess(character, character->characteristics.wisdom, difficulty);
+
+	int healAmount;
+	switch (result)
+	{
+	case 1:
+		character->healthFlasks--;
+		healAmount = character->maxHealth / 3;
+		character->IncreaseHealth(healAmount);
+		cout << character->name << " восстанавливает " << healAmount << " HP!" << endl;
+		break;
+	case 2:
+		character->healthFlasks--;
+		cout << character->name << " проливает целебную жидкость мимо рта." << endl;
+		break;
+	case 3:
+		character->healthFlasks--;
+		healAmount = character->maxHealth / 2;
+		character->IncreaseHealth(healAmount);
+		cout << character->name << " восстанавливает " << healAmount << " HP!" << endl;
+		break;
+	case 4:
+		character->healthFlasks--;
+		healAmount = character->maxHealth / 3;
+		character->DecreaseHealth(healAmount);
+		cout << "Во время того, как " << character->name << " судорожно пил склянку, он поперхнулся и потерял" << healAmount << " HP :o" << endl;
+		break;
+	default:
+		cout << character->name << " пропускает свой ход!" << endl;
+		break;
+	}
+}
+
+void FleeState::HandleChangeState()
+{
+
+}
+void FleeState::HandleAction(Character* character, Character* other, int difficulty)
+{
+	character->Flee(*other);
 }

@@ -8,7 +8,7 @@ using namespace std;
 
 int RollDice(int face)
 {
-	return rand() % face + 1;
+    return rand() % face + 1;
 }
 
 Results CheckSuccess(Character* character, int characteristicValue, int difficulty)

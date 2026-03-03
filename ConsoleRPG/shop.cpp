@@ -55,9 +55,8 @@ bool Shop::ShowItems()
 				cout << endl << "У игрока деняк: " << player.gold << endl;
 				cout << endl;
 
-				// Исправлено: Теперь с помощью оператора присваивания (=) для availableItems[userInput - 1].quantity присваивается availableItems[userInput - 1].quantity - 1, а не просто считает availableItems[userInput - 1].quantity - 1, как было раньше.
-				availableItems[userInput - 1].quantity -= 1;
-				if (availableItems[userInput - 1].quantity <= 0)
+				chosenItem.quantity -= 1;
+				if (chosenItem.quantity <= 0)
 				{
 					availableItems.erase(availableItems.begin() + userInput - 1);
 					system("cls");

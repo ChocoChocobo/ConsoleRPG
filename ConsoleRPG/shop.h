@@ -11,6 +11,10 @@ using namespace std;
 // Варианты выбора: по индексу предмета, последнее  0
 // При выборе предмета отображается его описание
 // Принять отменить кнопки
+
+/// <summary>
+/// Структура, которая отвечает за магазин и вывод содержимого магазина в консоль
+/// </summary>
 struct Shop
 {
 	string name;
@@ -18,7 +22,13 @@ struct Shop
 	Character& player;
 
 	Shop(Character& _player, vector<Item>& _availableItems, string _name = "Дремучая Ива");
+
+	/// <summary>
+	/// Функция, которая отвечает за вывод содержимого магазина в консоль
+	/// </summary>
+	/// <returns>Если магазин пуст, вернёт false, иначе отработает и вернёт true</returns>
 	bool ShowItems();
+
 	//Item BuyItem(Item _chosenItem);
 };
 

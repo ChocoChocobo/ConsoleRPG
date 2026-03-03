@@ -1,11 +1,50 @@
 #include "character_creator.h"
+using namespace std;
+
+void CreateCharacter(Character& player)
+{
+	cout << "Создание персонажа\n";
+
+	cout << "Введите имя персонажа: ";
+	cin.ignore(1000, '\n');
+	getline(cin, player.name);
+
+	int choice;
+
+	cout << "\nВыберите цвет кожи:\n";
+	cout << "1. Светлая\n2. Смуглая\n3. Тёмная\n> ";
+	cin >> choice;
+
+	switch (choice)
+	{
+	case 1: player.appearance.skinColor = "Светлая"; break;
+	case 2: player.appearance.skinColor = "Смуглая"; break;
+	case 3: player.appearance.skinColor = "Тёмная"; break;
+	default: player.appearance.skinColor = "Неизвестная"; break;
+	}
+
+	cout << "\nВыберите цвет волос:\n";
+	cout << "1. Чёрные\n2. Русые\n3. Светлые\n4. Рыжие\n> ";
+	cin >> choice;
+
+	switch (choice)
+	{
+	case 1: player.appearance.hairColor = "Чёрные"; break;
+	case 2: player.appearance.hairColor = "Русые"; break;
+	case 3: player.appearance.hairColor = "Светлые"; break;
+	case 4: player.appearance.hairColor = "Рыжие"; break;
+	default: player.appearance.hairColor = "Нет волос"; break;
+	}
+
+	system("cls");
+}
 
 Characteristics DistributeCharacteristics()
 {
 	Characteristics distributedCharacteristics;
 	distributedCharacteristics.PrintCharacteristics();
-	
-	cout << "Введите 1 для изменения характеристик (или '0' для отмены): ";	
+
+	cout << "Введите 1 для изменения характеристик (или '0' для отмены): ";
 	int userInput;
 	cin >> userInput;
 	if (userInput == 1)
@@ -22,19 +61,19 @@ Characteristics DistributeCharacteristics()
 	vector<int> characteristicsArray = { 15, 14, 13, 12, 10, 8 };
 
 	do // распределение характеристик
-	{		
+	{
 		cout << "Введите 1 для изменения характеристик (или '0' для отмены):" << endl;
 		cin >> userInput;
 		if (userInput == 1)
 		{
 			system("cls");
-					
+
 			distributedCharacteristics.PrintCharacteristics();
 
 			cout << "Выберите значение для распределения: " << endl;
 			for (int i = 1; i <= characteristicsArray.size(); i++)
 			{
-				cout << i << ". " << characteristicsArray[i-1] << endl;
+				cout << i << ". " << characteristicsArray[i - 1] << endl;
 			}
 
 			int nestedUserInput;
@@ -77,7 +116,7 @@ Characteristics DistributeCharacteristics()
 					characteristicsArray.erase(characteristicsArray.begin() + nestedUserInput);
 				}
 
-				distributedCharacteristics.armorClass = int((distributedCharacteristics.dexterity -10) / 2 + 10);
+				distributedCharacteristics.armorClass = int((distributedCharacteristics.dexterity - 10) / 2 + 10);
 				break;
 			case 2:
 				if (distributedCharacteristics.constitution != 0)
@@ -90,7 +129,7 @@ Characteristics DistributeCharacteristics()
 				{
 					distributedCharacteristics.constitution = characteristicsArray[nestedUserInput];
 					characteristicsArray.erase(characteristicsArray.begin() + nestedUserInput);
-				}				
+				}
 				break;
 			case 3:
 				if (distributedCharacteristics.intelligence != 0)
@@ -112,7 +151,7 @@ Characteristics DistributeCharacteristics()
 					distributedCharacteristics.wisdom = characteristicsArray[nestedUserInput];
 					characteristicsArray.erase(characteristicsArray.begin() + nestedUserInput);
 				}
-				else 
+				else
 				{
 					distributedCharacteristics.wisdom = characteristicsArray[nestedUserInput];
 					characteristicsArray.erase(characteristicsArray.begin() + nestedUserInput);
@@ -129,7 +168,7 @@ Characteristics DistributeCharacteristics()
 				{
 					distributedCharacteristics.charisma = characteristicsArray[nestedUserInput];
 					characteristicsArray.erase(characteristicsArray.begin() + nestedUserInput);
-				}				
+				}
 				break;
 			default:
 				cout << "Вы ввели фигню!" << endl;
@@ -145,48 +184,8 @@ Characteristics DistributeCharacteristics()
 	return distributedCharacteristics;
 }
 
-Appearance DefineAppearance()
-{
-	Appearance definedAppearance("", "", "", "", "", "", "", "", "", "", "", "", "");
-
-	cout << "Напишите телосложение вашего героя: ";
-	getline(cin, definedAppearance.physique);
-
-	cout << "Напишите цвет кожи вашего героя: ";
-	getline(cin, definedAppearance.skinColor);
-
-	cout << "Напишите цвет глаз вашего героя: ";
-	getline(cin, definedAppearance.eyeColor);
-
-	cout << "Напишите форму ушей вашего героя: ";
-	getline(cin, definedAppearance.earShape);
-
-	cout << "Опишите волосы вашего героя: ";
-	getline(cin, definedAppearance.hairType);
-
-	cout << "Опишите губы вашего героя: ";
-	getline(cin, definedAppearance.mouthType);
-
-	cout << "Какое оружие у вашего героя? ";
-	getline(cin, definedAppearance.weapon);
-
-	cout << "Какая броня у вашего героя? ";
-	getline(cin, definedAppearance.armor);
-
-	cout << "Какой хвост у вашего героя (если есть)? ";
-	getline(cin, definedAppearance.tail);
-
-	cout << "Опишите пупок вашего героя: ";
-	getline(cin, definedAppearance.navel);
-
-	cout << "Опишите текстуру кожи вашего героя: ";
-	getline(cin, definedAppearance.skinTexture);
-
-	cout << "Опишите руки вашего героя: ";
-	getline(cin, definedAppearance.hands);
-
-	cout << "Напишите особенности внешности вашего героя: ";
-	getline(cin, definedAppearance.specialMarks);
-
-	return definedAppearance;
-}
+//Appearance DefineAppearance()
+//{
+//	Appearance definedAppearance();
+//	return definedAppearance;
+//}
