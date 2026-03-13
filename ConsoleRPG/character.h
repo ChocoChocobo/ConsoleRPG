@@ -64,8 +64,9 @@ struct Appearance
 	string hairColor;
 };
 
-struct Character
+class Character
 {
+public:
 	string name;
 	Appearance appearance;
 
