@@ -18,7 +18,7 @@ using namespace std;
 // При внедрении классов необходимо определять тип куба и модификатора, используемого при атаке
 
 /// <summary>
-/// Структура, ответственная за хранение набора характеристик персонажа и расчёт модификатора [1, 2, 3, 4, 5, 7, 8, 9].
+/// Структура, ответственная за хранение набора характеристик персонажа и расчёт модификатора.
 /// </summary>
 struct Characteristics
 {
@@ -32,12 +32,21 @@ struct Characteristics
 
 	Characteristics();
 	Characteristics(int _strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, int armorClass);
+	/// <summary>
+	/// Функция ответствена за расчёт модификатора конкретной характеристики по её значению.
+	/// </summary>
+	/// <param name="characteristic">Значение характеристики, по которой будет считаться модификатор</param>
+	/// <returns>Возвращает модификатор характеристики</returns>
 	int CountModificator(int characteristic);
 	void PrintCharacteristics();
 };
 
 // Спрайты персонажей находятся в файлах
 // LoadSprite(enum state)
+
+/// <summary>
+/// Должн аотвечать за анимацию в стиле ASCII
+/// </summary>
 struct VisualsASCII
 {
 	void ShowSprite()
@@ -46,6 +55,9 @@ struct VisualsASCII
 	}
 };
 
+/// <summary>
+/// Структура отвечает за описательную внешность персонажа
+/// </summary>
 struct Appearance
 {
 	string skinColor;
