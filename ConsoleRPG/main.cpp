@@ -288,20 +288,9 @@ void main()
 		{
 
 
-			if (enemyWave[enemyCount].health <= 0)
-			{
-				cout << "Победа, но какой ценой (o_o;)" << endl;
+			if (CheckWinLoseConditionEnemy(enemyWave[enemyCount], player)) break;
 
-				player.AddGold(enemyWave[enemyCount].gold);
-
-				break;
-			}
-
-			if (player.health <= 0)
-			{
-				cout << player.name << " пал!" << endl;
-				break;
-			}
+			if (CheckWinLoseConditionPlayer(player)) break;
 
 			if ((userChoice == 1 || userChoice == 2 || userChoice == 3 || userChoice == 4) && battleContext.GetBattleStateEnum() == EnemyTurnEnum)
 			{
@@ -310,14 +299,7 @@ void main()
 				battleContext.RequestChangeState();
 			}
 
-			if (enemyWave[enemyCount].health <= 0)
-			{
-				cout << "Победа, но какой ценой (o_o;)" << endl;
-
-				player.AddGold(enemyWave[enemyCount].gold);
-
-				break;
-			}
+			if (CheckWinLoseConditionEnemy(enemyWave[enemyCount], player)) break;
 
 			if (userChoice == 0) enemyCount = 999; // РАБОТАЕТ - НЕ ТРОГАЙ!
 

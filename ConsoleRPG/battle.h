@@ -3,8 +3,8 @@
 #include "character.h"
 #include "user_interface.h"
 
-void CheckWinLoseConditionPlayer(Character player);
-void CheckWinLoseConditionEnemy(Character enemy);
+bool CheckWinLoseConditionPlayer(Character player);
+bool CheckWinLoseConditionEnemy(Character enemy, Character& player);
 
 enum BattleStates
 {

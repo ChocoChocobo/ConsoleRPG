@@ -104,14 +104,25 @@ int EnemyTurn(Character& enemy, Character& player)
 	}*/
 }
 
-void CheckWinLoseConditionPlayer(Character player)
+bool CheckWinLoseConditionPlayer(Character player)
 {
-
+	if (player.health <= 0)
+	{
+		cout << player.name << " пал!" << endl;
+		return true;
+	}
+	else return false;
 }
 
-void CheckWinLoseConditionEnemy(Character enemy)
+bool CheckWinLoseConditionEnemy(Character enemy, Character& player)
 {
-
+	if (enemy.health <= 0)
+	{
+		cout << "Победа, но какой ценой (o_o;)" << endl;
+		player.AddGold(enemy.gold);
+		return true;
+	}
+	else return false;
 }
 
 // -------------------------- State
