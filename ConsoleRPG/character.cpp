@@ -1,18 +1,20 @@
-#include <iostream>
 #include "character.h"
 #include <cmath>
+#include <iostream>
 
-// -------- Characteristics
+using namespace std;
 
-Characteristics::Characteristics() : strength(15), dexterity(14), constitution(13), wisdom(12), intelligence(10), charisma(8), armorClass(12) {}
+Characteristics::Characteristics() : strength(15), dexterity(14), constitution(13),
+	wisdom(12), intelligence(10), charisma(8), armorClass(12) {}
 
-Characteristics::Characteristics(int _strength, int _dexterity, int _constitution, int _wisdom, int _intelligence, int _charisma, int _armorClass)
+Characteristics::Characteristics(int _strength, int _dexterity, int _constitution,
+	int _wisdom, int _intelligence, int _charisma, int _armorClass)
 {
 	strength = _strength;
 	dexterity = _dexterity;
 	constitution = _constitution;
-	intelligence = _intelligence;
 	wisdom = _wisdom;
+	intelligence = _intelligence;
 	charisma = _charisma;
 	armorClass = _armorClass;
 }
@@ -24,22 +26,21 @@ int Characteristics::CountModificator(int characteristic)
 
 void Characteristics::PrintCharacteristics()
 {
-	cout << TOP_BORDER << endl;
-	cout << "\t----Âàøè òåêóùèå õàðàêòåðèñòèêè----" << endl;
-	cout << "Ñèëà: " << strength << endl;
-	cout << "Ëîâêîñòü: " << dexterity << endl;
-	cout << "Òåëîñëîæåíèå: " << constitution << endl;
-	cout << "Èíòåëëåêò: " << intelligence << endl;
-	cout << "Ìóäðîñòü: " << wisdom << endl;
-	cout << "Õàðèçìà: " << charisma << endl;
-	cout << "Êëàññ äîñïåõîâ: " << armorClass << endl;
-	cout << TOP_BORDER << endl;
+	cout << "---- Ð’Ð°ÑˆÐ¸ Ñ‚ÐµÐºÑƒÑ‰Ð¸Ðµ Ñ…Ð°Ñ€Ð°ÐºÑ‚ÐµÑ€Ð¸ÑÑ‚Ð¸ÐºÐ¸ ----" << endl;
+	cout << "Ð¡Ð¸Ð»Ð°: " << strength << endl;
+	cout << "Ð›Ð¾Ð²ÐºÐ¾ÑÑ‚ÑŒ: " << dexterity << endl;
+	cout << "Ð¢ÐµÐ»Ð¾ÑÐ»Ð¾Ð¶ÐµÐ½Ð¸Ðµ: " << constitution << endl;
+	cout << "Ð˜Ð½Ñ‚ÐµÐ»Ð»ÐµÐºÑ‚: " << intelligence << endl;
+	cout << "ÐœÑƒÐ´Ñ€Ð¾ÑÑ‚ÑŒ: " << wisdom << endl;
+	cout << "Ð¥Ð°Ñ€Ð¸Ð·Ð¼Ð°: " << charisma << endl;
+	cout << "ÐšÐ»Ð°ÑÑ Ð´Ð¾ÑÐ¿ÐµÑ…Ð¾Ð²: " << armorClass << endl;
 }
 
-// --------- Character
+// Character ÐºÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ñ‹
+
 Character::Character()
 {
-	name = "Áåçûìÿííûé";
+	name = "Ð‘ÐµÐ·Ñ‹Ð¼ÑÐ½Ð½Ñ‹Ð¹";
 	health = 10;
 	maxHealth = health;
 	healthFlasks = 3;
@@ -49,11 +50,12 @@ Character::Character()
 	uniqueAbilityDifficulty = 10;
 	minion = nullptr;
 	minionSpawned = false;
-	appearance.skinColor = "Íå âûáðàí";
-	appearance.hairColor = "Íå âûáðàí";
+	appearance.skinColor = "ÐÐµ Ð²Ñ‹Ð±Ñ€Ð°Ð½";
+	appearance.hairColor = "ÐÐµ Ð²Ñ‹Ð±Ñ€Ð°Ð½";
 }
 
-Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
+Character::Character(string _name, int _health, int _damageFace, int _specialCooldown,
+	int _startGold, Character& _minion, int _uniqueAbilityDifficulty)
 {
 	name = _name;
 	health = _health;
@@ -63,11 +65,11 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	specialCooldown = _specialCooldown;
 	minion = &_minion;
 	uniqueAbilityDifficulty = _uniqueAbilityDifficulty;
-
 	gold = _startGold;
 }
 
-Character::Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold)
+Character::Character(string _name, int _health, int _damageFace, int _specialCooldown,
+	int _startGold)
 {
 	name = _name;
 	health = _health;
@@ -75,138 +77,51 @@ Character::Character(string _name, int _health, int _damageFace, int _specialCoo
 	maxHealth = health;
 	healthFlasks = 3;
 	specialCooldown = _specialCooldown;
-	
 	gold = _startGold;
 }
 
+
+// GET / SET
+
+string Character::GetName() const { return name; }
+int Character::GetHealth() const { return health; }
+int Character::GetMaxHealth() const { return maxHealth; }
+int Character::GetGold() const { return gold; }
+void Character::SetHealth(int value) { health = value; }
+void Character::SetGold(int value) { gold = value; }
+
+
 void Character::PrintStatus()
 {
-	cout << endl << name << " –— HP: " << health << "/" << maxHealth;
-
-	// ÄÎÁÀÂËÅÍÎ: ÂÛÂÎÄ ÊÎËÈ×ÅÑÒÂÀ ÇÎËÎÒÀ
-	cout << " | Çîëîòî: " << gold;
-
-	if (specialCooldown > 0) cout << " | Îñîáàÿ àòàêà íåäîñòóïíà (" << specialCooldown << ")" << endl;
-	else cout << endl;
-	cout << "Íà äàííûé ìîìåíò ó " << name << " " << healthFlasks << " çåëèé ëå÷åíèÿ" << endl;
+	cout << name << " â€” HP: " << health << "/" << maxHealth;
+	cout << " | Ð—Ð¾Ð»Ð¾Ñ‚Ð¾: " << gold << endl;
+	cout << "ÐÐ° Ð´Ð°Ð½Ð½Ñ‹Ð¹ Ð¼Ð¾Ð¼ÐµÐ½Ñ‚ Ñƒ " << name << " " << healthFlasks << " Ð·ÐµÐ»Ð¸Ð¹ Ð»ÐµÑ‡ÐµÐ½Ð¸Ñ" << endl;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎËÓ×ÅÍÈß ÇÎËÎÒÀ
 void Character::AddGold(int amount)
 {
 	gold += amount;
-	cout << name << " ïîëó÷àåò " << amount << " çîëîòà!" << endl;
+	cout << name << " Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÑ‚ " << amount << " Ð·Ð¾Ð»Ð¾Ñ‚Ð°!" << endl;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÎÒÍÈÌÀÍÈß ÇÎËÎÒÀ (ÌÎÆÅÒ ÓÉÒÈ Â ÌÈÍÓÑ)
 void Character::RemoveGold(int amount)
 {
 	gold -= amount;
 }
 
-// ÄÎÁÀÂËÅÍÎ: ÌÅÒÎÄ ÄËß ÏÎÊÓÏÊÈ ÏÐÅÄÌÅÒÎÂ
 bool Character::BuyItem(int cost)
 {
 	if (gold >= cost)
 	{
 		gold -= cost;
-		cout << name << " ïîêóïàåò ïðåäìåò çà " << cost << " çîëîòà!" << endl;
+		cout << name << " ÐºÑƒÐ¿Ð¸Ð» Ð¿Ñ€ÐµÐ´Ð¼ÐµÑ‚ Ð·Ð° " << cost << " Ð·Ð¾Ð»Ð¾Ñ‚Ð°!" << endl;
 		return true;
 	}
 	else
 	{
-		cout << "Íåäîñòàòî÷íî çîëîòà! Íóæíî: " << cost << ", åñòü: " << gold << endl;
+		cout << "ÐÐµÐ´Ð¾ÑÑ‚Ð°Ñ‚Ð¾Ñ‡Ð½Ð¾ Ð·Ð¾Ð»Ð¾Ñ‚Ð°! ÐÑƒÐ¶Ð½Ð¾: " << cost << ", ÐµÑÑ‚ÑŒ: " << gold << endl;
 		return false;
 	}
-}
-
-void Character::BasicAttack(Character& other)
-{
-	cout << endl << name << " ïûòàåòñÿ àòàêîâàòü " << other.name << "..." << endl;
-
-	Results result = CheckSuccess(this, characteristics.strength, other.characteristics.armorClass);
-
-	int damageRoll;
-	switch (result)
-	{
-	case 1:
-		damageRoll = RollDice(damageFace);
-		other.DecreaseHealth(damageRoll);
-		cout << name << " íàíîñèò " << damageRoll << " óðîíà!" << endl;
-		break;
-	case 2:
-		cout << name << " ïðîìàõèâàåòñÿ O_O" << endl;
-		break;
-	case 3:
-		damageRoll = RollDice(damageFace * 2);
-		other.DecreaseHealth(damageRoll);
-		cout << name << " ÑÒÈÐÀÅÒ Ñ ËÈÖÀ ÇÅÌËÈ ÍÀ " << damageRoll << " ÓÐÎÍÀ!" << endl;
-		break;
-	case 4:
-		damageRoll = RollDice(damageFace);
-		DecreaseHealth(damageRoll);
-		cout << name << " ïîäñêîëüçíóëñÿ íà áàíàíîâîé êîæóðå è ñëîìàë ïîçâîíî÷íèê íà " << damageRoll << " óðîíà :U" << endl;
-		break;
-	default:
-		break;
-	}
-}
-
-void Character::SpecialAttack()
-{
-
-}
-
-void Character::ShowInventory()
-{
-	int userInput;
-	do
-	{
-		if (inventory.size() <= 0)
-		{
-			cout << "Â èíâåíòàðå íåò ïðåäìåòîâ!" << endl;
-			return;
-		}
-
-		for (int i = 1; i <= inventory.size(); i++)
-		{
-			cout << i << ". " << inventory[i - 1].name << "." << endl;
-		}
-
-		cout << endl << "Ââåäèòå íîìåð ïðåäìåòà äëÿ åãî îñìîòðà (èëè '0' äëÿ âûõîäà): " << endl;
-		cin >> userInput;
-
-		if (userInput == 0) continue;
-		while (true)
-		{
-			cout << SEPARATOR_LINE << endl;
-			inventory[userInput - 1].ShowInfo();
-			Item chosenItem = inventory[userInput - 1];
-			cout << endl << "Ââåäèòå 1 äëÿ ïðèìåíåíèÿ ïðåäìåòà (èëè '0' äëÿ âûõîäà): " << endl;
-			int nestedUserInput;
-			cin >> nestedUserInput;
-			if (nestedUserInput == 1)
-			{
-				inventory[userInput - 1].quantity -= 1;
-				if (inventory[userInput - 1].quantity <= 0)
-				{
-					inventory.erase(inventory.begin() + userInput - 1);
-					// PLACEHOLDER
-					break;
-				}
-			}
-
-			else if (nestedUserInput == 0)
-			{
-				system("cls");
-				break;
-			}
-		}
-
-		cout << TOP_BORDER << endl;
-	} while (userInput != 0);
-
-	system("cls");
 }
 
 void Character::IncreaseHealth(int amount)
@@ -221,97 +136,56 @@ void Character::DecreaseHealth(int amount)
 	if (health < 0) health = 0;
 }
 
-void Character::Heal(int difficulty)
+
+void Character::BasicAttack(Character& other)
 {
-	if (healthFlasks == 0)
+	cout << name << " Ð°Ñ‚Ð°ÐºÑƒÐµÑ‚ " << other.GetName() << "..." << endl;
+	int damageRoll = RollDice(damageFace);
+	other.DecreaseHealth(damageRoll);
+	cout << other.GetName() << " Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÑ‚ " << damageRoll << " ÑƒÑ€Ð¾Ð½Ð°!" << endl;
+}
+
+void Character::SpecialAttack()
+{
+	
+	cout << name << " Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ ÑÐ¿ÐµÑ†Ð¸Ð°Ð»ÑŒÐ½ÑƒÑŽ Ð°Ñ‚Ð°ÐºÑƒ!" << endl;
+}
+
+void Character::ShowInventory()
+{
+	if (inventory.empty())
 	{
-		cout << "Ó âàñ íå îñòàëîñü çåëèé ëå÷åíèÿ!" << endl;
+		cout << "Ð’ Ð¸Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ðµ Ð½ÐµÑ‚ Ð¿Ñ€ÐµÐ´Ð¼ÐµÑ‚Ð¾Ð²!" << endl;
 		return;
 	}
 
-	cout << name << " ïûòàåòñÿ èñöåëèòüñÿ..." << endl;
-
-	Results result = CheckSuccess(this, characteristics.wisdom, difficulty);
-
-	int healAmount;
-	switch (result)
+	for (size_t i = 0; i < inventory.size(); i++)
 	{
-	case 1:
-		healthFlasks--;
-		healAmount = maxHealth / 3;
-		IncreaseHealth(healAmount);
-		cout << name << " âîññòàíàâëèâàåò " << healAmount << " HP!" << endl;
-		break;
-	case 2:
-		healthFlasks--;
-		cout << name << " ïðîëèâàåò öåëåáíóþ æèäêîñòü ìèìî ðòà." << endl;
-		break;
-	case 3:
-		healthFlasks--;
-		healAmount = maxHealth / 2;
-		IncreaseHealth(healAmount);
-		cout << name << " âîññòàíàâëèâàåò " << healAmount << " HP!" << endl;
-		break;
-	case 4:
-		healthFlasks--;
-		healAmount = maxHealth / 3;
-		DecreaseHealth(healAmount);
-		cout << "Âî âðåìÿ òîãî, êàê " << name << " ñóäîðîæíî ïèë ñêëÿíêó, îí ïîïåðõíóëñÿ è ïîòåðÿë" << healAmount << " HP :o" << endl;
-		break;
-	default:
-		cout << name << " ïðîïóñêàåò ñâîé õîä!" << endl;
-		break;
+		cout << i + 1 << ". " << inventory[i].name << endl;
 	}
+}
+
+void Character::Heal(int difficulty)
+{
+	if (healthFlasks <= 0)
+	{
+		cout << "Ð£ " << name << " Ð½ÐµÑ‚ Ð·ÐµÐ»Ð¸Ð¹ Ð»ÐµÑ‡ÐµÐ½Ð¸Ñ!" << endl;
+		return;
+	}
+	healthFlasks--;
+	IncreaseHealth(maxHealth / 3);
+	cout << name << " Ð²Ð¾ÑÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ Ð·Ð´Ð¾Ñ€Ð¾Ð²ÑŒÐµ!" << endl;
 }
 
 bool Character::Flee(Character& other)
 {
-	int currentHealthPercent = int((double(other.health) / double(other.maxHealth)) * 100);
-
-	if (currentHealthPercent >= 0 && currentHealthPercent <= 20)
-	{
-		return CheckFleeSuccess(3);
-	}
-	else if (currentHealthPercent >= 20 && currentHealthPercent <= 40)
-	{
-		return CheckFleeSuccess(7);
-	}
-	else if (currentHealthPercent >= 40 && currentHealthPercent <= 60)
-	{
-		return CheckFleeSuccess(14);
-	}
-	else if (currentHealthPercent >= 60 && currentHealthPercent <= 80)
-	{
-		return CheckFleeSuccess(15);
-	}
-	else
-	{
-		return CheckFleeSuccess(19);
-	}
+	int healthPercent = int((double(other.GetHealth()) / double(other.GetMaxHealth())) * 100);
+	cout << name << " Ð¿Ñ‹Ñ‚Ð°ÐµÑ‚ÑÑ ÑƒÐ±ÐµÐ¶Ð°Ñ‚ÑŒ Ð¾Ñ‚ " << other.GetName() << "..." << endl;
+	return healthPercent < 50; // Ð¿Ñ€Ð¾ÑÑ‚Ð¾Ð¹ Ð¿Ñ€Ð¸Ð¼ÐµÑ€
 }
 
 bool Character::CheckFleeSuccess(int difficulty)
 {
-	Results result = CheckSuccess(this, characteristics.dexterity, difficulty);
-	switch (result)
-	{
-	case 1:
-		cout << name << " ñáåæàë, ïîæàâ õâîñò!" << endl;
-		return true;
-	case 2:
-		cout << "Ó " << name << " ñáåæàëè ãëàçà, à îí îñòàëñÿ..." << endl;
-		return false;
-	case 3:
-		cout << name << " íå òîëüêî óäàëîñü ñáåæàòü, íî è âîñïðÿòü äóõàìè!" << endl;
-		healthFlasks++;
-		Heal(8);
-		return true;
-	case 4:
-		cout << name << " çàñìîòðåëñÿ íà ïðîòèâíèêà è ïîäñêîëüçíóëñÿ íà ñâîèõ ãëàçàõ." << name << "çàâîðàæèâàåò åãî âèä..." << endl;
-		DecreaseHealth(RollDice(4));
-		return false;
-	default:
-		cout << "×òî-òî ïîøëî íå òàê â FleeCheckSuccess!" << endl;
-		return false;
-	}
+	
+	return true;
 }
