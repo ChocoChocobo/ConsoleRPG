@@ -7,19 +7,9 @@
 #include "item.h"
 #include "dice.h"
 #include "user_interface.h"
+
 using namespace std;
 
-// В структуре character находятся все характеристики + описание перса
-// Это редактируется в отдельном файле редакторе персонажа
-
-// 1. Игрок распределяет сам статы - делаем. 8, 10, 12, 13, 14, 15
-// 2. Программа бросает кубик на характеристики
-
-// При внедрении классов необходимо определять тип куба и модификатора, используемого при атаке
-
-/// <summary>
-/// Структура, ответственная за хранение набора характеристик персонажа и расчет модификатора [1, 2, 3, 4, 5, 7, 8, 9].
-/// </summary>
 struct Characteristics
 {
 	int strength;
@@ -36,24 +26,17 @@ struct Characteristics
 	void PrintCharacteristics();
 };
 
-// Спрайты персонажей находятся в файлах
-// LoadSprite(enum state)
-struct VisualsASCII
-{
-	void ShowSprite()
-	{
-		
-	}
-};
-  
 struct Appearance
 {
 	string skinColor;
 	string hairColor;
 };
 
-struct Character
+
+class Character
 {
+private:
+	
 	string name;
 	Appearance appearance;
 
@@ -74,13 +57,22 @@ struct Character
 	bool minionSpawned = false;
 	Character* minion = nullptr;
 
-	VisualsASCII visualsASCII;
-
+public:
+	
 	Character();
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty);
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold);
 
-	// Вспомогательные функции
+
+
+	string GetName() const;
+	int GetHealth() const;
+	int GetMaxHealth() const;
+	int GetGold() const;
+
+	void SetHealth(int value);
+	void SetGold(int value);
+
 	void PrintStatus();
 	void RemoveGold(int amount);
 	void AddGold(int amount);
@@ -89,7 +81,6 @@ struct Character
 	void DecreaseHealth(int amount);
 	bool CheckFleeSuccess(int difficulty);
 
-	// Функции, которые должны быть описаны как состояния
 	void BasicAttack(Character& other);
 	void SpecialAttack();
 	void ShowInventory();
@@ -97,21 +88,4 @@ struct Character
 	bool Flee(Character& other);
 };
 
-class CharacterContext;
-class CharacterState
-{
-
-};
-
-class CharacterContext
-{
-
-};
-
-class BasicAttackState : public CharacterState
-{
-
-};
-
-// Остальные классы состояний персонажа
 #endif
