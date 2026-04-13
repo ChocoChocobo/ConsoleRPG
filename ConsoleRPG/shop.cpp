@@ -22,7 +22,7 @@ bool Shop::ShowItems()
 		{
 			cout << i << ". " << availableItems[i - 1].name << "." << endl;
 		}
-		cout << endl << "У игрока деняк: " << player.gold << endl;
+		cout << endl << "У игрока деняк: " << player.GetGold() << endl;
 
 		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
 		cin >> userInput;
@@ -37,22 +37,22 @@ bool Shop::ShowItems()
 		{
 			system("cls");
 			availableItems[userInput - 1].ShowInfo();
-			cout << endl << "У игрока деняк: " << player.gold << endl;
+			cout << endl << "У игрока деняк: " << player.GetGold() << endl;
 			Item& chosenItem = availableItems[userInput - 1];
 			cout << endl << "Введите 1 для покупки предмета (или '0' для выхода): " << endl;
 			int nestedUserInput;
 			cin >> nestedUserInput;
 			if (nestedUserInput == 1)
 			{
-				if (player.gold < chosenItem.price)
+				if (player.GetGold() < chosenItem.price)
 				{
 					cout << "Нет деняк!" << endl;
 					continue;
 				}
 
-				player.gold -= chosenItem.price;
-				player.inventory.push_back(chosenItem);
-				cout << endl << "У игрока деняк: " << player.gold << endl;
+				player.GetGold() -= chosenItem.price;
+				player.AddItem(chosenItem);
+				cout << endl << "У игрока деняк: " << player.GetGold() << endl;
 				cout << endl;
 
 				chosenItem.quantity -= 1;

@@ -86,7 +86,7 @@ void main()
 		{
 			ShowProgressBar(3.2, 50, "Загрузка.", '#');
 			system("cls");
-			player.characteristics = DistributeCharacteristics();
+			player.GetCharacteristics() = DistributeCharacteristics();
 
 			system("cls");
 			cout << "Задайте имя вашему герою: ";
@@ -94,95 +94,7 @@ void main()
 			getline(cin, player.name);
 			cout << endl;
 
-			if (player.name == "Платон Святозарный")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ 6 кд" << endl;
-				cout << "+ 40 голды" << endl;
-				player.characteristics.armorClass += 6;
-				player.gold += 40;
-			}
-			else if (player.name == "ChocoChocobo")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете себя сильнее" << endl;
-				cout << "+ мораль" << endl;
-				player.damageFace = 10;
-			}
-			else if (player.name == "Bytik Menich")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете..." << endl;
-				Item item4("Батарейки", "Батарейки для пульта от кондиционера", 100, 2);
-				Item item5("Шпингалет", "Арбитр мироздания в твоей ванной", 1, 1);
-				player.inventory.push_back(item4);
-				player.inventory.push_back(item5);
-			}
-			else if (player.name == "Levi_333")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете свободу в вашем разуме" << endl;
-				cout << "+ вы перестали думать" << endl;
-				cout << "- мысли" << endl;
-				player.health += 12;
-				player.maxHealth += 12;
-				player.healthFlasks += 2;
-			}
-			else if (player.name == "Ольга Петровна")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ вы чувствуете страх в глазах ваших врагов" << endl;
-				cout << "+ Вы" << endl;
-				cout << "- Родин" << endl;
-				player.characteristics.armorClass = 18;
-				player.health = 1;
-				player.maxHealth = 1;
-				player.gold = 250;
-			}
-			else if (player.name == "Кусов")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ теперь вы что-то между Абаем Кунанбаевом и Аполлоном" << endl;
-				cout << "+++++++++++++++++++++" << endl;
-				cout << "- нет" << endl;
-				player.damageFace = 1;
-				player.healthFlasks = 64;
-				player.characteristics.armorClass = 128;
-				player.health = 256;
-				player.maxHealth = 512;
-				player.gold = 1024;
-			}
-			else if (player.name == "Леша 10 метров от вас")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ определенно дотянется" << endl;
-				cout << "+ вы вступили на тропу войны с С++" << endl;
-				cout << "+ С++" << endl;
-				cout << "- С--" << endl;
-				cout << "- проиграл все торговцу" << endl;
-				player.gold = -1024;
-				player.characteristics.charisma = 17;
-				player.characteristics.wisdom = 17;
-			}
-			else if (player.name == "Гном Плюсокрад")
-			{
-				cout << "Вы вписали секретное имя!" << endl;
-				cout << "+ теперь гном" << endl;
-				cout << "+ есть честь" << endl;
-				cout << "+ печеньки с молоком" << endl;
-				cout << "- тестировщик" << endl;
-				player.gold = 1024;
-				player.characteristics.wisdom = 20;
-				player.characteristics.strength = 20;
-				player.characteristics.constitution = 20;
-				player.characteristics.dexterity = 20;
-				player.characteristics.charisma = 20;
-				player.characteristics.intelligence = 20;
-				player.damageFace = 60;
-				player.health = 256;
-				player.maxHealth = 512;
-				player.characteristics.armorClass = 30;
-			}
+			CheckSecretName(player);
 
 			system("pause");
 			system("cls");
@@ -273,7 +185,7 @@ void main()
 			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->health <= 0)
 			{
 				cout << "Ты выйграл битву, но не войну!" << endl;
-				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->gold);
+				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->GetGold());
 				enemyWave[enemyCount].minionSpawned = false;
 			}
 			break;
@@ -286,8 +198,6 @@ void main()
 
 		do
 		{
-
-
 			if (CheckWinLoseConditionEnemy(enemyWave[enemyCount], player)) break;
 
 			if (CheckWinLoseConditionPlayer(player)) break;

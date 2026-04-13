@@ -123,12 +123,12 @@ void RoundGame(Character& player, bool GameReady) {
 			"Торговец наклоняется ближе к огню.\n"
 			"— Назови свою ставку. Сколько золотых ты готов доверить этому броску?\n\n";
 
-		cout << "(Ваш кошелек: " << player.gold << " золотых)" << endl << endl;
+		cout << "(Ваш кошелек: " << player.GetGold() << " золотых)" << endl << endl;
 
 		while (Money) {
 			cout << "Введите вашу ставку: ";
 			cin >> PlayerBet;
-			if (PlayerBet > player.gold || PlayerBet < 1) {
+			if (PlayerBet > player.GetGold() || PlayerBet < 1) {
 				cout << endl << "Поставьте на кон столько, сколько есть в кошельке" << endl;
 				continue;
 			}

@@ -15,4 +15,10 @@ Characteristics DistributeCharacteristics();
 /// <param name="player">ќбъект, который отвечает за персонажа игрока</param>
 void CreateCharacter(Character& player);
 
+/// <summary>
+/// ‘ункци€ провер€ет им€ персонажа и если оно соответствует секретному имени, то игроку добавл€ютс€ бонусы.
+/// </summary>
+/// <param name="player">ќбъект класса Character, который отвечает за персонажа игрока.</param>
+void CheckSecretName(Character& player);
+
 #endif // !CHARACTER_CREATOR

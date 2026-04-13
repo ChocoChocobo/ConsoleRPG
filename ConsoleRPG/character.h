@@ -80,15 +80,6 @@ public:
 	int maxHealth;
 	int healthFlasks;
 
-	int damageFace;
-	int specialCooldown;
-
-	int gold;
-
-	vector<Item> inventory;
-
-	Characteristics characteristics;
-
 	int uniqueAbilityDifficulty;
 	bool minionSpawned = false;
 	Character* minion = nullptr;
@@ -182,6 +173,60 @@ public:
 	/// <param name="other">Тот, от кого пытаются сбежать</param>
 	/// <returns>Если успешно возвращает true, иначе false</returns>
 	bool Flee(Character& other);
+	/// <summary>
+	/// Geter функция к полю inventory.
+	/// </summary>
+	/// <returns>Возвращает инвентарь.</returns>
+	vector<Item> GetInventory()
+	{
+		return inventory;
+	}
+	/// <summary>
+	/// Функция, которая добавляет в инвентарь новый предмет.
+	/// </summary>
+	/// <param name="item">Предмет, который нужно добавить.</param>
+	void AddItem(Item item)
+	{
+		inventory.push_back(item);
+	}
+	/// <summary>
+	/// Geter функция к полю damageFace.
+	/// </summary>
+	/// <returns>Возвращает грань куба урона.</returns>
+	int& GetDamageFace()
+	{
+		return damageFace;
+	}
+	/// <summary>
+	/// Geter функция к полю specialCooldown.
+	/// </summary>
+	/// <returns>Возвращает время отката спец. атаки в раундах.</returns>
+	int& GetSpecialCooldown()
+	{
+		return specialCooldown;
+	}
+	/// <summary>
+	/// Geter функция к полю gold.
+	/// </summary>
+	/// <returns>Возвращает золото персонажа.</returns>
+	int& GetGold()
+	{
+		return gold;
+	}
+	/// <summary>
+	/// Geter функция к полю characteristics.
+	/// </summary>
+	/// <returns>Возвращает набор характеристик персонажа.</returns>
+	Characteristics& GetCharacteristics()
+	{
+		return characteristics;
+	}
+private:
+	vector<Item> inventory;
+	int damageFace;
+	int specialCooldown;
+	int gold;
+	Characteristics characteristics;
 };
 
 class CharacterContext;

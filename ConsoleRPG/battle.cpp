@@ -119,7 +119,7 @@ bool CheckWinLoseConditionEnemy(Character enemy, Character& player)
 	if (enemy.health <= 0)
 	{
 		cout << "Победа, но какой ценой (o_o;)" << endl;
-		player.AddGold(enemy.gold);
+		player.AddGold(enemy.GetGold());
 		return true;
 	}
 	else return false;

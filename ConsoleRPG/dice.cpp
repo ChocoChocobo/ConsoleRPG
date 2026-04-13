@@ -15,7 +15,7 @@ Results CheckSuccess(Character* character, int characteristicValue, int difficul
 {
     int d20Roll = RollDice(20);
     cout << "Бросок кубика: " << d20Roll;
-    int modificator = character->characteristics.CountModificator(characteristicValue);
+    int modificator = character->GetCharacteristics().CountModificator(characteristicValue);
     PrintConsoleMessage("МОДИФИКАТОР: ", modificator);
     if (d20Roll == 20)
     {

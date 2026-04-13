@@ -20,7 +20,7 @@ bool LoadGame(Character& player, Character& enemy, const string& filename = "sav
 /// <param name="enemy">Объект, отвечающий за персонажа врага</param>
 /// <param name="filename">Путь к файлу с сохранением</param>
 /// <returns>Если сохранение удачно возвращает true, иначе false</returns>
-bool SaveGame(const Character& player, const Character& enemy, const string& filename = "saves\\save.txt");
+bool SaveGame(Character& player, Character& enemy, const string& filename = "saves\\save.txt");
 
 /// <summary>
 /// Проверяет наличие сохранения в папке

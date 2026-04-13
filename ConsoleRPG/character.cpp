@@ -337,13 +337,13 @@ void BasicAttackState::HandleAction(Character* character, Character* other, int 
 {
 	cout << endl << character->name << " пытается атаковать " << other->name << "..." << endl;
 
-	Results result = CheckSuccess(character, character->characteristics.strength, other->characteristics.armorClass);
+	Results result = CheckSuccess(character, character->GetCharacteristics().strength, other->GetCharacteristics().armorClass);
 
 	int damageRoll;
 	switch (result)
 	{
 	case 1:
-		damageRoll = RollDice(character->damageFace);
+		damageRoll = RollDice(character->GetDamageFace());
 		other->DecreaseHealth(damageRoll);
 		cout << character->name << " наносит " << damageRoll << " урона!" << endl;
 		break;
@@ -351,12 +351,12 @@ void BasicAttackState::HandleAction(Character* character, Character* other, int 
 		cout << character->name << " промахивается O_O" << endl;
 		break;
 	case 3:
-		damageRoll = RollDice(character->damageFace * 2);
+		damageRoll = RollDice(character->GetDamageFace() * 2);
 		other->DecreaseHealth(damageRoll);
 		cout << character->name << " СТИРАЕТ С ЛИЦА ЗЕМЛИ НА " << damageRoll << " УРОНА!" << endl;
 		break;
 	case 4:
-		damageRoll = RollDice(character->damageFace);
+		damageRoll = RollDice(character->GetDamageFace());
 		character->DecreaseHealth(damageRoll);
 		cout << character->name << " подскользнулся на банановой кожуре и сломал позвоночник на " << damageRoll << " урона :U" << endl;
 		break;
@@ -383,15 +383,15 @@ void ShowInventoryState::HandleAction(Character* character, Character* other, in
 	int userInput;
 	do
 	{
-		if (character->inventory.size() <= 0)
+		if (character->GetInventory().size() <= 0)
 		{
 			cout << "В инвентаре нет предметов!" << endl;
 			return;
 		}
 
-		for (int i = 1; i <= character->inventory.size(); i++)
+		for (int i = 1; i <= character->GetInventory().size(); i++)
 		{
-			cout << i << ". " << character->inventory[i - 1].name << "." << endl;
+			cout << i << ". " << character->GetInventory()[i - 1].name << "." << endl;
 		}
 
 		cout << endl << "Введите номер предмета для его осмотра (или '0' для выхода): " << endl;
@@ -401,17 +401,17 @@ void ShowInventoryState::HandleAction(Character* character, Character* other, in
 		while (true)
 		{
 			cout << SEPARATOR_LINE << endl;
-			character->inventory[userInput - 1].ShowInfo();
-			Item chosenItem = character->inventory[userInput - 1];
+			character->GetInventory()[userInput - 1].ShowInfo();
+			Item chosenItem = character->GetInventory()[userInput - 1];
 			cout << endl << "Введите 1 для применения предмета (или '0' для выхода): " << endl;
 			int nestedUserInput;
 			cin >> nestedUserInput;
 			if (nestedUserInput == 1)
 			{
-				character->inventory[userInput - 1].quantity -= 1;
-				if (character->inventory[userInput - 1].quantity <= 0)
+				character->GetInventory()[userInput - 1].quantity -= 1;
+				if (character->GetInventory()[userInput - 1].quantity <= 0)
 				{
-					character->inventory.erase(character->inventory.begin() + userInput - 1);
+					character->GetInventory().erase(character->GetInventory().begin() + userInput - 1);
 					// PLACEHOLDER
 					break;
 				}
@@ -444,7 +444,7 @@ void HealState::HandleAction(Character* character, Character* other, int difficu
 
 	cout << character->name << " пытается исцелиться..." << endl;
 
-	Results result = CheckSuccess(character, character->characteristics.wisdom, difficulty);
+	Results result = CheckSuccess(character, character->GetCharacteristics().wisdom, difficulty);
 
 	int healAmount;
 	switch (result)

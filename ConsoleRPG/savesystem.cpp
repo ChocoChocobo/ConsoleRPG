@@ -16,7 +16,7 @@ bool WriteKeyValue(ofstream& file, const string& key, const string& value)
 	else return false;
 }
 
-bool SaveGame(const Character& player, const Character& enemy, const string& filename)
+bool SaveGame(Character& player, Character& enemy, const string& filename)
 {
 	filesystem::create_directory("saves");
 	ofstream file;
@@ -33,20 +33,20 @@ bool SaveGame(const Character& player, const Character& enemy, const string& fil
 		WriteKeyValue(file, "player.health", to_string(player.health));
 		WriteKeyValue(file, "player.maxHealth", to_string(player.maxHealth));
 		WriteKeyValue(file, "player.healthFlasks", to_string(player.healthFlasks));
-		WriteKeyValue(file, "player.damageFace", to_string(player.damageFace));
-		WriteKeyValue(file, "player.specialCooldown", to_string(player.specialCooldown));
-		WriteKeyValue(file, "player.gold", to_string(player.gold));
-		WriteKeyValue(file, "player.stats.armorClass", to_string(player.characteristics.armorClass));
+		WriteKeyValue(file, "player.damageFace", to_string(player.GetDamageFace()));
+		WriteKeyValue(file, "player.specialCooldown", to_string(player.GetSpecialCooldown()));
+		WriteKeyValue(file, "player.gold", to_string(player.GetGold()));
+		WriteKeyValue(file, "player.stats.armorClass", to_string(player.GetCharacteristics().armorClass));
 
 		// Враг
 		WriteKeyValue(file, "enemy.name", enemy.name);
 		WriteKeyValue(file, "enemy.health", to_string(enemy.health));
 		WriteKeyValue(file, "enemy.maxHealth", to_string(enemy.maxHealth));
 		WriteKeyValue(file, "enemy.healthFlasks", to_string(enemy.healthFlasks));
-		WriteKeyValue(file, "enemy.damageFace", to_string(enemy.damageFace));
-		WriteKeyValue(file, "enemy.specialCooldown", to_string(enemy.specialCooldown));
-		WriteKeyValue(file, "enemy.gold", to_string(enemy.gold));
-		WriteKeyValue(file, "enemy.stats.armorClass", to_string(enemy.characteristics.armorClass));
+		WriteKeyValue(file, "enemy.damageFace", to_string(enemy.GetDamageFace()));
+		WriteKeyValue(file, "enemy.specialCooldown", to_string(enemy.GetSpecialCooldown()));
+		WriteKeyValue(file, "enemy.gold", to_string(enemy.GetGold()));
+		WriteKeyValue(file, "enemy.stats.armorClass", to_string(enemy.GetCharacteristics().armorClass));
 
 		file.close();
 		cout << "Игра успешно сохранена! \\(@^0^@)/" << endl;
@@ -77,10 +77,10 @@ bool LoadGame(Character& player, Character& enemy, const string& filename)
 		else if (key == "player.health") player.health = stoi(value);
 		else if (key == "player.maxHealth") player.maxHealth = stoi(value);
 		else if (key == "player.healthFlasks") player.healthFlasks = stoi(value);
-		else if (key == "player.damageFace") player.damageFace = stoi(value);
-		else if (key == "player.specialCooldown") player.specialCooldown = stoi(value);
-		else if (key == "player.gold") player.gold = stoi(value);
-		else if (key == "player.stats.armorClass") player.characteristics.armorClass = stoi(value);
+		else if (key == "player.damageFace") player.GetDamageFace() = stoi(value);
+		else if (key == "player.specialCooldown") player.GetSpecialCooldown() = stoi(value);
+		else if (key == "player.gold") player.GetGold() = stoi(value);
+		else if (key == "player.stats.armorClass") player.GetCharacteristics().armorClass = stoi(value);
 	}
 
 	cout << "Сохранение успешно загружено!" << endl;

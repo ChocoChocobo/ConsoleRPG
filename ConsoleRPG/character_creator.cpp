@@ -39,6 +39,99 @@ void CreateCharacter(Character& player)
 	system("cls");
 }
 
+void CheckSecretName(Character& player)
+{
+	if (player.name == "Платон Святозарный")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ 6 кд" << endl;
+		cout << "+ 40 голды" << endl;
+		player.GetCharacteristics().armorClass += 6;
+		player.GetGold() += 40;
+	}
+	else if (player.name == "ChocoChocobo")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ вы чувствуете себя сильнее" << endl;
+		cout << "+ мораль" << endl;
+		player.GetDamageFace() = 10;
+	}
+	else if (player.name == "Bytik Menich")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ вы чувствуете..." << endl;
+		Item item4("Батарейки", "Батарейки для пульта от кондиционера", 100, 2);
+		Item item5("Шпингалет", "Арбитр мироздания в твоей ванной", 1, 1);
+		player.AddItem(item4);
+		player.AddItem(item5);
+	}
+	else if (player.name == "Levi_333")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ вы чувствуете свободу в вашем разуме" << endl;
+		cout << "+ вы перестали думать" << endl;
+		cout << "- мысли" << endl;
+		player.health += 12;
+		player.maxHealth += 12;
+		player.healthFlasks += 2;
+	}
+	else if (player.name == "Ольга Петровна")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ вы чувствуете страх в глазах ваших врагов" << endl;
+		cout << "+ Вы" << endl;
+		cout << "- Родин" << endl;
+		player.GetCharacteristics().armorClass = 18;
+		player.health = 1;
+		player.maxHealth = 1;
+		player.GetGold() = 250;
+	}
+	else if (player.name == "Кусов")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ теперь вы что-то между Абаем Кунанбаевом и Аполлоном" << endl;
+		cout << "+++++++++++++++++++++" << endl;
+		cout << "- нет" << endl;
+		player.GetDamageFace() = 1;
+		player.healthFlasks = 64;
+		player.GetCharacteristics().armorClass = 128;
+		player.health = 256;
+		player.maxHealth = 512;
+		player.GetGold() = 1024;
+	}
+	else if (player.name == "Леша 10 метров от вас")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ определенно дотянется" << endl;
+		cout << "+ вы вступили на тропу войны с С++" << endl;
+		cout << "+ С++" << endl;
+		cout << "- С--" << endl;
+		cout << "- проиграл все торговцу" << endl;
+		player.GetGold() = -1024;
+		player.GetCharacteristics().charisma = 17;
+		player.GetCharacteristics().wisdom = 17;
+	}
+	else if (player.name == "Гном Плюсокрад")
+	{
+		cout << "Вы вписали секретное имя!" << endl;
+		cout << "+ теперь гном" << endl;
+		cout << "+ есть честь" << endl;
+		cout << "+ печеньки с молоком" << endl;
+		cout << "- тестировщик" << endl;
+		player.GetGold() = 1024;
+		player.GetCharacteristics().wisdom = 20;
+		player.GetCharacteristics().strength = 20;
+		player.GetCharacteristics().constitution = 20;
+		player.GetCharacteristics().dexterity = 20;
+		player.GetCharacteristics().charisma = 20;
+		player.GetCharacteristics().intelligence = 20;
+		player.GetDamageFace() = 60;
+		player.health = 256;
+		player.maxHealth = 512;
+		player.GetCharacteristics().armorClass = 30;
+	}
+}
+
 Characteristics DistributeCharacteristics()
 {
 	Characteristics distributedCharacteristics;
