@@ -11,7 +11,7 @@ struct Item
 	string description;
 	int price;
 	int quantity;
-
+	Item();
 	Item(string _name, string _description, int _price, int _quantity);
 	void ShowInfo();
 	bool BuyItem(int playerGold);

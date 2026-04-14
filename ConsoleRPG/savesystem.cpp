@@ -64,7 +64,7 @@ bool LoadGame(Character& player, Character& enemy, Shop& shop, const string& fil
     }
 
     shop.availableItems.clear();
-    player.inventory.clear();
+    player.GetInventory().clear();
 
     string line;
 
@@ -80,9 +80,9 @@ bool LoadGame(Character& player, Character& enemy, Shop& shop, const string& fil
 
         // ===== ИГРОК =====
         if (key == "player.name") player.name = value;
-        else if (key == "player.health") player.health = stoi(value);
-        else if (key == "player.maxHealth") player.maxHealth = stoi(value);
-        else if (key == "player.healthFlasks") player.healthFlasks = stoi(value);
+        else if (key == "player.GetHealf()") player.GetHealf() = stoi(value);
+        else if (key == "player.GetMaxHealf()") player.GetMaxHealf() = stoi(value);
+        else if (key == "player.GetHealfFlask()") player.GetHealfFlask() = stoi(value);
         else if (key == "player.damageFace") player.damageFace = stoi(value);
         else if (key == "player.specialCooldown") player.specialCooldown = stoi(value);
         else if (key == "player.gold") player.gold = stoi(value);
@@ -120,9 +120,9 @@ bool LoadGame(Character& player, Character& enemy, Shop& shop, const string& fil
 
         // ===== ВРАГ =====
         else if (key == "enemy.name") enemy.name = value;
-        else if (key == "enemy.health") enemy.health = stoi(value);
-        else if (key == "enemy.maxHealth") enemy.maxHealth = stoi(value);
-        else if (key == "enemy.healthFlasks") enemy.healthFlasks = stoi(value);
+        else if (key == "enemy.GetHealf()") enemy.GetHealf() = stoi(value);
+        else if (key == "enemy.GetMaxHealf()") enemy.GetMaxHealf() = stoi(value);
+        else if (key == "enemy.GetHealfFlask()") enemy.GetHealfFlask() = stoi(value);
         else if (key == "enemy.damageFace") enemy.damageFace = stoi(value);
         else if (key == "enemy.specialCooldown") enemy.specialCooldown = stoi(value);
         else if (key == "enemy.gold") enemy.gold = stoi(value);

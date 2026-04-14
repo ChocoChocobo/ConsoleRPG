@@ -23,7 +23,7 @@
 #include "character_creator.h"
 #include "casino.h"
 #include <conio.h>
-#include "battle.cpp"
+//#include "battle.cpp"
 
 using namespace std;
 
@@ -88,7 +88,7 @@ void main()
 	{
 		cout << endl << "Обнаружено сохранение. Для его загрузки нажмите 1. Для начала новой игрой нажмите 0." << endl;
 		cin >> userChoice;
-		if (userChoice == 1) LoadGame(player, enemy);
+		if (userChoice == 1) LoadGame(player, enemy,shop);
 		else
 		{
 			ShowProgressBar(3.2, 50, "Загрузка.", '#');
@@ -100,6 +100,7 @@ void main()
 			cin.ignore(1000, '\n');
 			getline(cin, player.name);
 			cout << endl;
+
 
 			if (player.name == "Платон Святозарный")
 			{
@@ -122,8 +123,8 @@ void main()
 				cout << "+ вы чувствуете..." << endl;
 				Item item4("Батарейки", "Батарейки для пульта от кондиционера", 100, 2);
 				Item item5("Шпингалет", "Арбитр мироздания в твоей ванной", 1, 1);
-				player.inventory.push_back(item4);
-				player.inventory.push_back(item5);
+				player.GetInventory().push_back(item4);
+				player.GetInventory().push_back(item5);
 			}
 			else if (player.name == "Levi_333")
 			{
@@ -131,9 +132,9 @@ void main()
 				cout << "+ вы чувствуете свободу в вашем разуме" << endl;
 				cout << "+ вы перестали думать" << endl;
 				cout << "- мысли" << endl;
-				player.health += 12;
-				player.maxHealth += 12;
-				player.healthFlasks += 2;
+				player.GetHealf() += 12;
+				player.GetMaxHealf() += 12;
+				player.GetHealfFlask() += 2;
 			}
 			else if (player.name == "Ольга Петровна")
 			{
@@ -142,8 +143,8 @@ void main()
 				cout << "+ Вы" << endl;
 				cout << "- Родин" << endl;
 				player.characteristics.armorClass = 18;
-				player.health = 1;
-				player.maxHealth = 1;
+				player.GetHealf()= 1;
+				player.GetMaxHealf() = 1;
 				player.gold = 250;
 			}
 			else if (player.name == "Кусов")
@@ -153,10 +154,10 @@ void main()
 				cout << "+++++++++++++++++++++" << endl;
 				cout << "- нет" << endl;
 				player.damageFace = 1;
-				player.healthFlasks = 64;
+				player.GetHealfFlask() = 64;
 				player.characteristics.armorClass = 128;
-				player.health = 256;
-				player.maxHealth = 512;
+				player.GetHealf() = 256;
+				player.GetMaxHealf() = 512;
 				player.gold = 1024;
 			}
 			else if (player.name == "Леша 10 метров от вас")
@@ -186,8 +187,8 @@ void main()
 				player.characteristics.charisma = 20;
 				player.characteristics.intelligence = 20;
 				player.damageFace = 60;
-				player.health = 256;
-				player.maxHealth = 512;
+				player.GetHealf() = 256;
+				player.GetMaxHealf() = 512;
 				player.characteristics.armorClass = 30;
 			}
 			else if (player.name == "Кокаколик")
@@ -197,14 +198,16 @@ void main()
 				cout << "+ вам мало лет" << endl;
 				cout << "- это не лечится" << endl;
 				Item cococola("Банка колы 0.333", "Это нерациональная трата денег, дешевле купить бутылку 0.5", 69, 1);
-				player.inventory.push_back(cococola);
-				player.maxHealth -= 3;
-				player.health -= 3;
+				player.GetInventory().push_back(cococola);
+				player.GetMaxHealf() -= 3;
+				player.GetHealf() -= 3;
 			}
 
 			cout << "Нажмите любую клавишу, чтобы продолжить...";
 			_getch(); // Ждет нажатия одной клавиши
 			system("cls");			
+
+			
 
 			/*int index = 1;
 			while (true)
@@ -286,7 +289,11 @@ void main()
 				break;
 			}
 
+
 			/*if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->health <= 0)
+
+			if (enemyWave[enemyCount].minion != nullptr && enemyWave[enemyCount].minion->GetHealf() <= 0)
+
 			{
 				cout << "Ты выйграл битву, но не войну!" << endl;
 				enemyWave[enemyCount].AddGold(enemyWave[enemyCount].minion->gold);
@@ -320,7 +327,7 @@ void main()
 				enemyChoice = EnemyTurn(enemyWave[enemyCount], player);
 			}
 
-			if (enemyWave[enemyCount].health <= 0)
+			if (enemyWave[enemyCount].GetHealf() <= 0)
 			{
 				cout << "Победа, но какой ценой (o_o;)" << endl;
 

@@ -113,13 +113,13 @@ void CheckWinLoseConditionPlayer(Character player)
 
 void CheckWinLoseConditionEnemy(Character enemy, Character player)
 {
-	if (enemy.minion != nullptr && enemy.minion->health <= 0)
+	if (enemy.minion != nullptr && enemy.minion->GetHealf() <= 0)
 	{
 		cout << "Ты выйграл битву, но не войну!" << endl;
 		enemy.AddGold(enemy.minion->gold);
 		enemy.minionSpawned = false;
 	}
-	if (enemy.health <= 0)
+	if (enemy.GetHealf() <= 0)
 	{
 		cout << "Победа, но какой ценой (o_o;)" << endl;
 

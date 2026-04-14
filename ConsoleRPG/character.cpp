@@ -311,7 +311,7 @@ bool Character::CheckFleeSuccess(int difficulty)
 }
 
 // --------- Appearance
-
+Appearance::Appearance(){}
 Appearance::Appearance(string _physique, string _skinColor, string _eyeColor,
 	string _earShape, string _hairType, string _mouthType,
 	string _weapon, string _armor, string _tail, string _navel,

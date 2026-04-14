@@ -17,11 +17,12 @@ void CreateCharacter(Character& player)
 
 	switch (choice)
 	{
-	case 1: player.appearance.skinColor = "Светлая"; break;
-	case 2: player.appearance.skinColor = "Смуглая"; break;
-	case 3: player.appearance.skinColor = "Тёмная"; break;
-	default: player.appearance.skinColor = "Неизвестная"; break;
+	case 1: player.apperance.skinColor = "Светлая"; break;
+	case 2: player.apperance.skinColor = "Смуглая"; break;
+	case 3: player.apperance.skinColor = "Тёмная"; break;
+	default: player.apperance.skinColor = "Неизвестная"; break;
 	}
+}
 
 Characteristics DistributeCharacteristics()
 {

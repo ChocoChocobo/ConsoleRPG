@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -7,10 +7,8 @@
 #include "item.h"
 #include "dice.h"
 #include "user_interface.h"
+
 using namespace std;
-
-// В структуре character находятся все характеристики + описание перса
-
 
 struct Characteristics
 {
@@ -28,55 +26,30 @@ struct Characteristics
 	void PrintCharacteristics();
 };
 
-
-struct VisualsASCII
-{
-	void ShowSprite()
-	{
-		
-	}
-};
-  
 struct Appearance
 {
-	string physique;
 	string skinColor;
-	string eyeColor;
-	string earShape;
-	string hairType;
-	string mouthType;
-	string weapon;
-	string armor;
-	string tail;
-	string navel;
-	string skinTexture;
-	string hands;
-	string specialMarks;
-
-	Appearance();
-	Appearance(string _physique, string _skinColor, string _eyeColor,
-		string _earShape, string _hairType, string _mouthType,
-		string _weapon, string _armor, string _tail, string _navel,
-		string _skinTexture, string _hands, string _specialMarks);
+	string hairColor;
 };
 
-struct Character
-{
-	string name;
 
-	Appearance apperance;
+class Character
+{
+private:
+	
+	string name;
+	Appearance appearance;
+
+	int health;
+	int maxHealth;
+	int healthFlasks;
 
 	int damageFace;
 	int specialCooldown;
 
 	int gold;
 
-	void AddItem(Item item)
-	{
-		inventory.push_back(item);
-	}
-
-
+	vector<Item> inventory;
 
 	Characteristics characteristics;
 
@@ -84,47 +57,35 @@ struct Character
 	bool minionSpawned = false;
 	Character* minion = nullptr;
 
-	VisualsASCII visualsASCII;
-
+public:
+	
 	Character();
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty);
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold);
+
+
+
+	string GetName() const;
+	int GetHealth() const;
+	int GetMaxHealth() const;
+	int GetGold() const;
+
+	void SetHealth(int value);
+	void SetGold(int value);
+
 	void PrintStatus();
 	void RemoveGold(int amount);
 	void AddGold(int amount);
 	bool BuyItem(int cost);
+	void IncreaseHealth(int amount);
+	void DecreaseHealth(int amount);
+	bool CheckFleeSuccess(int difficulty);
+
 	void BasicAttack(Character& other);
 	void SpecialAttack();
 	void ShowInventory();
-	void IncreaseHealth(int amount);
-	void DecreaseHealth(int amount);
 	void Heal(int difficulty);
 	bool Flee(Character& other);
-
-	bool CheckFleeSuccess(int difficulty);
-
-	int& GetHealf()
-	{
-		return health;
-	}
-	int& GetMaxHealf()
-	{
-		return maxHealth;
-	}
-	int& GetHealfFlask()
-	{
-		return healthFlasks;
-	}
-	vector<Item>& GetInventory()
-	{
-		return inventory;
-	}
-private:
-	int health;
-	int maxHealth;
-	int healthFlasks;
-	
-	vector<Item> inventory;
 };
 
 #endif

@@ -9,6 +9,6 @@ int EnemyTurn(Character& enemy, Character& player);
 
 void CheckWinLoseConditionPlayer(Character player);
 
-void CheckWinLoseConditionEnemy(Character enemy);
+void CheckWinLoseConditionEnemy(Character enemy, Character player);
 
 #endif

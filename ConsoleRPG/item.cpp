@@ -1,5 +1,11 @@
 #include "item.h"
-
+Item::Item()
+{
+	name = "Имя предмета";
+	description = "Я предмет";
+	price = 666;
+	quantity = 6;
+}
 Item::Item(string _name, string _description, int _price, int _quantity)
 {
 	name = _name;
