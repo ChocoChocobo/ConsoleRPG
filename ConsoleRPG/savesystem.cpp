@@ -16,7 +16,7 @@ bool WriteKeyValue(ofstream& file, const string& key, const string& value)
 	else return false;
 }
 
-bool SaveGame(const Character& player, const Character& enemy, const string& filename)
+bool SaveGame( Character& player,  Character& enemy, const string& filename)
 {
 	filesystem::create_directory("saves");
 	ofstream file;
@@ -30,9 +30,9 @@ bool SaveGame(const Character& player, const Character& enemy, const string& fil
 	{
 		// Игрок
 		WriteKeyValue(file, "player.name", player.name);
-		WriteKeyValue(file, "player.health", to_string(player.health));
-		WriteKeyValue(file, "player.maxHealth", to_string(player.maxHealth));
-		WriteKeyValue(file, "player.healthFlasks", to_string(player.healthFlasks));
+		WriteKeyValue(file, "player.health", to_string(player.GetHealf()));
+		WriteKeyValue(file, "player.maxHealth", to_string(player.GetMaxHealf()));
+		WriteKeyValue(file, "player.healthFlasks", to_string(player.GetHealfFlask()));
 		WriteKeyValue(file, "player.damageFace", to_string(player.damageFace));
 		WriteKeyValue(file, "player.specialCooldown", to_string(player.specialCooldown));
 		WriteKeyValue(file, "player.gold", to_string(player.gold));
@@ -40,9 +40,9 @@ bool SaveGame(const Character& player, const Character& enemy, const string& fil
 
 		// Враг
 		WriteKeyValue(file, "enemy.name", enemy.name);
-		WriteKeyValue(file, "enemy.health", to_string(enemy.health));
-		WriteKeyValue(file, "enemy.maxHealth", to_string(enemy.maxHealth));
-		WriteKeyValue(file, "enemy.healthFlasks", to_string(enemy.healthFlasks));
+		WriteKeyValue(file, "enemy.health", to_string(enemy.GetHealf()));
+		WriteKeyValue(file, "enemy.maxHealth", to_string(enemy.GetMaxHealf()));
+		WriteKeyValue(file, "enemy.healthFlasks", to_string(enemy.GetHealfFlask()));
 		WriteKeyValue(file, "enemy.damageFace", to_string(enemy.damageFace));
 		WriteKeyValue(file, "enemy.specialCooldown", to_string(enemy.specialCooldown));
 		WriteKeyValue(file, "enemy.gold", to_string(enemy.gold));

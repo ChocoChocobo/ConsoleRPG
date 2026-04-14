@@ -70,13 +70,14 @@ int EnemyTurn(Character& enemy, Character& player)
 {
 	int enemyAction = rand() % 3;
 
-	if (enemyAction == 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 >= 40)
+	
+		if (enemyAction == 0 && (double(enemy.GetHealf()) / double(enemy.GetMaxHealf())) * 100 >= 40)
 	{
 		enemy.BasicAttack(player);
 		cout << endl;
 		return 1;
 	}
-	else if (enemy.healthFlasks != 0 && (double(enemy.health) / double(enemy.maxHealth)) * 100 <= 40)
+	else if (enemy.GetHealfFlask() != 0 && (double(enemy.GetHealf()) / double(enemy.GetMaxHealf())) * 100 <= 40)
 	{
 		enemy.Heal(8);
 		cout << endl;
@@ -103,7 +104,7 @@ int EnemyTurn(Character& enemy, Character& player)
 
 void CheckWinLoseConditionPlayer(Character player)
 {
-	if (player.health <= 0)
+	if (player.GetHealf() <= 0)
 	{
 		cout << player.name << " пал!" << endl;
 		

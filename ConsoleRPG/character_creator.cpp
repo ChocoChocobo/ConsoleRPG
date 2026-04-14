@@ -1,4 +1,27 @@
 #include "character_creator.h"
+using namespace std;
+
+void CreateCharacter(Character& player)
+{
+	cout << "Создание персонажа\n";
+
+	cout << "Введите имя персонажа: ";
+	cin.ignore(1000, '\n');
+	getline(cin, player.name);
+
+	int choice;
+
+	cout << "\nВыберите цвет кожи:\n";
+	cout << "1. Светлая\n2. Смуглая\n3. Тёмная\n> ";
+	cin >> choice;
+
+	switch (choice)
+	{
+	case 1: player.appearance.skinColor = "Светлая"; break;
+	case 2: player.appearance.skinColor = "Смуглая"; break;
+	case 3: player.appearance.skinColor = "Тёмная"; break;
+	default: player.appearance.skinColor = "Неизвестная"; break;
+	}
 
 Characteristics DistributeCharacteristics()
 {

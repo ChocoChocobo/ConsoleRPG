@@ -51,7 +51,7 @@ bool Shop::ShowItems()
 				}
 
 				player.gold -= chosenItem.price;
-				player.inventory.push_back(chosenItem);
+				player.AddItem(chosenItem); // добавление в инвентарь
 				cout << endl << "У игрока деняк: " << player.gold << endl;
 				cout << endl;
 

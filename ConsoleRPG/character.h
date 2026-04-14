@@ -69,16 +69,19 @@ struct Character
 {
 	string name;
 
-	int health;
-	int maxHealth;
-	int healthFlasks;
+	
 
 	int damageFace;
 	int specialCooldown;
 
 	int gold;
 
-	vector<Item> inventory;
+	void AddItem(Item item)
+	{
+		inventory.push_back(item);
+	}
+
+
 
 	Characteristics characteristics;
 
@@ -102,7 +105,77 @@ struct Character
 	void DecreaseHealth(int amount);
 	void Heal(int difficulty);
 	bool Flee(Character& other);
-	bool CheckFleeSuccess(int difficulty);
+};
+
+class CharacterContext;
+class CharacterState
+{
+public:
+	~CharacterState() {}
+	// Публичный метод, позволяющий переключиться на конкретное состояние
+	void SetContext(CharacterContext* context)
+	{
+		this->context = context;
+	}
+	// Handle-функция ответственна за возможность справиться с вызовом другой функции
+	virtual void HandleChangeState() = 0;
+	virtual void HandleAction(Character* character, Character* other, int difficulty) = 0;
+protected:
+	CharacterContext* context;
+};
+
+class CharacterContext
+{
+public:
+	CharacterContext(CharacterState* state)
+	{
+		this->TransitionToState(state);
+	}
+	// Контекст позволяет изменять состояние объекта с помощью этой функции
+	void TransitionToState(CharacterState* state);
+	void RequestChangeState()
+	{
+		this->state->HandleChangeState();
+	}
+	void RequestAction()
+	{
+		this->state->HandleAction(character, other, dificulty);
+	}
+	~CharacterContext()
+	{
+		delete state;
+	}
+private:
+	CharacterState* state;
+
+	Character* character;
+	Character* other;
+	int dificulty;
+};
+
+class BasicAttackState : public CharacterState
+{
+public:
+	void HandleChangeState() override;
+	void HandleAction(Character* character, Character* other, int difficulty) override;
+};
+
+class SpecialAttackState : public CharacterState
+{
+	void HandleChangeState() override;
+	void HandleAction(Character* character, Character* other, int difficulty) override;
+};
+
+class ShowInventoryState : public CharacterState
+{
+	void HandleChangeState() override;
+	void HandleAction(Character* character, Character* other, int difficulty) override;
+};
+
+class HealState : public CharacterState
+{
+	void HandleChangeState() override;
+	void HandleAction(Character* character, Character* other, int difficulty) override;
 };
 
 #endif
