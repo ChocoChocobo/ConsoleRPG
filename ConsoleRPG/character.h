@@ -4,18 +4,11 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "item.h"
 #include "dice.h"
 #include "user_interface.h"
 using namespace std;
-
-// В структуре character находятся все характеристики + описание перса
-// Это редактируется в отдельном файле редакторе персонажа
-
-// 1. Игрок распределяет сам статы - делаем. 8, 10, 12, 13, 14, 15
-// 2. Программа бросает кубик на характеристики
-
-// При внедрении классов необходимо определять тип куба и модификатора, используемого при атаке
 
 struct Characteristics
 {
@@ -28,13 +21,11 @@ struct Characteristics
 	int armorClass;
 
 	Characteristics();
-	Characteristics(int _strength, int dexterity, int constitution, int wisdom, int intelligence, int charisma, int armorClass);
+	Characteristics(int _strength, int _dexterity, int _constitution, int _wisdom, int _intelligence, int _charisma, int _armorClass);
 	int CountModificator(int characteristic);
 	void PrintCharacteristics();
 };
 
-// Спрайты персонажей находятся в файлах
-// LoadSprite(enum state)
 struct VisualsASCII
 {
 	void ShowSprite()
@@ -47,6 +38,17 @@ struct Appearance
 {
 	string skinColor;
 	string hairColor;
+	string eyeColor;
+	string height;
+	string bodyType;
+	
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
+	Appearance();
+	Appearance(string _skinColor, string _hairColor, string _eyeColor, string _height, string _bodyType);
+	
+	// РњРµС‚РѕРґС‹
+	void PrintAppearance();
+	void RandomizeAppearance();
 };
 
 struct Character
@@ -73,9 +75,13 @@ struct Character
 
 	VisualsASCII visualsASCII;
 
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 	Character();
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, Character& _minion, int _uniqueAbilityDifficulty);
 	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold);
+	Character(string _name, int _health, int _damageFace, int _specialCooldown, int _startGold, string _skinColor, string _hairColor, string _eyeColor, string _height, string _bodyType);
+	
+	// РњРµС‚РѕРґС‹
 	void PrintStatus();
 	void RemoveGold(int amount);
 	void AddGold(int amount);
@@ -88,6 +94,7 @@ struct Character
 	void Heal(int difficulty);
 	bool Flee(Character& other);
 	bool CheckFleeSuccess(int difficulty);
+	void PrintFullInfo(); // РќРѕРІС‹Р№ РјРµС‚РѕРґ РґР»СЏ РІС‹РІРѕРґР° РїРѕР»РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё СЃ РІРЅРµС€РЅРѕСЃС‚СЊСЋ
 };
 
 #endif
